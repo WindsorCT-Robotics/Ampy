@@ -2,7 +2,7 @@ package frc.robot;
 
 import java.util.function.DoubleSupplier;
 
-import frc.robot.commands.TurnConveyorCommand;
+import frc.robot.commands.ForwardConveyorCommand;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -26,16 +26,23 @@ public class Constants {
 
     }
 
-    public static final class MotorConstants {
-        public static final int INTAKE_MOTOR = 9;
-        public static final int kLeftIndexMotor = 5;
-        public static final int kRightIndexMotor = 18;
-        public static final int kShooterMotor = 6;
-        public static final double CONVEYOR_FULL_SPEED = 0.8; // 0.8 is an arbitrary value picked by Evan
+    public static final class ConveyorMotorConstants {
+        public static final int CAN_ID = 5;
+        public static final double TARGET_FORWARD_RPM = 250; //250 is not an arbitrary number
+        public static final double TARGET_REVERSE_RPM = -200; //-200 is an arbitrary number chosen by Evan
+        public static final double GEAR_RATIO = 20;
+        public static final double MAX_RPM = 5700;
+        public static final double MAX_POWER_OUTPUT = 1; // Max power output out of 100%
+        public static final double MIN_POWER_OUTPUT = -1; // Min power output out of 100%
+        public static final double kP = 6e-5;
+        public static final double kI = 0;
+        public static final double kD = 0;
+        public static final double kIz = 0;
+        public static final double kFF = 0.000015;
     }
 
     public static final class ControlConstants {
-        public static final double SHOOT_TRIGGER_THRESHOLD = 0.3;
+        public static final double CONVEYOR_TRIGGER_THRESHOLD = 0.3;
     }
 
     public static final class DigitalConstants {
