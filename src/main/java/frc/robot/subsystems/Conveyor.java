@@ -5,22 +5,24 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ConveyorMotorConstants;
+import frc.robot.Constants.DigitalConstants;
 
 public class Conveyor extends SubsystemBase {
 
     private static Conveyor conveyor;
-
+    private DigitalInput conveyorFullSensor;
     private CANSparkMax conveyorMotor;
-    private final int deviceId = 5;
-    private final double maxRPM = 2000;
     private SparkMaxPIDController pidController;
     private RelativeEncoder encoder;
     private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
     private Conveyor() {
-        conveyorMotor = new CANSparkMax(deviceId, MotorType.kBrushless);
+        conveyorFullSensor = new DigitalInput(DigitalConstants.conveyorFullSensor);
+        conveyorMotor = new CANSparkMax(ConveyorMotorConstants.CAN_ID, MotorType.kBrushless);
         conveyorMotor.restoreFactoryDefaults();
         pidController = conveyorMotor.getPIDController();
         encoder = conveyorMotor.getEncoder();
@@ -37,13 +39,13 @@ public class Conveyor extends SubsystemBase {
 
     private void initializePidController() {
         // PID coefficients
-        kP = 0.0001;
-        kI = 0.000001;
-        kD = 0.00002;
-        kIz = 0;
-        kFF = 0.000015;
-        kMaxOutput = 1;
-        kMinOutput = -1;
+        kP = ConveyorMotorConstants.kP;
+        kI = ConveyorMotorConstants.kI;
+        kD = ConveyorMotorConstants.kD;
+        kIz = ConveyorMotorConstants.kIz;
+        kFF = ConveyorMotorConstants.kFF;
+        kMaxOutput = ConveyorMotorConstants.MAX_POWER_OUTPUT;
+        kMinOutput = ConveyorMotorConstants.MIN_POWER_OUTPUT;
 
         // set PID coefficients
         pidController.setP(kP);
@@ -56,25 +58,27 @@ public class Conveyor extends SubsystemBase {
 
     private void initializeSmartDashboard() {
         // display PID coefficients on SmartDashboard
-        SmartDashboard.putNumber("P Gain", kP);
-        SmartDashboard.putNumber("I Gain", kI);
-        SmartDashboard.putNumber("D Gain", kD);
-        SmartDashboard.putNumber("I Zone", kIz);
-        SmartDashboard.putNumber("Feed Forward", kFF);
-        SmartDashboard.putNumber("Max Output", kMaxOutput);
-        SmartDashboard.putNumber("Min Output", kMinOutput);
+        SmartDashboard.putNumber("Conveyor/P Gain", kP);
+        SmartDashboard.putNumber("Conveyor/I Gain", kI);
+        SmartDashboard.putNumber("Conveyor/D Gain", kD);
+        SmartDashboard.putNumber("Conveyor/I Zone", kIz);
+        SmartDashboard.putNumber("Conveyor/Feed Forward", kFF);
+        SmartDashboard.putNumber("Conveyor/Max Output", kMaxOutput);
+        SmartDashboard.putNumber("Conveyor/Min Output", kMinOutput);
+        SmartDashboard.putBoolean("isConveyorEmpty", isEmpty());
     }
 
     @Override
     public void periodic() {
         // read PID coefficients from SmartDashboard
-        double p = SmartDashboard.getNumber("P Gain", 0);
-        double i = SmartDashboard.getNumber("I Gain", 0);
-        double d = SmartDashboard.getNumber("D Gain", 0);
-        double iz = SmartDashboard.getNumber("I Zone", 0);
-        double ff = SmartDashboard.getNumber("Feed Forward", 0);
-        double max = SmartDashboard.getNumber("Max Output", 0);
-        double min = SmartDashboard.getNumber("Min Output", 0);
+        double p = SmartDashboard.getNumber("Conveyor/P Gain", 0);
+        double i = SmartDashboard.getNumber("Conveyor/I Gain", 0);
+        double d = SmartDashboard.getNumber("Conveyor/D Gain", 0);
+        double iz = SmartDashboard.getNumber("Conveyor/I Zone", 0);
+        double ff = SmartDashboard.getNumber("Conveyor/Feed Forward", 0);
+        double max = SmartDashboard.getNumber("Conveyor/Max Output", 0);
+        double min = SmartDashboard.getNumber("Conveyor/Min Output", 0);
+        SmartDashboard.putBoolean("isConveyorEmpty", isEmpty());
 
         // if PID coefficients on SmartDashboard have changed, write new values to
         // controller
@@ -120,17 +124,21 @@ public class Conveyor extends SubsystemBase {
      * com.revrobotics.CANSparkMax.ControlType.kVoltage
      */
     public void setVelocity(double velocity) {
-        if (velocity > maxRPM) {
-            velocity = maxRPM;
-        } else if (velocity < -maxRPM) {
-            velocity = -maxRPM;
+        if (velocity > ConveyorMotorConstants.MAX_RPM) {
+            velocity = ConveyorMotorConstants.MAX_RPM;
+        } else if (velocity < -ConveyorMotorConstants.MAX_RPM) {
+            velocity = -ConveyorMotorConstants.MAX_RPM;
         }
         pidController.setReference(velocity, CANSparkMax.ControlType.kVelocity);
-        SmartDashboard.putNumber("Current Velocity", encoder.getVelocity());
+        SmartDashboard.putNumber("Conveyor/Current Velocity", encoder.getVelocity());
     }
 
     public void stop() {
         conveyorMotor.stopMotor();
-        SmartDashboard.putNumber("Current Velocity", 0.0);
+        SmartDashboard.putNumber("Conveyor/Current Velocity", 0.0);
+    }
+
+    public boolean isEmpty() {
+        return conveyorFullSensor.get();
     }
 }

@@ -18,15 +18,20 @@ public class ForwardConveyorCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        if (!SmartDashboard.containsKey("VelocitySetPoint")) {
-            SmartDashboard.putNumber("VelocitySetPoint", defaultVelocity);
+        if (!SmartDashboard.containsKey("ForwardConveyor/VelocitySetPoint")) {
+            SmartDashboard.putNumber("ForwardConveyor/VelocitySetPoint", defaultVelocity);
         }
-        velocity = SmartDashboard.getNumber("VelocitySetPoint", defaultVelocity);
+        velocity = SmartDashboard.getNumber("ForwardConveyor/VelocitySetPoint", defaultVelocity);
     }
 
     @Override
     public void execute() {
         conveyor.setVelocity(velocity);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return !conveyor.isEmpty();
     }
 
     @Override

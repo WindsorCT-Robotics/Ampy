@@ -18,10 +18,10 @@ public class ReverseConveyorCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        if (!SmartDashboard.containsKey("VelocitySetPoint")) {
-            SmartDashboard.putNumber("VelocitySetPoint", defaultVelocity);
+        if (!SmartDashboard.containsKey("ReverseConveyor/VelocitySetPoint")) {
+            SmartDashboard.putNumber("ReverseConveyor/VelocitySetPoint", defaultVelocity);
         }
-        velocity = SmartDashboard.getNumber("VelocitySetPoint", defaultVelocity);
+        velocity = SmartDashboard.getNumber("ReverseConveyor/VelocitySetPoint", defaultVelocity);
     }
 
     @Override
