@@ -1,13 +1,10 @@
 package frc.robot.subsystems;
-import java.util.Set;
 import java.lang.Math;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Interfaces.PdpDevice;
-import frc.robot.Types.Amperage;
-import frc.robot.Types.Channel;
 import frc.robot.subsystems.PowerDistributionPanelSubsystem;
 
 public class PowerDistributionPanelSubsystem extends SubsystemBase implements PdpDevice {
@@ -33,25 +30,5 @@ public class PowerDistributionPanelSubsystem extends SubsystemBase implements Pd
         // get channel current amperage for master device and each follower device
         // compare each follower device amperage with master device
         // if any device is out-of-tolerance, throw new MismatchedAmperageException.
-        @Override
-        public Amperage getMinimumAmpage() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-        @Override
-        public Amperage getMaximumAmpage() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-        @Override
-        public Channel getChannel() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-        @Override
-        public Set<PdpDevice> getFollowerDevices() {
-            // TODO Auto-generated method stub
-            return null;
-        }
+
     }
-// For commitment
