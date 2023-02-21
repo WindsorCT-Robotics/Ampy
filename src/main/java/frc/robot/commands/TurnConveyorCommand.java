@@ -12,7 +12,7 @@ public class TurnConveyorCommand extends CommandBase {
         m_speed = speed;
         m_conveyer = subsystem;
         addRequirements(m_conveyer);
-        
+
     }
 
     @Override
