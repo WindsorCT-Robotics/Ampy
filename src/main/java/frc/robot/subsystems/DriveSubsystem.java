@@ -14,7 +14,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.DriveSubsystem;
 
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -22,7 +22,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 /**
  *
  */
-public class Drive extends SubsystemBase {
+public class DriveSubsystem extends SubsystemBase {
     private WPI_TalonFX leftMaster;
     private WPI_TalonFX leftFollower;
     private WPI_TalonFX rightMaster;
@@ -32,7 +32,7 @@ public class Drive extends SubsystemBase {
     /**
      * Drivetrain subsystem
      */
-    public Drive() {
+    public DriveSubsystem() {
         leftMaster = initMotor("Left Master", 1);
         leftFollower = initMotor("Left Follower", 2);
 

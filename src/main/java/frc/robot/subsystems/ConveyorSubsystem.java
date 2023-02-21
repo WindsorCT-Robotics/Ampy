@@ -11,16 +11,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ConveyorMotorConstants;
 import frc.robot.Constants.DigitalConstants;
 
-public class Conveyor extends SubsystemBase {
+public class ConveyorSubsystem extends SubsystemBase {
 
-    private static Conveyor conveyor;
+    private static ConveyorSubsystem conveyor;
     private DigitalInput conveyorFullSensor;
     private CANSparkMax conveyorMotor;
     private SparkMaxPIDController pidController;
     private RelativeEncoder encoder;
     private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
-    private Conveyor() {
+    private ConveyorSubsystem() {
         conveyorFullSensor = new DigitalInput(DigitalConstants.conveyorFullSensor);
         conveyorMotor = new CANSparkMax(ConveyorMotorConstants.CAN_ID, MotorType.kBrushless);
         conveyorMotor.restoreFactoryDefaults();
@@ -30,9 +30,9 @@ public class Conveyor extends SubsystemBase {
         initializeSmartDashboard();
     }
 
-    public static synchronized Conveyor getInstance() {
+    public static synchronized ConveyorSubsystem getInstance() {
         if (null == conveyor) {
-            conveyor = new Conveyor();
+            conveyor = new ConveyorSubsystem();
         }
         return conveyor;
     }

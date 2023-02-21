@@ -1,7 +1,7 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.DoubleSupplier;
-import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.DriveSubsystem;
 
 
 /**
@@ -9,11 +9,11 @@ import frc.robot.subsystems.Drive;
  */
 public class DriveCommand extends CommandBase {
     
-    private final Drive drive;
+    private final DriveSubsystem drive;
     private final DoubleSupplier speed;
     private final DoubleSupplier rotation;
 
-    public DriveCommand(DoubleSupplier speed, DoubleSupplier rotation, Drive drive) {
+    public DriveCommand(DoubleSupplier speed, DoubleSupplier rotation, DriveSubsystem drive) {
 
         this.speed = speed;
         this.rotation = rotation;
