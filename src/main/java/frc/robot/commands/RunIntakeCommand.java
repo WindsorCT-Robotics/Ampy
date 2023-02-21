@@ -1,4 +1,5 @@
 package frc.robot.commands;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeRollers;
 
@@ -10,11 +11,10 @@ public class RunIntakeCommand extends CommandBase {
         addRequirements(m_intakeRollers);
     }
 
-
     @Override
     public void initialize() {
     }
-    
+
     @Override
     public void execute() {
     }
@@ -33,4 +33,3 @@ public class RunIntakeCommand extends CommandBase {
         return false;
     }
 }
-

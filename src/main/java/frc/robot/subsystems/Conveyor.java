@@ -58,9 +58,6 @@ public class Conveyor extends SubsystemBase {
 
     }
 
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-
     public boolean getFrontInput() {
         return !frontInput.get();
     }

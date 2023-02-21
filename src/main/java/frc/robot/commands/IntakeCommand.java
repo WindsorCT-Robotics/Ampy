@@ -9,13 +9,5 @@ public class IntakeCommand extends SequentialCommandGroup {
 
     public IntakeCommand(IntakeRollers rollers) {
 
-//         addCommands(
-//             new LowerIntakeCommand(),
-
-//             new ParallelDeadlineGroup(
-//                 new TurnConveyorCommand(),
-//                 new RunIntakeCommand(),
-//             )
-//         );
     }
 }
