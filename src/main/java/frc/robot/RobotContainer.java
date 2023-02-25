@@ -20,8 +20,6 @@ public class RobotContainer {
   public final DriveSubsystem drive = new DriveSubsystem();
   public final boolean isPrecisionOn = false;
 
-  // PDP
-  private final PowerDistributionPanelSubsystem PDP;
   // Joysticks
   private final CommandXboxController operatorController = new CommandXboxController(1);
   private final CommandXboxController driveController = new CommandXboxController(0);
@@ -54,7 +52,7 @@ public class RobotContainer {
     // ReverseIntakeRollersCommand());
     // SmartDashboard.putData("IntakeCommand", new IntakeCommand(intakeRollers));
 
-    PDP = new PowerDistributionPanelSubsystem(new PowerDistribution());
+    new PowerDistributionPanelSubsystem(new PowerDistribution());
 
     // Configure the button bindings
     configureButtonBindings();
