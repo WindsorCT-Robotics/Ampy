@@ -5,7 +5,6 @@ import java.lang.Math;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.PowerDistributionPanelSubsystem;
 
 public class PowerDistributionPanelSubsystem extends SubsystemBase {
     private final PowerDistribution powerDistributionPanel;
@@ -18,6 +17,7 @@ public class PowerDistributionPanelSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         //Each subsystem will be given an id in each subsystem class TODO
+        //Channels are numbered 0 to 15 because there are 16 channels on the PDP
         for (int i = 0; i <= 15; i++) {
             SmartDashboard.putNumber("ID " + i, this.powerDistributionPanel.getCurrent(i));
         }

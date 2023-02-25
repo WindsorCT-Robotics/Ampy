@@ -10,8 +10,9 @@ public class ReverseIntakeRollersCommand extends CommandBase {
     IntakeRollersSubsystem intakeRollers;
     double velocity;
     public static final double GEAR_RATIO = 20;
-    double defaultVelocity = ReverseIntakeRollersCommand.TARGET_REVERSE_RPM * GEAR_RATIO;
     public static final double TARGET_REVERSE_RPM = -200; //-200 is an arbitrary number chosen by Evan
+    double defaultVelocity = TARGET_REVERSE_RPM * GEAR_RATIO;
+    
 
     public ReverseIntakeRollersCommand() {
         intakeRollers = IntakeRollersSubsystem.getInstance();

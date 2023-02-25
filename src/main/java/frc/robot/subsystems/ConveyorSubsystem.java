@@ -21,14 +21,15 @@ public class ConveyorSubsystem extends SubsystemBase {
     private double kD = 0.00002;
     private double kI = 0.000001;
     private double kP = 0.0001;
-    private double MIN_POWER_OUTPUT = -1; // Min power output out of 100%
-    private double MAX_POWER_OUTPUT = 1; // Max power output out of 100%
-    private double MAX_RPM = 2000;
-    private int CAN_ID = 5; // CAN ID should be 5
+    private final double MIN_POWER_OUTPUT = -1; // Min power output out of 100%
+    private final double MAX_POWER_OUTPUT = 1; // Max power output out of 100%
+    private final double MAX_RPM = 2000;
+    private static final int CONVEYOR_MOTOR_CAN_ID = 5; // CAN ID should be 5
+    private static final int CONVEYOR_SENSOR_CAN_ID = 0;
 
     private ConveyorSubsystem() {
-        conveyorFullSensor = new DigitalInput(0);
-        conveyorMotor = new CANSparkMax(CAN_ID, MotorType.kBrushless);
+        conveyorFullSensor = new DigitalInput(CONVEYOR_SENSOR_CAN_ID);
+        conveyorMotor = new CANSparkMax(CONVEYOR_MOTOR_CAN_ID, MotorType.kBrushless);
         conveyorMotor.restoreFactoryDefaults();
         pidController = conveyorMotor.getPIDController();
         encoder = conveyorMotor.getEncoder();
@@ -99,11 +100,7 @@ public class ConveyorSubsystem extends SubsystemBase {
             pidController.setFF(ff);
             kFF = ff;
         }
-        if ((max != MAX_POWER_OUTPUT) || (min != MIN_POWER_OUTPUT)) {
-            pidController.setOutputRange(min, max);
-            MIN_POWER_OUTPUT = min;
-            MAX_POWER_OUTPUT = max;
-        }
+       
     }
 
     public void setVelocity(double velocity) {

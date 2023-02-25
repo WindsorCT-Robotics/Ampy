@@ -21,9 +21,9 @@ public class IntakeRollersSubsystem extends SubsystemBase {
     private double kD = 0.00002;
     private double kI = 0.000001;
     private double kP = 0.0001;
-    private double MIN_POWER_OUTPUT = -1; // Min power output out of 100%
-    private double MAX_POWER_OUTPUT = 1; // Max power output out of 100%
-    private double MAX_RPM = 2000;
+    private final double MIN_POWER_OUTPUT = -1; // Min power output out of 100%
+    private final double MAX_POWER_OUTPUT = 1; // Max power output out of 100%
+    private final double MAX_RPM = 2000;
     public static final int CAN_ID = 6; // CAN ID should be 6
 
     private IntakeRollersSubsystem() {
@@ -97,11 +97,6 @@ public class IntakeRollersSubsystem extends SubsystemBase {
         if ((ff != kFF)) {
             pidController.setFF(ff);
             kFF = ff;
-        }
-        if ((max != MAX_POWER_OUTPUT) || (min != MIN_POWER_OUTPUT)) {
-            pidController.setOutputRange(min, max);
-            MIN_POWER_OUTPUT = min;
-            MAX_POWER_OUTPUT = max;
         }
     }
 
