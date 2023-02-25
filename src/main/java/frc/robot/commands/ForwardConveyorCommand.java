@@ -10,8 +10,9 @@ public class ForwardConveyorCommand extends CommandBase {
 
     ConveyorSubsystem conveyor;
     double velocity;
-    double defaultVelocity = ForwardConveyorCommand.TARGET_FORWARD_RPM * ReverseConveyorCommand.GEAR_RATIO;
-	public static final double TARGET_FORWARD_RPM = 250; //250 is not an arbitrary number
+    public static final int GEAR_RATIO = 20;
+    public static final int TARGET_FORWARD_RPM = 250; // 250 is not an arbitrary number
+    double defaultVelocity = TARGET_FORWARD_RPM * GEAR_RATIO;
 
     public ForwardConveyorCommand() {
         conveyor = ConveyorSubsystem.getInstance();
@@ -40,5 +41,5 @@ public class ForwardConveyorCommand extends CommandBase {
     public void end(boolean interrupted) {
         conveyor.stop();
     }
-    
+
 }

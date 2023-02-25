@@ -10,9 +10,9 @@ public class ReverseConveyorCommand extends CommandBase {
 
     ConveyorSubsystem conveyor;
     double velocity;
-    double defaultVelocity = ReverseConveyorCommand.TARGET_REVERSE_RPM * ReverseConveyorCommand.GEAR_RATIO;
-    public static final double GEAR_RATIO = 20;
-    public static final double TARGET_REVERSE_RPM = -200; //-200 is an arbitrary number chosen by Evan
+    public static final int GEAR_RATIO = 20;
+    public static final int TARGET_REVERSE_RPM = -200; // -200 is an arbitrary number chosen by Evan
+    double defaultVelocity = TARGET_REVERSE_RPM * GEAR_RATIO;
 
     public ReverseConveyorCommand() {
         conveyor = ConveyorSubsystem.getInstance();
@@ -36,5 +36,5 @@ public class ReverseConveyorCommand extends CommandBase {
     public void end(boolean interrupted) {
         conveyor.stop();
     }
-    
+
 }

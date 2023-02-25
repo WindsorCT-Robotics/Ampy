@@ -20,8 +20,6 @@ public class RobotContainer {
   public final DriveSubsystem drive = new DriveSubsystem();
   public final boolean isPrecisionOn = false;
 
-  // PDP
-  private final PowerDistributionPanelSubsystem PDP;
   // Joysticks
   private final CommandXboxController operatorController = new CommandXboxController(1);
   private final CommandXboxController driveController = new CommandXboxController(0);
@@ -48,13 +46,11 @@ public class RobotContainer {
     SmartDashboard.putData("LowerIntakeCommand", new LowerIntakeCommand(IntakeArmsSubsystem.getInstance()));
     SmartDashboard.putData("ForwardConveyorCommand", new ForwardConveyorCommand());
     SmartDashboard.putData("ReverseConveyorCommand", new ReverseConveyorCommand());
-    // SmartDashboard.putData("ForwardIntakeRollersCommand", new
-    // ForwardIntakeRollersCommand());
-    // SmartDashboard.putData("ReverseIntakeRollersCommand", new
-    // ReverseIntakeRollersCommand());
-    // SmartDashboard.putData("IntakeCommand", new IntakeCommand(intakeRollers));
+    SmartDashboard.putData("ForwardIntakeRollersCommand", new ForwardIntakeRollersCommand());
+    SmartDashboard.putData("ReverseIntakeRollersCommand", new ReverseIntakeRollersCommand());
+    SmartDashboard.putData("IntakeCommand", new IntakeCommand(IntakeArmsSubsystem.getInstance()));
 
-    PDP = new PowerDistributionPanelSubsystem(new PowerDistribution());
+    new PowerDistributionPanelSubsystem(new PowerDistribution());
 
     // Configure the button bindings
     configureButtonBindings();
@@ -82,14 +78,10 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-
-    // Create some buttons
     operatorController.povUp().onTrue(new IntakeCommand(IntakeArmsSubsystem.getInstance()));
     operatorController.povDown().onTrue(new EjectCommand(IntakeArmsSubsystem.getInstance()));
-    // operatorController.rightBumper().whileTrue(new
-    // ForwardIntakeRollersCommand());
-    // operatorController.leftBumper().whileTrue(new ReverseIntakeRollersCommand());
-
+    operatorController.y().onTrue(new RaiseIntakeCommand(IntakeArmsSubsystem.getInstance()));
+    operatorController.a().onTrue(new LowerIntakeCommand(IntakeArmsSubsystem.getInstance()));
   }
 
   public CommandXboxController getDriveController() {
