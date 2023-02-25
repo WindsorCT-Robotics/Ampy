@@ -11,8 +11,8 @@ public class LowerIntakeCommand extends InstantCommand {
 
     public LowerIntakeCommand(IntakeArms subsystem) {
 
-        m_intakeArms = subsystem;
-        addRequirements(m_intakeArms);
+        intakeArms = IntakeArms.getInstance();
+        addRequirements(intakeArms);
 
     }
 
@@ -22,7 +22,7 @@ public class LowerIntakeCommand extends InstantCommand {
 
     @Override
     public void execute() {
-        m_intakeArms.retract();
+        intakeArms.retract();
     }
 
     @Override

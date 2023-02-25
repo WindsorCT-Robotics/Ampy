@@ -11,8 +11,8 @@ public class RaiseIntakeCommand extends InstantCommand {
 
     public RaiseIntakeCommand(IntakeArms subsystem) {
 
-        m_intakeArms = subsystem;
-        addRequirements(m_intakeArms);
+        intakeArms = IntakeArms.getInstance();
+        addRequirements(intakeArms);
 
     }
 
@@ -22,7 +22,7 @@ public class RaiseIntakeCommand extends InstantCommand {
 
     @Override
     public void execute() {
-        m_intakeArms.extend();
+        intakeArms.extend();
     }
 
     @Override

@@ -6,18 +6,18 @@ import java.util.function.DoubleSupplier;
 import frc.robot.subsystems.Drive;
 
 public class DriveCommand extends CommandBase {
+    
+    private final Drive drive;
+    private final DoubleSupplier speed;
+    private final DoubleSupplier rotation;
 
-    private final Drive m_drive;
-    private final DoubleSupplier m_forward;
-    private final DoubleSupplier m_turn;
+    public DriveCommand(DoubleSupplier speed, DoubleSupplier rotation, Drive drive) {
 
-    public DriveCommand(DoubleSupplier forward, DoubleSupplier turn) {
+        this.speed = speed;
+        this.rotation = rotation;
 
-        m_forward = forward;
-        m_turn = turn;
-
-        m_drive = Drive.getInstance();
-        addRequirements(m_drive);
+        this.drive = drive;
+        addRequirements(drive);
 
     }
 
@@ -27,6 +27,7 @@ public class DriveCommand extends CommandBase {
 
     @Override
     public void execute() {
+        drive.drive(speed.getAsDouble(), rotation.getAsDouble());
     }
 
     @Override
