@@ -1,17 +1,20 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.IntakeRollersMotorConstants;
-import frc.robot.subsystems.IntakeRollers;
+import frc.robot.subsystems.IntakeRollersSubsystem;
+
+// This command enables the rollers of Ampy's intake arms to spin in reverse (in the direction to eject objects)
 
 public class ReverseIntakeRollersCommand extends CommandBase {
     
-    IntakeRollers intakeRollers;
+    IntakeRollersSubsystem intakeRollers;
     double velocity;
-    double defaultVelocity = IntakeRollersMotorConstants.TARGET_REVERSE_RPM * IntakeRollersMotorConstants.GEAR_RATIO;
+    public static final double GEAR_RATIO = 20;
+    double defaultVelocity = ReverseIntakeRollersCommand.TARGET_REVERSE_RPM * GEAR_RATIO;
+    public static final double TARGET_REVERSE_RPM = -200; //-200 is an arbitrary number chosen by Evan
 
     public ReverseIntakeRollersCommand() {
-        intakeRollers = IntakeRollers.getInstance();
+        intakeRollers = IntakeRollersSubsystem.getInstance();
         addRequirements(intakeRollers);
     }
 

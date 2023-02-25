@@ -8,21 +8,27 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ConveyorMotorConstants;
-import frc.robot.Constants.DigitalConstants;
 
-public class Conveyor extends SubsystemBase {
+public class ConveyorSubsystem extends SubsystemBase {
 
-    private static Conveyor conveyor;
-    private DigitalInput conveyorFullSensor;
+    private static ConveyorSubsystem conveyor;
     private CANSparkMax conveyorMotor;
     private SparkMaxPIDController pidController;
     private RelativeEncoder encoder;
-    private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
+    public static DigitalInput conveyorFullSensor;
+    private double kFF = 0.000015;
+    private double kIz = 0;
+    private double kD = 0.00002;
+    private double kI = 0.000001;
+    private double kP = 0.0001;
+    private double MIN_POWER_OUTPUT = -1; // Min power output out of 100%
+    private double MAX_POWER_OUTPUT = 1; // Max power output out of 100%
+    private double MAX_RPM = 2000;
+    private int CAN_ID = 5; // CAN ID should be 5
 
-    private Conveyor() {
-        conveyorFullSensor = new DigitalInput(DigitalConstants.conveyorFullSensor);
-        conveyorMotor = new CANSparkMax(ConveyorMotorConstants.CAN_ID, MotorType.kBrushless);
+    private ConveyorSubsystem() {
+        conveyorFullSensor = new DigitalInput(0);
+        conveyorMotor = new CANSparkMax(CAN_ID, MotorType.kBrushless);
         conveyorMotor.restoreFactoryDefaults();
         pidController = conveyorMotor.getPIDController();
         encoder = conveyorMotor.getEncoder();
@@ -30,30 +36,21 @@ public class Conveyor extends SubsystemBase {
         initializeSmartDashboard();
     }
 
-    public static synchronized Conveyor getInstance() {
+    public static synchronized ConveyorSubsystem getInstance() {
         if (null == conveyor) {
-            conveyor = new Conveyor();
+            conveyor = new ConveyorSubsystem();
         }
         return conveyor;
     }
 
     private void initializePidController() {
-        // PID coefficients
-        kP = ConveyorMotorConstants.kP;
-        kI = ConveyorMotorConstants.kI;
-        kD = ConveyorMotorConstants.kD;
-        kIz = ConveyorMotorConstants.kIz;
-        kFF = ConveyorMotorConstants.kFF;
-        kMaxOutput = ConveyorMotorConstants.MAX_POWER_OUTPUT;
-        kMinOutput = ConveyorMotorConstants.MIN_POWER_OUTPUT;
-
         // set PID coefficients
         pidController.setP(kP);
         pidController.setI(kI);
         pidController.setD(kD);
         pidController.setIZone(kIz);
         pidController.setFF(kFF);
-        pidController.setOutputRange(kMinOutput, kMaxOutput);
+        pidController.setOutputRange(MIN_POWER_OUTPUT, MAX_POWER_OUTPUT);
     }
 
     private void initializeSmartDashboard() {
@@ -63,8 +60,8 @@ public class Conveyor extends SubsystemBase {
         SmartDashboard.putNumber("Conveyor/D Gain", kD);
         SmartDashboard.putNumber("Conveyor/I Zone", kIz);
         SmartDashboard.putNumber("Conveyor/Feed Forward", kFF);
-        SmartDashboard.putNumber("Conveyor/Max Output", kMaxOutput);
-        SmartDashboard.putNumber("Conveyor/Min Output", kMinOutput);
+        SmartDashboard.putNumber("Conveyor/Max Output", MAX_POWER_OUTPUT);
+        SmartDashboard.putNumber("Conveyor/Min Output", MIN_POWER_OUTPUT);
         SmartDashboard.putBoolean("isConveyorEmpty", isEmpty());
     }
 
@@ -102,32 +99,22 @@ public class Conveyor extends SubsystemBase {
             pidController.setFF(ff);
             kFF = ff;
         }
-        if ((max != kMaxOutput) || (min != kMinOutput)) {
+        if ((max != MAX_POWER_OUTPUT) || (min != MIN_POWER_OUTPUT)) {
             pidController.setOutputRange(min, max);
-            kMinOutput = min;
-            kMaxOutput = max;
+            MIN_POWER_OUTPUT = min;
+            MAX_POWER_OUTPUT = max;
         }
     }
 
-    /**
-     * PIDController objects are commanded to a set point using the
-     * SetReference() method.
-     * 
-     * The first parameter is the value of the set point, whose units vary
-     * depending on the control type set in the second parameter.
-     * 
-     * The second parameter is the control type can be set to one of four
-     * parameters:
-     * com.revrobotics.CANSparkMax.ControlType.kDutyCycle
-     * com.revrobotics.CANSparkMax.ControlType.kPosition
-     * com.revrobotics.CANSparkMax.ControlType.kVelocity
-     * com.revrobotics.CANSparkMax.ControlType.kVoltage
-     */
     public void setVelocity(double velocity) {
-        if (velocity > ConveyorMotorConstants.MAX_RPM) {
-            velocity = ConveyorMotorConstants.MAX_RPM;
-        } else if (velocity < -ConveyorMotorConstants.MAX_RPM) {
-            velocity = -ConveyorMotorConstants.MAX_RPM;
+        // Ensures the velocity entered on the Smart Dashboard does not exceed the max
+        // velocity
+        if (velocity > MAX_RPM) {
+            velocity = MAX_RPM;
+            // Ensures the velocity entered on the Smart Dashboard does not exceed the max
+            // velocity, but in the negative direction
+        } else if (velocity < -MAX_RPM) {
+            velocity = -MAX_RPM;
         }
         pidController.setReference(velocity, CANSparkMax.ControlType.kVelocity);
         SmartDashboard.putNumber("Conveyor/Current Velocity", encoder.getVelocity());
