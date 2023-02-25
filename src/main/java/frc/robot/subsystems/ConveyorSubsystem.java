@@ -24,7 +24,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     private final double MIN_POWER_OUTPUT = -1; // Min power output out of 100%
     private final double MAX_POWER_OUTPUT = 1; // Max power output out of 100%
     private final double MAX_RPM = 2000;
-    private static final int CONVEYOR_MOTOR_CAN_ID = 5; // CAN ID should be 5
+    private static final int CONVEYOR_MOTOR_CAN_ID = 5; // CAN ID should be 5, it may be different as a result of testing
     private static final int CONVEYOR_SENSOR_CAN_ID = 0;
 
     private ConveyorSubsystem() {

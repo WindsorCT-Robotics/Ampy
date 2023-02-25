@@ -24,7 +24,7 @@ public class IntakeRollersSubsystem extends SubsystemBase {
     private final double MIN_POWER_OUTPUT = -1; // Min power output out of 100%
     private final double MAX_POWER_OUTPUT = 1; // Max power output out of 100%
     private final double MAX_RPM = 2000;
-    public static final int CAN_ID = 6; // CAN ID should be 6
+    public static final int CAN_ID = 6; // CAN ID should be 6, it may be different as a result of testing
 
     private IntakeRollersSubsystem() {
 
