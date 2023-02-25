@@ -74,8 +74,6 @@ public class ConveyorSubsystem extends SubsystemBase {
         double d = SmartDashboard.getNumber("Conveyor/D Gain", 0);
         double iz = SmartDashboard.getNumber("Conveyor/I Zone", 0);
         double ff = SmartDashboard.getNumber("Conveyor/Feed Forward", 0);
-        double max = SmartDashboard.getNumber("Conveyor/Max Output", 0);
-        double min = SmartDashboard.getNumber("Conveyor/Min Output", 0);
         SmartDashboard.putBoolean("isConveyorEmpty", isEmpty());
 
         // if PID coefficients on SmartDashboard have changed, write new values to

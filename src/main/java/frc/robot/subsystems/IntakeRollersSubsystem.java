@@ -73,8 +73,6 @@ public class IntakeRollersSubsystem extends SubsystemBase {
         double d = SmartDashboard.getNumber("IntakeRollers/D Gain", 0);
         double iz = SmartDashboard.getNumber("IntakeRollers/I Zone", 0);
         double ff = SmartDashboard.getNumber("IntakeRollers/Feed Forward", 0);
-        double max = SmartDashboard.getNumber("IntakeRollers/Max Output", 0);
-        double min = SmartDashboard.getNumber("IntakeRollers/Min Output", 0);
 
         // if PID coefficients on SmartDashboard have changed, write new values to
         // controller
