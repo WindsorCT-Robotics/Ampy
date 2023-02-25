@@ -46,11 +46,9 @@ public class RobotContainer {
     SmartDashboard.putData("LowerIntakeCommand", new LowerIntakeCommand(IntakeArmsSubsystem.getInstance()));
     SmartDashboard.putData("ForwardConveyorCommand", new ForwardConveyorCommand());
     SmartDashboard.putData("ReverseConveyorCommand", new ReverseConveyorCommand());
-    // SmartDashboard.putData("ForwardIntakeRollersCommand", new
-    // ForwardIntakeRollersCommand());
-    // SmartDashboard.putData("ReverseIntakeRollersCommand", new
-    // ReverseIntakeRollersCommand());
-    // SmartDashboard.putData("IntakeCommand", new IntakeCommand(intakeRollers));
+    SmartDashboard.putData("ForwardIntakeRollersCommand", new ForwardIntakeRollersCommand());
+    SmartDashboard.putData("ReverseIntakeRollersCommand", new ReverseIntakeRollersCommand());
+    SmartDashboard.putData("IntakeCommand", new IntakeCommand(IntakeArmsSubsystem.getInstance()));
 
     new PowerDistributionPanelSubsystem(new PowerDistribution());
 
