@@ -7,11 +7,11 @@ import frc.robot.subsystems.IntakeArms;
 
 public class RaiseIntakeCommand extends InstantCommand {
 
-    private final IntakeArms m_intakeArms;
+    private final IntakeArms intakeArms;
 
-    public RaiseIntakeCommand(IntakeArms subsystem) {
+    public RaiseIntakeCommand(IntakeArms intakeArms) {
 
-        intakeArms = IntakeArms.getInstance();
+        this.intakeArms = IntakeArms.getInstance();
         addRequirements(intakeArms);
 
     }

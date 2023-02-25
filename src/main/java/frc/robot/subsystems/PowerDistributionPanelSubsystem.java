@@ -4,10 +4,9 @@ import java.lang.Math;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Interfaces.PdpDevice;
 import frc.robot.subsystems.PowerDistributionPanelSubsystem;
 
-public class PowerDistributionPanelSubsystem extends SubsystemBase implements PdpDevice {
+public class PowerDistributionPanelSubsystem extends SubsystemBase {
     private final PowerDistribution powerDistributionPanel;
 
     public PowerDistributionPanelSubsystem(PowerDistribution powerDistributionPanel){

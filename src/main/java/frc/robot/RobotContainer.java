@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -32,7 +33,6 @@ public class RobotContainer {
   // The robot's subsystems
   public final Drive drive = new Drive();
   public final boolean isPrecisionOn = false;
-  public final PrecisionToggle precision = new PrecisionToggle(drive, isPrecisionOn);
 
   //PDP
   private final PowerDistributionPanelSubsystem PDP;
@@ -46,8 +46,6 @@ public class RobotContainer {
   SendableChooser<Command> chooser = new SendableChooser<>();
 
   /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   private RobotContainer() {
