@@ -24,7 +24,7 @@ public class RaiseIntakeCommand extends InstantCommand {
 
     @Override
     public void execute() {
-        intakeArms.extend();
+        intakeArms.raiseArms();
     }
 
     @Override

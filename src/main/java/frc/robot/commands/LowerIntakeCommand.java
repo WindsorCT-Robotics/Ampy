@@ -24,7 +24,7 @@ public class LowerIntakeCommand extends InstantCommand {
 
     @Override
     public void execute() {
-        intakeArms.retract();
+        intakeArms.lowerArms();
     }
 
     @Override
