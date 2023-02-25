@@ -82,14 +82,10 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-
-    // Create some buttons
     operatorController.povUp().onTrue(new IntakeCommand(IntakeArmsSubsystem.getInstance()));
     operatorController.povDown().onTrue(new EjectCommand(IntakeArmsSubsystem.getInstance()));
-    // operatorController.rightBumper().whileTrue(new
-    // ForwardIntakeRollersCommand());
-    // operatorController.leftBumper().whileTrue(new ReverseIntakeRollersCommand());
-
+    operatorController.y().onTrue(new RaiseIntakeCommand(IntakeArmsSubsystem.getInstance()));
+    operatorController.a().onTrue(new LowerIntakeCommand(IntakeArmsSubsystem.getInstance()));
   }
 
   public CommandXboxController getDriveController() {
