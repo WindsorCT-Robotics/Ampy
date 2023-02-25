@@ -3,15 +3,17 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
-import frc.robot.subsystems.IntakeArms;
+import frc.robot.subsystems.IntakeArmsSubsystem;
+
+// This command lowers Ampy's intake arms.
 
 public class LowerIntakeCommand extends InstantCommand {
 
-    private final IntakeArms intakeArms;
+    private final IntakeArmsSubsystem intakeArms;
 
-    public LowerIntakeCommand(IntakeArms intakeArms) {
+    public LowerIntakeCommand(IntakeArmsSubsystem intakeArms) {
 
-        this.intakeArms = IntakeArms.getInstance();
+        this.intakeArms = IntakeArmsSubsystem.getInstance();
         addRequirements(intakeArms);
 
     }
