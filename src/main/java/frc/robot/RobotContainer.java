@@ -2,6 +2,7 @@
 package frc.robot;
 
 import frc.robot.commands.*;
+import frc.robot.commands.AutonomousCommands.AutonomousCommand;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,7 +42,7 @@ public class RobotContainer {
     SmartDashboard.putData(drive);
 
     // SmartDashboard Buttons
-    SmartDashboard.putData("AutonomousCommand", new AutonomousCommand());
+    SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(drive));
     SmartDashboard.putData("RaiseIntakeCommand", new RaiseIntakeCommand(IntakeArmsSubsystem.getInstance()));
     SmartDashboard.putData("LowerIntakeCommand", new LowerIntakeCommand(IntakeArmsSubsystem.getInstance()));
     SmartDashboard.putData("ForwardConveyorCommand", new ForwardConveyorCommand());
@@ -61,7 +62,7 @@ public class RobotContainer {
         new DriveCommand(() -> driveController.getLeftY(), () -> driveController.getRightX(), drive));
 
     // Configure autonomous sendable chooser
-
+    chooser.setDefaultOption("Drive forward", new AutonomousCommand(drive));
     SmartDashboard.putData("Auto Mode", chooser);
   }
 
