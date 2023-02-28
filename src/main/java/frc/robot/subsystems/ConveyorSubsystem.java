@@ -8,11 +8,12 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.hardware.WPI_CANSparkMax;
 
 public class ConveyorSubsystem extends SubsystemBase {
 
     private static ConveyorSubsystem conveyor;
-    private CANSparkMax conveyorMotor;
+    private WPI_CANSparkMax conveyorMotor;
     private SparkMaxPIDController pidController;
     private RelativeEncoder encoder;
     public static DigitalInput conveyorFullSensor;
@@ -29,8 +30,10 @@ public class ConveyorSubsystem extends SubsystemBase {
 
     private ConveyorSubsystem() {
         conveyorFullSensor = new DigitalInput(CONVEYOR_SENSOR_CAN_ID);
-        conveyorMotor = new CANSparkMax(CONVEYOR_MOTOR_CAN_ID, MotorType.kBrushless);
+        conveyorMotor = new WPI_CANSparkMax(CONVEYOR_MOTOR_CAN_ID, MotorType.kBrushless);
         conveyorMotor.restoreFactoryDefaults();
+        addChild("Conveyor motor", conveyorMotor);
+
         pidController = conveyorMotor.getPIDController();
         encoder = conveyorMotor.getEncoder();
         initializePidController();

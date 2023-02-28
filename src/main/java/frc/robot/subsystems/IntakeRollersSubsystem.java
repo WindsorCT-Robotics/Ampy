@@ -2,7 +2,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.hardware.WPI_CANSparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.revrobotics.CANSparkMax;
@@ -12,7 +12,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class IntakeRollersSubsystem extends SubsystemBase {
 
-    private CANSparkMax intakeRollerMotor;
+    private WPI_CANSparkMax intakeRollerMotor;
     private static IntakeRollersSubsystem intakeRollers;
     private SparkMaxPIDController pidController;
     private RelativeEncoder encoder;
@@ -28,8 +28,10 @@ public class IntakeRollersSubsystem extends SubsystemBase {
 
     private IntakeRollersSubsystem() {
 
-        intakeRollerMotor = new CANSparkMax(IntakeRollersSubsystem.CAN_ID, MotorType.kBrushless);
+        intakeRollerMotor = new WPI_CANSparkMax(IntakeRollersSubsystem.CAN_ID, MotorType.kBrushless);
         intakeRollerMotor.restoreFactoryDefaults();
+        addChild("Intake Roller Motor", intakeRollerMotor);
+
         pidController = intakeRollerMotor.getPIDController();
         encoder = intakeRollerMotor.getEncoder();
         initializePidController();
