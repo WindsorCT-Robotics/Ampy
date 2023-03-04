@@ -1,4 +1,3 @@
-
 package frc.robot;
 
 import frc.robot.commands.*;
@@ -20,7 +19,6 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
-
   // Subsystems
   private final ConveyorSubsystem conveyor;
   private final DriveSubsystem drive;
@@ -40,10 +38,10 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Initialize subsystems
-    conveyor = ConveyorSubsystem.getInstance();
+    conveyor = new ConveyorSubsystem();
     drive = new DriveSubsystem();
-    intakeArms = IntakeArmsSubsystem.getInstance();
-    intakeRollers = IntakeRollersSubsystem.getInstance();
+    intakeArms = new IntakeArmsSubsystem();
+    intakeRollers = new IntakeRollersSubsystem();
     pdp = new PowerDistributionPanelSubsystem(new PowerDistribution());
 
     // Put subsystems on the SmartDashboard
@@ -76,11 +74,11 @@ public class RobotContainer {
     SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(drive));
     SmartDashboard.putData("RaiseIntakeCommand", new RaiseIntakeCommand(intakeArms));
     SmartDashboard.putData("LowerIntakeCommand", new LowerIntakeCommand(intakeArms));
-    SmartDashboard.putData("ForwardConveyorCommand", new ForwardConveyorCommand());
-    SmartDashboard.putData("ReverseConveyorCommand", new ReverseConveyorCommand());
-    SmartDashboard.putData("ForwardIntakeRollersCommand", new ForwardIntakeRollersCommand());
-    SmartDashboard.putData("ReverseIntakeRollersCommand", new ReverseIntakeRollersCommand());
-    SmartDashboard.putData("IntakeCommand", new IntakeCommand(intakeArms));
+    SmartDashboard.putData("ForwardConveyorCommand", new ForwardConveyorCommand(conveyor));
+    SmartDashboard.putData("ReverseConveyorCommand", new ReverseConveyorCommand(conveyor));
+    SmartDashboard.putData("ForwardIntakeRollersCommand", new ForwardIntakeRollersCommand(intakeRollers));
+    SmartDashboard.putData("ReverseIntakeRollersCommand", new ReverseIntakeRollersCommand(intakeRollers));
+    SmartDashboard.putData("IntakeCommand", new IntakeCommand(intakeArms, conveyor, intakeRollers));
   }
 
   // Used to start compressor
@@ -95,10 +93,10 @@ public class RobotContainer {
    * Configure joysitck button bindings
    */
   private void configureButtonBindings() {
-    operatorController.povUp().onTrue(new IntakeCommand(IntakeArmsSubsystem.getInstance()));
-    operatorController.povDown().onTrue(new EjectCommand(IntakeArmsSubsystem.getInstance()));
-    operatorController.y().onTrue(new RaiseIntakeCommand(IntakeArmsSubsystem.getInstance()));
-    operatorController.a().onTrue(new LowerIntakeCommand(IntakeArmsSubsystem.getInstance()));
+    operatorController.povUp().onTrue(new IntakeCommand(intakeArms, conveyor, intakeRollers));
+    operatorController.povDown().onTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
+    operatorController.y().onTrue(new RaiseIntakeCommand(intakeArms));
+    operatorController.a().onTrue(new LowerIntakeCommand(intakeArms));
     // Toggle between brake and coast
     driveController.a()
         .onTrue(

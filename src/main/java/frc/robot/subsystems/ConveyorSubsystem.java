@@ -12,7 +12,6 @@ import frc.robot.hardware.WPI_CANSparkMax;
 
 public class ConveyorSubsystem extends SubsystemBase {
 
-    private static ConveyorSubsystem conveyor;
     private WPI_CANSparkMax conveyorMotor;
     private SparkMaxPIDController pidController;
     private RelativeEncoder encoder;
@@ -28,7 +27,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     private static final int CONVEYOR_MOTOR_CAN_ID = 5; // CAN ID should be 5, it may be different as a result of testing
     private static final int CONVEYOR_SENSOR_CAN_ID = 0;
 
-    private ConveyorSubsystem() {
+    public ConveyorSubsystem() {
         conveyorFullSensor = new DigitalInput(CONVEYOR_SENSOR_CAN_ID);
         conveyorMotor = new WPI_CANSparkMax(CONVEYOR_MOTOR_CAN_ID, MotorType.kBrushless);
         conveyorMotor.restoreFactoryDefaults();
@@ -38,13 +37,6 @@ public class ConveyorSubsystem extends SubsystemBase {
         encoder = conveyorMotor.getEncoder();
         initializePidController();
         initializeSmartDashboard();
-    }
-
-    public static synchronized ConveyorSubsystem getInstance() {
-        if (null == conveyor) {
-            conveyor = new ConveyorSubsystem();
-        }
-        return conveyor;
     }
 
     private void initializePidController() {
