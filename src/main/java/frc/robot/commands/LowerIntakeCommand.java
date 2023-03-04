@@ -1,34 +1,24 @@
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.IntakeArmsSubsystem;
 
-// This command lowers Ampy's intake arms.
-
+/**
+ * Lower Ampy's intake arms
+ */
 public class LowerIntakeCommand extends CommandBase {
 
     private final IntakeArmsSubsystem intakeArms;
 
     public LowerIntakeCommand(IntakeArmsSubsystem intakeArms) {
-
-        this.intakeArms = IntakeArmsSubsystem.getInstance();
+        this.intakeArms = intakeArms;
         addRequirements(intakeArms);
-
-    }
-
-    @Override
-    public void initialize() {
     }
 
     @Override
     public void execute() {
         intakeArms.lowerArms();
-    }
-
-    @Override
-    public void end(boolean interrupted) {
     }
 
     @Override
@@ -38,8 +28,6 @@ public class LowerIntakeCommand extends CommandBase {
 
     @Override
     public boolean runsWhenDisabled() {
-
         return false;
-
     }
 }

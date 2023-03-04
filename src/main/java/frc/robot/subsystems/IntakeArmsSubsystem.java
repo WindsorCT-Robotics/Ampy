@@ -13,21 +13,13 @@ public class IntakeArmsSubsystem extends SubsystemBase {
     private static boolean raisedState = true;
     public static final int armSolenoidChannel = 1;
     public static final int pcmCANID = 20;
-    private static IntakeArmsSubsystem intakeArms;
 
-    private IntakeArmsSubsystem() {
+    public IntakeArmsSubsystem() {
 
         armSolenoid = new Solenoid(IntakeArmsSubsystem.pcmCANID, PneumaticsModuleType.CTREPCM,
                 IntakeArmsSubsystem.armSolenoidChannel);
         addChild("ArmSolenoid", armSolenoid);
 
-    }
-
-    public static synchronized IntakeArmsSubsystem getInstance() {
-        if (null == intakeArms) {
-            intakeArms = new IntakeArmsSubsystem();
-        }
-        return intakeArms;
     }
 
     /**

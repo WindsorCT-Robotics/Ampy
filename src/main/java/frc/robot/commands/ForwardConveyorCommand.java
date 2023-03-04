@@ -4,18 +4,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ConveyorSubsystem;
 
-// This command enables the conveyor within Ampy to rotate forward (in the direction into the intake)
-
+/**
+ * Enable the conveyor within Ampy to rotate forward (in the direction into the intake)
+ */
 public class ForwardConveyorCommand extends CommandBase {
-
     ConveyorSubsystem conveyor;
     double velocity;
     public static final int GEAR_RATIO = 20;
     public static final int TARGET_FORWARD_RPM = 250; // 250 is not an arbitrary number
     double defaultVelocity = TARGET_FORWARD_RPM * GEAR_RATIO;
 
-    public ForwardConveyorCommand() {
-        conveyor = ConveyorSubsystem.getInstance();
+    public ForwardConveyorCommand(ConveyorSubsystem conveyor) {
+        this.conveyor = conveyor;
         addRequirements(conveyor);
     }
 

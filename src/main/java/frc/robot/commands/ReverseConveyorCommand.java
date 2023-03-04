@@ -4,8 +4,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ConveyorSubsystem;
 
-// This command enables the conveyor within Ampy to rotate in reverse (in the direction out of the intake)
 
+/**
+ * Enable the conveyor within Ampy to rotate in reverse (in the direction out of the intake)
+ */
 public class ReverseConveyorCommand extends CommandBase {
 
     ConveyorSubsystem conveyor;
@@ -14,8 +16,8 @@ public class ReverseConveyorCommand extends CommandBase {
     public static final int TARGET_REVERSE_RPM = -200; // -200 is an arbitrary number chosen by Evan
     double defaultVelocity = TARGET_REVERSE_RPM * GEAR_RATIO;
 
-    public ReverseConveyorCommand() {
-        conveyor = ConveyorSubsystem.getInstance();
+    public ReverseConveyorCommand(ConveyorSubsystem conveyor) {
+        this.conveyor = conveyor;
         addRequirements(conveyor);
     }
 

@@ -13,7 +13,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 public class IntakeRollersSubsystem extends SubsystemBase {
 
     private WPI_CANSparkMax intakeRollerMotor;
-    private static IntakeRollersSubsystem intakeRollers;
     private SparkMaxPIDController pidController;
     private RelativeEncoder encoder;
     private double kFF = 0.000015;
@@ -26,8 +25,7 @@ public class IntakeRollersSubsystem extends SubsystemBase {
     private final double MAX_RPM = 2000;
     public static final int CAN_ID = 6; // CAN ID should be 6, it may be different as a result of testing
 
-    private IntakeRollersSubsystem() {
-
+    public IntakeRollersSubsystem() {
         intakeRollerMotor = new WPI_CANSparkMax(IntakeRollersSubsystem.CAN_ID, MotorType.kBrushless);
         intakeRollerMotor.restoreFactoryDefaults();
         addChild("Intake Roller Motor", intakeRollerMotor);
@@ -37,13 +35,6 @@ public class IntakeRollersSubsystem extends SubsystemBase {
         initializePidController();
         initializeSmartDashboard();
 
-    }
-
-    public static synchronized IntakeRollersSubsystem getInstance() {
-        if (null == intakeRollers) {
-            intakeRollers = new IntakeRollersSubsystem();
-        }
-        return intakeRollers;
     }
 
     private void initializePidController() {
