@@ -22,33 +22,55 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class RobotContainer {
 
   // Subsystems
+  private final ConveyorSubsystem conveyor;
   private final DriveSubsystem drive;
   private final IntakeArmsSubsystem intakeArms;
-  private final PowerDistributionPanelSubsystem pdpSubsystem;
+  private final IntakeRollersSubsystem intakeRollers;
+  private final PowerDistributionPanelSubsystem pdp;
 
   // Joysticks
-  private final CommandXboxController operatorController = new CommandXboxController(1);
-  private final CommandXboxController driveController = new CommandXboxController(0);
+  private final CommandXboxController operatorController;
+  private final CommandXboxController driveController;
 
   // A chooser for autonomous commands
-  SendableChooser<Command> chooser = new SendableChooser<>();
+  private final SendableChooser<Command> chooser;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Initialize subsystems
+    conveyor = ConveyorSubsystem.getInstance();
     drive = new DriveSubsystem();
     intakeArms = IntakeArmsSubsystem.getInstance();
-    pdpSubsystem = new PowerDistributionPanelSubsystem(new PowerDistribution());
+    intakeRollers = IntakeRollersSubsystem.getInstance();
+    pdp = new PowerDistributionPanelSubsystem(new PowerDistribution());
+
+    // Put subsystems on the SmartDashboard
+    SmartDashboard.putData(conveyor);
+    SmartDashboard.putData(drive);
+    SmartDashboard.putData(intakeArms);
+    SmartDashboard.putData(intakeRollers);
+    SmartDashboard.putData(pdp);
 
     // Initialize pneumatics
     initializePneumatics();
 
-    // Put subsystems on the SmartDashboard
-    SmartDashboard.putData(drive);
-    SmartDashboard.putData(intakeArms);
-    SmartDashboard.putData(pdpSubsystem);
+    // Initialize controllers
+    driveController = new CommandXboxController(0);
+    operatorController = new CommandXboxController(1);
+
+    // Configure default commands
+    drive.setDefaultCommand(
+        new DriveCommand(() -> driveController.getLeftY(), () -> driveController.getRightX(), drive));
+
+    // Configure button bindings
+    configureButtonBindings();
+
+    // Initialize autonomous chooser
+    chooser = new SendableChooser<>();
+    chooser.setDefaultOption("Drive forward", new AutonomousCommand(drive));
+    SmartDashboard.putData("Auto Mode", chooser);
 
     // Put commands on the SmartDashboard
     SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(drive));
@@ -59,17 +81,6 @@ public class RobotContainer {
     SmartDashboard.putData("ForwardIntakeRollersCommand", new ForwardIntakeRollersCommand());
     SmartDashboard.putData("ReverseIntakeRollersCommand", new ReverseIntakeRollersCommand());
     SmartDashboard.putData("IntakeCommand", new IntakeCommand(intakeArms));
-
-    // Configure button bindings
-    configureButtonBindings();
-
-    // Configure default commands
-    drive.setDefaultCommand(
-        new DriveCommand(() -> driveController.getLeftY(), () -> driveController.getRightX(), drive));
-
-    // Configure autonomous sendable chooser
-    chooser.setDefaultOption("Drive forward", new AutonomousCommand(drive));
-    SmartDashboard.putData("Auto Mode", chooser);
   }
 
   // Used to start compressor
@@ -80,6 +91,9 @@ public class RobotContainer {
     }
   }
 
+  /**
+   * Configure joysitck button bindings
+   */
   private void configureButtonBindings() {
     operatorController.povUp().onTrue(new IntakeCommand(IntakeArmsSubsystem.getInstance()));
     operatorController.povDown().onTrue(new EjectCommand(IntakeArmsSubsystem.getInstance()));
