@@ -21,8 +21,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
 
-  private static RobotContainer robotContainer = new RobotContainer();
-
   // Subsystems
   private final DriveSubsystem drive;
   private final IntakeArmsSubsystem intakeArms;
@@ -38,7 +36,7 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
-  private RobotContainer() {
+  public RobotContainer() {
     // Initialize subsystems
     drive = new DriveSubsystem();
     intakeArms = IntakeArmsSubsystem.getInstance();
@@ -82,10 +80,6 @@ public class RobotContainer {
     }
   }
 
-  public static RobotContainer getInstance() {
-    return robotContainer;
-  }
-
   private void configureButtonBindings() {
     operatorController.povUp().onTrue(new IntakeCommand(IntakeArmsSubsystem.getInstance()));
     operatorController.povDown().onTrue(new EjectCommand(IntakeArmsSubsystem.getInstance()));
@@ -98,14 +92,6 @@ public class RobotContainer {
                 new SetNeutralModeCommand(NeutralMode.Brake, drive),
                 new SetNeutralModeCommand(NeutralMode.Coast, drive),
                 () -> (drive.getNeutralMode() == NeutralMode.Coast)));
-  }
-
-  public CommandXboxController getDriveController() {
-    return driveController;
-  }
-
-  public CommandXboxController getOperatorController() {
-    return operatorController;
   }
 
   /**
