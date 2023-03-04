@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.drive;
 
 import java.util.function.DoubleSupplier;
 
@@ -9,7 +9,7 @@ import frc.robot.subsystems.DriveSubsystem;
 
 /**
  * Command to drive the robot, using speed and rotation values. Requires the
- * DrivetrainSubsystem.
+ * DriveSubsystem.
  */
 public class DriveCommand extends CommandBase {
     // Speed values
@@ -40,7 +40,7 @@ public class DriveCommand extends CommandBase {
      * 
      * @param speed               Joystick speed in [-1.0, 1.0]
      * @param turn                Joystick rotation in [-1.0, 1.0]
-     * @param drivetrainSubsystem The DrivetrainSubsystem
+     * @param drivetrainSubsystem The DriveSubsystem
      */
     public DriveCommand(DoubleSupplier speed, DoubleSupplier turn, DriveSubsystem drivetrainSubsystem) {
         this.speed = speed;

@@ -21,6 +21,9 @@ public class DriveSubsystem extends SubsystemBase {
     // DifferentialDrive object for drive calculations
     DifferentialDrive drive;
 
+    // Current neutral mode
+    NeutralMode neutralMode = NeutralMode.Coast;
+
     public DriveSubsystem() {
         // Motor initialization
         // Left motors turn clockwise
@@ -43,12 +46,14 @@ public class DriveSubsystem extends SubsystemBase {
 
     /**
      * Helper method to initialize a WPI_TalonFX.
+     * 
      * @param canId The motor's CAN ID
      * @return newly initialized WPI_TalonFX
      */
-    private static WPI_TalonFX initMotor(int canId) {
+    private WPI_TalonFX initMotor(int canId) {
         WPI_TalonFX motor = new WPI_TalonFX(canId);
         motor.configFactoryDefault();
+        motor.setNeutralMode(neutralMode);
         return motor;
     }
 
@@ -79,10 +84,20 @@ public class DriveSubsystem extends SubsystemBase {
      * @param neutralMode The motor's neutral mode
      */
     public void setNeutralMode(NeutralMode neutralMode) {
+        this.neutralMode = neutralMode;
         leftMain.setNeutralMode(neutralMode);
         leftFollower.setNeutralMode(neutralMode);
         rightMain.setNeutralMode(neutralMode);
         rightFollower.setNeutralMode(neutralMode);
+    }
+
+    /**
+     * Get the drivetrain's current neutral mode
+     * 
+     * @return the current neutral mode
+     */
+    public NeutralMode getNeutralMode() {
+        return neutralMode;
     }
 
     /**

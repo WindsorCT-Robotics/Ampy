@@ -2,12 +2,18 @@
 package frc.robot;
 
 import frc.robot.commands.*;
-import frc.robot.commands.AutonomousCommands.AutonomousCommand;
+import frc.robot.commands.autonomous.AutonomousCommand;
+import frc.robot.commands.drive.DriveCommand;
+import frc.robot.commands.drive.SetNeutralModeCommand;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -18,7 +24,7 @@ public class RobotContainer {
   private static RobotContainer robotContainer = new RobotContainer();
 
   // The robot's subsystems
-  public final DriveSubsystem drive = new DriveSubsystem();
+  public final DriveSubsystem drive;
   public final boolean isPrecisionOn = false;
 
   // Joysticks
@@ -32,6 +38,7 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   private RobotContainer() {
+    drive = new DriveSubsystem();
 
     // Smartdashboard Subsystems
 
@@ -83,6 +90,13 @@ public class RobotContainer {
     operatorController.povDown().onTrue(new EjectCommand(IntakeArmsSubsystem.getInstance()));
     operatorController.y().onTrue(new RaiseIntakeCommand(IntakeArmsSubsystem.getInstance()));
     operatorController.a().onTrue(new LowerIntakeCommand(IntakeArmsSubsystem.getInstance()));
+    // Toggle between brake and coast
+    driveController.a()
+        .onTrue(
+            new ConditionalCommand(
+                new SetNeutralModeCommand(NeutralMode.Brake, drive),
+                new SetNeutralModeCommand(NeutralMode.Coast, drive),
+                () -> (drive.getNeutralMode() == NeutralMode.Coast)));
   }
 
   public CommandXboxController getDriveController() {

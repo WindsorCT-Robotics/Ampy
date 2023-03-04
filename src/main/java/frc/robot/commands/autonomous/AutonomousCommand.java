@@ -1,5 +1,5 @@
 
-package frc.robot.commands.AutonomousCommands;
+package frc.robot.commands.autonomous;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.DriveSubsystem;

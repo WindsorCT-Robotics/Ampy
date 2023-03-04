@@ -1,4 +1,4 @@
-package frc.robot.commands.AutonomousCommands;
+package frc.robot.commands.autonomous;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
