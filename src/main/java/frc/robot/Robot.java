@@ -18,7 +18,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
 
-        robotContainer = RobotContainer.getInstance();
+        robotContainer = new RobotContainer();
         HAL.report(tResourceType.kResourceType_Framework, tInstances.kFramework_RobotBuilder);
         CameraServer.startAutomaticCapture();
     }

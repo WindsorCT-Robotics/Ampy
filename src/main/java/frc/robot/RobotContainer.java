@@ -21,56 +21,66 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
 
-  private static RobotContainer robotContainer = new RobotContainer();
-
-  // The robot's subsystems
-  public final DriveSubsystem drive;
-  public final boolean isPrecisionOn = false;
+  // Subsystems
+  private final ConveyorSubsystem conveyor;
+  private final DriveSubsystem drive;
+  private final IntakeArmsSubsystem intakeArms;
+  private final IntakeRollersSubsystem intakeRollers;
+  private final PowerDistributionPanelSubsystem pdp;
 
   // Joysticks
-  private final CommandXboxController operatorController = new CommandXboxController(1);
-  private final CommandXboxController driveController = new CommandXboxController(0);
+  private final CommandXboxController operatorController;
+  private final CommandXboxController driveController;
 
   // A chooser for autonomous commands
-  SendableChooser<Command> chooser = new SendableChooser<>();
+  private final SendableChooser<Command> chooser;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
-  private RobotContainer() {
+  public RobotContainer() {
+    // Initialize subsystems
+    conveyor = ConveyorSubsystem.getInstance();
     drive = new DriveSubsystem();
+    intakeArms = IntakeArmsSubsystem.getInstance();
+    intakeRollers = IntakeRollersSubsystem.getInstance();
+    pdp = new PowerDistributionPanelSubsystem(new PowerDistribution());
 
-    // Smartdashboard Subsystems
+    // Put subsystems on the SmartDashboard
+    SmartDashboard.putData(conveyor);
+    SmartDashboard.putData(drive);
+    SmartDashboard.putData(intakeArms);
+    SmartDashboard.putData(intakeRollers);
+    SmartDashboard.putData(pdp);
 
+    // Initialize pneumatics
     initializePneumatics();
 
-    SmartDashboard.putData(IntakeArmsSubsystem.getInstance());
+    // Initialize controllers
+    driveController = new CommandXboxController(0);
+    operatorController = new CommandXboxController(1);
 
-    SmartDashboard.putData(drive);
+    // Configure default commands
+    drive.setDefaultCommand(
+        new DriveCommand(() -> driveController.getLeftY(), () -> driveController.getRightX(), drive));
 
-    // SmartDashboard Buttons
+    // Configure button bindings
+    configureButtonBindings();
+
+    // Initialize autonomous chooser
+    chooser = new SendableChooser<>();
+    chooser.setDefaultOption("Drive forward", new AutonomousCommand(drive));
+    SmartDashboard.putData("Auto Mode", chooser);
+
+    // Put commands on the SmartDashboard
     SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(drive));
-    SmartDashboard.putData("RaiseIntakeCommand", new RaiseIntakeCommand(IntakeArmsSubsystem.getInstance()));
-    SmartDashboard.putData("LowerIntakeCommand", new LowerIntakeCommand(IntakeArmsSubsystem.getInstance()));
+    SmartDashboard.putData("RaiseIntakeCommand", new RaiseIntakeCommand(intakeArms));
+    SmartDashboard.putData("LowerIntakeCommand", new LowerIntakeCommand(intakeArms));
     SmartDashboard.putData("ForwardConveyorCommand", new ForwardConveyorCommand());
     SmartDashboard.putData("ReverseConveyorCommand", new ReverseConveyorCommand());
     SmartDashboard.putData("ForwardIntakeRollersCommand", new ForwardIntakeRollersCommand());
     SmartDashboard.putData("ReverseIntakeRollersCommand", new ReverseIntakeRollersCommand());
-    SmartDashboard.putData("IntakeCommand", new IntakeCommand(IntakeArmsSubsystem.getInstance()));
-
-    new PowerDistributionPanelSubsystem(new PowerDistribution());
-
-    // Configure the button bindings
-    configureButtonBindings();
-
-    // Configure default commands
-
-    drive.setDefaultCommand(
-        new DriveCommand(() -> driveController.getLeftY(), () -> driveController.getRightX(), drive));
-
-    // Configure autonomous sendable chooser
-    chooser.setDefaultOption("Drive forward", new AutonomousCommand(drive));
-    SmartDashboard.putData("Auto Mode", chooser);
+    SmartDashboard.putData("IntakeCommand", new IntakeCommand(intakeArms));
   }
 
   // Used to start compressor
@@ -81,10 +91,9 @@ public class RobotContainer {
     }
   }
 
-  public static RobotContainer getInstance() {
-    return robotContainer;
-  }
-
+  /**
+   * Configure joysitck button bindings
+   */
   private void configureButtonBindings() {
     operatorController.povUp().onTrue(new IntakeCommand(IntakeArmsSubsystem.getInstance()));
     operatorController.povDown().onTrue(new EjectCommand(IntakeArmsSubsystem.getInstance()));
@@ -97,14 +106,6 @@ public class RobotContainer {
                 new SetNeutralModeCommand(NeutralMode.Brake, drive),
                 new SetNeutralModeCommand(NeutralMode.Coast, drive),
                 () -> (drive.getNeutralMode() == NeutralMode.Coast)));
-  }
-
-  public CommandXboxController getDriveController() {
-    return driveController;
-  }
-
-  public CommandXboxController getOperatorController() {
-    return operatorController;
   }
 
   /**
