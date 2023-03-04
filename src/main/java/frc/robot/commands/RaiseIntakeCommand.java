@@ -17,16 +17,8 @@ public class RaiseIntakeCommand extends CommandBase {
     }
 
     @Override
-    public void initialize() {
-    }
-
-    @Override
     public void execute() {
         intakeArms.raiseArms();
-    }
-
-    @Override
-    public void end(boolean interrupted) {
     }
 
     @Override
