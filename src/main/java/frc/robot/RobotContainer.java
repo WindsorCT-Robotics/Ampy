@@ -2,9 +2,9 @@
 package frc.robot;
 
 import frc.robot.commands.*;
-import frc.robot.commands.AutonomousCommands.AutonomousCommand;
-import frc.robot.commands.DriveCommands.DriveCommand;
-import frc.robot.commands.DriveCommands.SetNeutralModeCommand;
+import frc.robot.commands.autonomous.AutonomousCommand;
+import frc.robot.commands.drive.DriveCommand;
+import frc.robot.commands.drive.SetNeutralModeCommand;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
