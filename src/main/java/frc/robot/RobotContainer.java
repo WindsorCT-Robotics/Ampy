@@ -23,9 +23,10 @@ public class RobotContainer {
 
   private static RobotContainer robotContainer = new RobotContainer();
 
-  // The robot's subsystems
-  public final DriveSubsystem drive;
-  public final boolean isPrecisionOn = false;
+  // Subsystems
+  private final DriveSubsystem drive;
+  private final IntakeArmsSubsystem intakeArms;
+  private final PowerDistributionPanelSubsystem pdpSubsystem;
 
   // Joysticks
   private final CommandXboxController operatorController = new CommandXboxController(1);
@@ -38,33 +39,33 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   private RobotContainer() {
+    // Initialize subsystems
     drive = new DriveSubsystem();
+    intakeArms = IntakeArmsSubsystem.getInstance();
+    pdpSubsystem = new PowerDistributionPanelSubsystem(new PowerDistribution());
 
-    // Smartdashboard Subsystems
-
+    // Initialize pneumatics
     initializePneumatics();
 
-    SmartDashboard.putData(IntakeArmsSubsystem.getInstance());
-
+    // Put subsystems on the SmartDashboard
     SmartDashboard.putData(drive);
+    SmartDashboard.putData(intakeArms);
+    SmartDashboard.putData(pdpSubsystem);
 
-    // SmartDashboard Buttons
+    // Put commands on the SmartDashboard
     SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(drive));
-    SmartDashboard.putData("RaiseIntakeCommand", new RaiseIntakeCommand(IntakeArmsSubsystem.getInstance()));
-    SmartDashboard.putData("LowerIntakeCommand", new LowerIntakeCommand(IntakeArmsSubsystem.getInstance()));
+    SmartDashboard.putData("RaiseIntakeCommand", new RaiseIntakeCommand(intakeArms));
+    SmartDashboard.putData("LowerIntakeCommand", new LowerIntakeCommand(intakeArms));
     SmartDashboard.putData("ForwardConveyorCommand", new ForwardConveyorCommand());
     SmartDashboard.putData("ReverseConveyorCommand", new ReverseConveyorCommand());
     SmartDashboard.putData("ForwardIntakeRollersCommand", new ForwardIntakeRollersCommand());
     SmartDashboard.putData("ReverseIntakeRollersCommand", new ReverseIntakeRollersCommand());
-    SmartDashboard.putData("IntakeCommand", new IntakeCommand(IntakeArmsSubsystem.getInstance()));
+    SmartDashboard.putData("IntakeCommand", new IntakeCommand(intakeArms));
 
-    new PowerDistributionPanelSubsystem(new PowerDistribution());
-
-    // Configure the button bindings
+    // Configure button bindings
     configureButtonBindings();
 
     // Configure default commands
-
     drive.setDefaultCommand(
         new DriveCommand(() -> driveController.getLeftY(), () -> driveController.getRightX(), drive));
 
