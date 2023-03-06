@@ -11,11 +11,11 @@ public class ConveyorSubsystem extends SubsystemBase {
 
     private WPI_CANSparkMax conveyorMotor;
     private static final int CONVEYOR_MOTOR_CAN_ID = 5; // CAN ID should be 5, it may be different as a result of testing
-    private static final int CONVEYOR_SENSOR_CAN_ID = 0;
+    private static final int CONVEYOR_SENSOR_CHANNEL = 0;
     private final DigitalInput conveyorFullSensor;
 
     public ConveyorSubsystem() {
-        conveyorFullSensor = new DigitalInput(CONVEYOR_SENSOR_CAN_ID);
+        conveyorFullSensor = new DigitalInput(CONVEYOR_SENSOR_CHANNEL);
         conveyorMotor = new WPI_CANSparkMax(CONVEYOR_MOTOR_CAN_ID, MotorType.kBrushless);
         conveyorMotor.restoreFactoryDefaults();
         addChild("Conveyor motor", conveyorMotor);
