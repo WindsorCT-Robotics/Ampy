@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.IntakeArmsSubsystem;
 import frc.robot.subsystems.IntakeRollersSubsystem;
+import frc.robot.subsystems.IntakeArmsSubsystem.ArmState;
 
 /*
 This command executes multiple commands in sequence in order to intake an object. It first lowers the intake, then activates the conveyor
@@ -15,11 +16,11 @@ public class IntakeCommand extends SequentialCommandGroup {
     public IntakeCommand(IntakeArmsSubsystem intakeArms, ConveyorSubsystem conveyor,
             IntakeRollersSubsystem intakeRollers) {
         addCommands(
-                new LowerIntakeCommand(intakeArms),
+                new MoveIntakeCommand(ArmState.LOWERED, intakeArms),
                 new ParallelDeadlineGroup(
                         new ForwardConveyorCommand(conveyor),
                         new ForwardIntakeRollersCommand(intakeRollers)),
-                new RaiseIntakeCommand(intakeArms));
+                new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     }
 
 }

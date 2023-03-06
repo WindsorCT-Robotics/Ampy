@@ -5,6 +5,7 @@ import frc.robot.commands.autonomous.AutonomousCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.SetNeutralModeCommand;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.IntakeArmsSubsystem.ArmState;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -72,8 +73,8 @@ public class RobotContainer {
 
     // Put commands on the SmartDashboard
     SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(drive));
-    SmartDashboard.putData("RaiseIntakeCommand", new RaiseIntakeCommand(intakeArms));
-    SmartDashboard.putData("LowerIntakeCommand", new LowerIntakeCommand(intakeArms));
+    SmartDashboard.putData("RaiseIntakeCommand", new MoveIntakeCommand(ArmState.RAISED, intakeArms));
+    SmartDashboard.putData("LowerIntakeCommand", new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
     SmartDashboard.putData("ForwardConveyorCommand", new ForwardConveyorCommand(conveyor));
     SmartDashboard.putData("ReverseConveyorCommand", new ReverseConveyorCommand(conveyor));
     SmartDashboard.putData("ForwardIntakeRollersCommand", new ForwardIntakeRollersCommand(intakeRollers));
@@ -95,8 +96,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     operatorController.povUp().onTrue(new IntakeCommand(intakeArms, conveyor, intakeRollers));
     operatorController.povDown().onTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
-    operatorController.y().onTrue(new RaiseIntakeCommand(intakeArms));
-    operatorController.a().onTrue(new LowerIntakeCommand(intakeArms));
+    operatorController.y().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
+    operatorController.a().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
     // Toggle between brake and coast
     driveController.a()
         .onTrue(

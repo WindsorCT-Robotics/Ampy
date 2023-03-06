@@ -9,13 +9,17 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class IntakeArmsSubsystem extends SubsystemBase {
 
+    public enum ArmState {
+        RAISED,
+        LOWERED
+    }
+
     private Solenoid armSolenoid;
-    private static boolean raisedState = true;
+    private static ArmState currentArmState = ArmState.RAISED;
     public static final int armSolenoidChannel = 1;
     public static final int pcmCANID = 20;
 
     public IntakeArmsSubsystem() {
-
         armSolenoid = new Solenoid(IntakeArmsSubsystem.pcmCANID, PneumaticsModuleType.CTREPCM,
                 IntakeArmsSubsystem.armSolenoidChannel);
         addChild("ArmSolenoid", armSolenoid);
@@ -23,33 +27,27 @@ public class IntakeArmsSubsystem extends SubsystemBase {
     }
 
     /**
-     * Lowers the intake of the robot (EXTEND THE SOLENOID TO LOWER THE ARMS)
+     * Raises / lowers the robot's intake
+     * 
+     * @param state The desired arm state (raised or lowered)
      */
-    public void lowerArms() {
-        armSolenoid.set(true);
-        raisedState = false;
+    public void setArmState(ArmState state) {
+        armSolenoid.set((state == ArmState.RAISED) ? true : false);
+        currentArmState = state;
     }
 
     /**
-     * Raises the intake of the robot (RETRACT THE SOLENOID TO RAISE THE ARM)
+     * Returns the intake's raised/lowered state
+     * 
+     * @return The current arm state
      */
-    public void raiseArms() {
-        armSolenoid.set(false);
-        raisedState = true;
-    }
-
-    public boolean getRaisedState() {
-        return raisedState;
+    public ArmState getArmState() {
+        return currentArmState;
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("Arms Raised?", raisedState);
-    }
-
-    @Override
-    public void simulationPeriodic() {
-
+        SmartDashboard.putBoolean("Arms Raised?", (currentArmState == ArmState.RAISED) ? true : false);
     }
 
 }
