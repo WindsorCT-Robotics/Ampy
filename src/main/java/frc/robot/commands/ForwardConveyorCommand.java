@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ConveyorSubsystem;
 
@@ -9,10 +8,7 @@ import frc.robot.subsystems.ConveyorSubsystem;
  */
 public class ForwardConveyorCommand extends CommandBase {
     ConveyorSubsystem conveyor;
-    double velocity;
-    public static final int GEAR_RATIO = 20;
-    public static final int TARGET_FORWARD_RPM = 250; // 250 is not an arbitrary number
-    double defaultVelocity = TARGET_FORWARD_RPM * GEAR_RATIO;
+    public static final double TARGET_FORWARD_RPM = 0.3;
 
     public ForwardConveyorCommand(ConveyorSubsystem conveyor) {
         this.conveyor = conveyor;
@@ -20,16 +16,8 @@ public class ForwardConveyorCommand extends CommandBase {
     }
 
     @Override
-    public void initialize() {
-        if (!SmartDashboard.containsKey("ForwardConveyor/VelocitySetPoint")) {
-            SmartDashboard.putNumber("ForwardConveyor/VelocitySetPoint", defaultVelocity);
-        }
-        velocity = SmartDashboard.getNumber("ForwardConveyor/VelocitySetPoint", defaultVelocity);
-    }
-
-    @Override
     public void execute() {
-        conveyor.setVelocity(velocity);
+        conveyor.setSpeed(TARGET_FORWARD_RPM);
     }
 
     @Override
