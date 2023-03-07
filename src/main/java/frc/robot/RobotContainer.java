@@ -96,13 +96,14 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // intake a game piece
     driveController.a()
-        .whileTrue(
+        .onTrue(
             new SequentialCommandGroup(
                 new MoveIntakeCommand(ArmState.LOWERED, intakeArms),
                 new ParallelCommandGroup(
-                    new MoveConveyorCommand(0.3, conveyor),
-                    new ForwardIntakeRollersCommand(intakeRollers))));
-    driveController.b().whileTrue(new MoveConveyorCommand(0.3, conveyor));
+                    new MoveConveyorCommand(0.5, conveyor),
+                    new ForwardIntakeRollersCommand(intakeRollers)).until(() -> !conveyor.isEmpty()),
+                new MoveIntakeCommand(ArmState.RAISED, intakeArms)));
+    driveController.b().whileTrue(new MoveConveyorCommand(0.5, conveyor));
     driveController.y().whileTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
     driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
