@@ -94,15 +94,14 @@ public class RobotContainer {
    * Configure joysitck button bindings
    */
   private void configureButtonBindings() {
-    // intake a
+    // intake a game piece
     driveController.a()
         .whileTrue(
             new SequentialCommandGroup(
                 new MoveIntakeCommand(ArmState.LOWERED, intakeArms),
                 new ParallelCommandGroup(
                     new MoveConveyorCommand(0.3, conveyor),
-                    new ForwardIntakeRollersCommand(intakeRollers)))
-                .andThen(new MoveIntakeCommand(ArmState.RAISED, intakeArms)));
+                    new ForwardIntakeRollersCommand(intakeRollers))));
     driveController.b().whileTrue(new MoveConveyorCommand(0.3, conveyor));
     driveController.y().whileTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
     driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
