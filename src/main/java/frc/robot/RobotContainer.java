@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -95,14 +93,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // intake a game piece
-    driveController.a()
-        .onTrue(
-            new SequentialCommandGroup(
-                new MoveIntakeCommand(ArmState.LOWERED, intakeArms),
-                new ParallelCommandGroup(
-                    new MoveConveyorCommand(0.5, conveyor),
-                    new ForwardIntakeRollersCommand(intakeRollers)).until(() -> !conveyor.isEmpty()),
-                new MoveIntakeCommand(ArmState.RAISED, intakeArms)));
+    driveController.a().onTrue(new IntakeCommand(intakeArms, conveyor, intakeRollers));
     driveController.b().whileTrue(new MoveConveyorCommand(0.5, conveyor));
     driveController.y().whileTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
     driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
