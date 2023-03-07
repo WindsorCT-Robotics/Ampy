@@ -6,23 +6,25 @@ import frc.robot.subsystems.ConveyorSubsystem;
 /**
  * Enable the conveyor within Ampy to rotate forward (in the direction into the intake)
  */
-public class ForwardConveyorCommand extends CommandBase {
+public class MoveConveyorCommand extends CommandBase {
     ConveyorSubsystem conveyor;
-    public static final double TARGET_FORWARD_RPM = 0.3;
+    private final double targetSpeed;
 
-    public ForwardConveyorCommand(ConveyorSubsystem conveyor) {
+    public MoveConveyorCommand(double targetSpeed, ConveyorSubsystem conveyor) {
+        // Positive values move pieces towards the back
+        this.targetSpeed = -targetSpeed;
         this.conveyor = conveyor;
         addRequirements(conveyor);
     }
 
     @Override
     public void execute() {
-        conveyor.setSpeed(TARGET_FORWARD_RPM);
+        conveyor.setSpeed(targetSpeed);
     }
 
     @Override
     public boolean isFinished() {
-        return !conveyor.isEmpty();
+        return false;
     }
 
     @Override

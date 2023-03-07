@@ -16,7 +16,7 @@ public class IntakeArmsSubsystem extends SubsystemBase {
 
     private Solenoid armSolenoid;
     private static ArmState currentArmState = ArmState.RAISED;
-    public static final int armSolenoidChannel = 1;
+    public static final int armSolenoidChannel = 0;
     public static final int pcmCANID = 20;
 
     public IntakeArmsSubsystem() {
@@ -32,7 +32,7 @@ public class IntakeArmsSubsystem extends SubsystemBase {
      * @param state The desired arm state (raised or lowered)
      */
     public void setArmState(ArmState state) {
-        armSolenoid.set((state == ArmState.RAISED) ? true : false);
+        armSolenoid.set(state == ArmState.LOWERED);
         currentArmState = state;
     }
 

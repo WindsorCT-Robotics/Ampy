@@ -9,7 +9,7 @@ import frc.robot.subsystems.IntakeRollersSubsystem;
  */
 public class ForwardIntakeRollersCommand extends CommandBase {
     IntakeRollersSubsystem intakeRollers;
-    public static final double TARGET_FORWARD_SPEED = 0.3;
+    public static final double TARGET_FORWARD_SPEED = -0.3;
 
     public ForwardIntakeRollersCommand(IntakeRollersSubsystem intakeRollers) {
         this.intakeRollers = intakeRollers;
