@@ -7,22 +7,22 @@ import frc.robot.subsystems.IntakeArmsSubsystem;
 import frc.robot.subsystems.IntakeRollersSubsystem;
 import frc.robot.subsystems.IntakeArmsSubsystem.ArmState;
 
-/*
-This command executes multiple commands in sequence in order to eject an object. It first lowers the intake, then activates the conveyor
-and intake rollers at the same time with both of them rotating in reverse in order to eject an object. Afterwards, it raises the intake.
-*/
+/**
+ * This command executes multiple commands in sequence in order to eject an
+ * object. It first lowers the intake, then activates the conveyor
+ * and intake rollers at the same time with both of them rotating in reverse in
+ * order to eject an object. Afterwards, it raises the intake.
+ */
 public class EjectCommand extends SequentialCommandGroup {
 
-    public EjectCommand(IntakeArmsSubsystem intakeArms, ConveyorSubsystem conveyor,
-            IntakeRollersSubsystem intakeRollers) {
-        addCommands(
-                new MoveIntakeCommand(ArmState.LOWERED, intakeArms),
-
-                new ParallelDeadlineGroup(
-                        new ReverseConveyorCommand(conveyor),
-                        new ReverseIntakeRollersCommand(intakeRollers)),
-
-                new MoveIntakeCommand(ArmState.RAISED, intakeArms));
-    }
+        public EjectCommand(IntakeArmsSubsystem intakeArms, ConveyorSubsystem conveyor,
+                        IntakeRollersSubsystem intakeRollers) {
+                addCommands(
+                                new MoveIntakeCommand(ArmState.LOWERED, intakeArms),
+                                new ParallelDeadlineGroup(
+                                                new MoveConveyorCommand(-0.3, conveyor),
+                                                new ReverseIntakeRollersCommand(intakeRollers)),
+                                new MoveIntakeCommand(ArmState.RAISED, intakeArms));
+        }
 
 }

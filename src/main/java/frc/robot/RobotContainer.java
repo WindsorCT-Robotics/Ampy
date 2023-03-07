@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -28,7 +30,6 @@ public class RobotContainer {
   private final PowerDistributionPanelSubsystem pdp;
 
   // Joysticks
-  private final CommandXboxController operatorController;
   private final CommandXboxController driveController;
 
   // A chooser for autonomous commands
@@ -57,7 +58,6 @@ public class RobotContainer {
 
     // Initialize controllers
     driveController = new CommandXboxController(0);
-    operatorController = new CommandXboxController(1);
 
     // Configure default commands
     drive.setDefaultCommand(
@@ -75,8 +75,8 @@ public class RobotContainer {
     SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(drive));
     SmartDashboard.putData("RaiseIntakeCommand", new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     SmartDashboard.putData("LowerIntakeCommand", new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
-    SmartDashboard.putData("ForwardConveyorCommand", new ForwardConveyorCommand(conveyor));
-    SmartDashboard.putData("ReverseConveyorCommand", new ReverseConveyorCommand(conveyor));
+    SmartDashboard.putData("ForwardConveyorCommand", new MoveConveyorCommand(0.3, conveyor));
+    SmartDashboard.putData("ReverseConveyorCommand", new MoveConveyorCommand(-0.3, conveyor));
     SmartDashboard.putData("ForwardIntakeRollersCommand", new ForwardIntakeRollersCommand(intakeRollers));
     SmartDashboard.putData("ReverseIntakeRollersCommand", new ReverseIntakeRollersCommand(intakeRollers));
     SmartDashboard.putData("IntakeCommand", new IntakeCommand(intakeArms, conveyor, intakeRollers));
@@ -94,12 +94,20 @@ public class RobotContainer {
    * Configure joysitck button bindings
    */
   private void configureButtonBindings() {
-    operatorController.povUp().onTrue(new IntakeCommand(intakeArms, conveyor, intakeRollers));
-    operatorController.povDown().onTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
-    operatorController.y().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
-    operatorController.a().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
-    // Toggle between brake and coast
+    // intake a game piece
     driveController.a()
+        .whileTrue(
+            new SequentialCommandGroup(
+                new MoveIntakeCommand(ArmState.LOWERED, intakeArms),
+                new ParallelCommandGroup(
+                    new MoveConveyorCommand(0.3, conveyor),
+                    new ForwardIntakeRollersCommand(intakeRollers))));
+    driveController.b().whileTrue(new MoveConveyorCommand(0.3, conveyor));
+    driveController.y().whileTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
+    driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
+    driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
+    // Toggle between brake and coast
+    driveController.leftStick()
         .onTrue(
             new ConditionalCommand(
                 new SetNeutralModeCommand(NeutralMode.Brake, drive),
