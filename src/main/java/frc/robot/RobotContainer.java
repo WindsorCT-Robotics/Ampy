@@ -35,6 +35,9 @@ public class RobotContainer {
   // A chooser for autonomous commands
   private final SendableChooser<Command> chooser;
 
+  private final double CONVEYOR_SPEED = 0.5;
+  private final double INTAKE_ROLLER_SPEED = 0.5;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -75,11 +78,10 @@ public class RobotContainer {
     SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(drive));
     SmartDashboard.putData("RaiseIntakeCommand", new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     SmartDashboard.putData("LowerIntakeCommand", new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
-    SmartDashboard.putData("ForwardConveyorCommand", new MoveConveyorCommand(0.3, conveyor));
-    SmartDashboard.putData("ReverseConveyorCommand", new MoveConveyorCommand(-0.3, conveyor));
-    SmartDashboard.putData("ForwardIntakeRollersCommand", new ForwardIntakeRollersCommand(intakeRollers));
-    SmartDashboard.putData("ReverseIntakeRollersCommand", new ReverseIntakeRollersCommand(intakeRollers));
-    SmartDashboard.putData("IntakeCommand", new IntakeCommand(intakeArms, conveyor, intakeRollers));
+    SmartDashboard.putData("ForwardConveyorCommand", new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
+    SmartDashboard.putData("ReverseConveyorCommand", new MoveConveyorCommand(-CONVEYOR_SPEED, conveyor));
+    SmartDashboard.putData("ForwardIntakeRollersCommand", new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers));
+    SmartDashboard.putData("ReverseIntakeRollersCommand", new MoveIntakeRollersCommand(-INTAKE_ROLLER_SPEED, intakeRollers));
   }
 
   // Used to start compressor
@@ -100,9 +102,9 @@ public class RobotContainer {
             new SequentialCommandGroup(
                 new MoveIntakeCommand(ArmState.LOWERED, intakeArms),
                 new ParallelCommandGroup(
-                    new MoveConveyorCommand(0.3, conveyor),
-                    new ForwardIntakeRollersCommand(intakeRollers))));
-    driveController.b().whileTrue(new MoveConveyorCommand(0.3, conveyor));
+                    new MoveConveyorCommand(CONVEYOR_SPEED, conveyor),
+                    new MoveIntakeRollersCommand(-INTAKE_ROLLER_SPEED, intakeRollers))));
+    driveController.b().whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
     driveController.y().whileTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
     driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
