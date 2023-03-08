@@ -46,13 +46,6 @@ public class RobotContainer {
     intakeRollers = new IntakeRollersSubsystem();
     pdp = new PowerDistributionPanelSubsystem(new PowerDistribution());
 
-    // Put subsystems on the SmartDashboard
-    SmartDashboard.putData(conveyor);
-    SmartDashboard.putData(drive);
-    SmartDashboard.putData(intakeArms);
-    SmartDashboard.putData(intakeRollers);
-    SmartDashboard.putData(pdp);
-
     // Initialize pneumatics
     initializePneumatics();
 
@@ -71,15 +64,6 @@ public class RobotContainer {
     chooser.setDefaultOption("Drive forward", new AutonomousCommand(drive));
     SmartDashboard.putData("Auto Mode", chooser);
 
-    // Put commands on the SmartDashboard
-    SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(drive));
-    SmartDashboard.putData("RaiseIntakeCommand", new MoveIntakeCommand(ArmState.RAISED, intakeArms));
-    SmartDashboard.putData("LowerIntakeCommand", new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
-    SmartDashboard.putData("ForwardConveyorCommand", new MoveConveyorCommand(0.3, conveyor));
-    SmartDashboard.putData("ReverseConveyorCommand", new MoveConveyorCommand(-0.3, conveyor));
-    SmartDashboard.putData("ForwardIntakeRollersCommand", new ForwardIntakeRollersCommand(intakeRollers));
-    SmartDashboard.putData("ReverseIntakeRollersCommand", new ReverseIntakeRollersCommand(intakeRollers));
-    SmartDashboard.putData("IntakeCommand", new IntakeCommand(intakeArms, conveyor, intakeRollers));
   }
 
   // Used to start compressor
