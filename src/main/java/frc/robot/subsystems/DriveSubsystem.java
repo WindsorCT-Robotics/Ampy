@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.lang.Math;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -59,12 +60,17 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("Drive/Left main sensor position m", getMeters(leftMain.getSelectedSensorPosition()));
-        SmartDashboard.putNumber("Drive/Left main sensor velocity m/s",
-                Math.abs(getMetersPerSecond(leftMain.getSelectedSensorVelocity())));
-        SmartDashboard.putNumber("Drive/Right main sensor position m", getMeters(rightMain.getSelectedSensorPosition()));
-        SmartDashboard.putNumber("Drive/Right main sensor velocity m/s",
-                Math.abs(getMetersPerSecond(rightMain.getSelectedSensorVelocity())));
+
+        SmartDashboard.putNumber("Left main sensor position", leftMain.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Left main sensor velocity", leftMain.getSelectedSensorVelocity());
+        SmartDashboard.putNumber("Right main sensor position", rightMain.getSelectedSensorPosition());
+        SmartDashboard.putNumber("Right main sensor velocity", rightMain.getSelectedSensorVelocity());
+        // Motor temps
+        SmartDashboard.putNumber("MotorTemperature/Left main", Math.round(leftMain.getTemperature()));
+        SmartDashboard.putNumber("MotorTemperature/Left follower", Math.round(leftFollower.getTemperature()));
+        SmartDashboard.putNumber("MotorTemperature/Right main", Math.round(rightMain.getTemperature()));
+        SmartDashboard.putNumber("MotorTemperature/Right follower", Math.round(rightFollower.getTemperature()));
+
     }
 
     /**
