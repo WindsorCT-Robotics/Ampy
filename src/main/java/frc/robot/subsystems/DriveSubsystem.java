@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.lang.Math;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -63,6 +64,11 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Left main sensor velocity", leftMain.getSelectedSensorVelocity());
         SmartDashboard.putNumber("Right main sensor position", rightMain.getSelectedSensorPosition());
         SmartDashboard.putNumber("Right main sensor velocity", rightMain.getSelectedSensorVelocity());
+        // Motor temps
+        SmartDashboard.putNumber("Left main motor", Math.round(leftMain.getTemperature()));
+        SmartDashboard.putNumber("Left follower motor", Math.round(leftFollower.getTemperature()));
+        SmartDashboard.putNumber("Right main motor", Math.round(rightMain.getTemperature()));
+        SmartDashboard.putNumber("Right follower motor", Math.round(rightFollower.getTemperature()));
     }
 
     /**
