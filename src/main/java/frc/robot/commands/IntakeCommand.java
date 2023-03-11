@@ -21,7 +21,7 @@ public class IntakeCommand extends SequentialCommandGroup {
                                 new MoveIntakeCommand(ArmState.LOWERED, intakeArms),
                                 new ParallelCommandGroup(
                                                 new MoveConveyorCommand(0.5, conveyor),
-                                                new ForwardIntakeRollersCommand(intakeRollers))
+                                                new MoveIntakeRollersCommand(0.5, intakeRollers))
                                                 .until(() -> !conveyor.isEmpty()),
                                 new MoveIntakeCommand(ArmState.RAISED, intakeArms));
         }
