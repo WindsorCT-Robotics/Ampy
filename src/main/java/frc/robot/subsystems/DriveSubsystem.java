@@ -60,6 +60,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+
         SmartDashboard.putNumber("Left main sensor position", leftMain.getSelectedSensorPosition());
         SmartDashboard.putNumber("Left main sensor velocity", leftMain.getSelectedSensorVelocity());
         SmartDashboard.putNumber("Right main sensor position", rightMain.getSelectedSensorPosition());
@@ -69,6 +70,7 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Left follower motor", Math.round(leftFollower.getTemperature()));
         SmartDashboard.putNumber("Right main motor", Math.round(rightMain.getTemperature()));
         SmartDashboard.putNumber("Right follower motor", Math.round(rightFollower.getTemperature()));
+
     }
 
     /**
@@ -112,6 +114,20 @@ public class DriveSubsystem extends SubsystemBase {
     public void stop() {
         leftMain.set(0);
         rightMain.set(0);
+    }
+
+    private static double getMeters(double sensorReading) {
+        final double gearRatio = 10.71; // 10.71:1 gear ratio
+        final double encoderCount = 2048; // 2048 encoder counts per revolution
+        final double wheelDiameter = 0.1524; // 6-inch wheel diameter in meters
+        final double wheelCircumference = (Math.PI * wheelDiameter);
+        final double pulsesPerRevolution = (gearRatio * encoderCount);
+
+        return sensorReading / pulsesPerRevolution * wheelCircumference;
+    }
+
+    private static double getMetersPerSecond(double sensorReading) {
+        return getMeters(sensorReading) * 10;
     }
 
 }
