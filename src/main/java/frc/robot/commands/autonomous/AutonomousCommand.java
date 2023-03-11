@@ -8,7 +8,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
     public AutonomousCommand(DriveSubsystem drive) {
         addCommands(
-            new AutoDriveCommand(2, 0, 0.5, drive)
+            new AutoDriveCommand(2, 0, 0.5, drive) //Change speed and time
         );
     }
 }
