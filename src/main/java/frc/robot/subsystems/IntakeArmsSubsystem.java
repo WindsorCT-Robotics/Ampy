@@ -47,7 +47,7 @@ public class IntakeArmsSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("ArmSolenoid/Arms Up", (currentArmState == ArmState.RAISED) ? true : false);
+        SmartDashboard.putBoolean("Arms Raised?", (currentArmState == ArmState.RAISED) ? true : false);
     }
 
 }

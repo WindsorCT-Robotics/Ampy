@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -35,6 +33,9 @@ public class RobotContainer {
   // A chooser for autonomous commands
   private final SendableChooser<Command> chooser;
 
+  private final double CONVEYOR_SPEED = 0.5;
+  private final double INTAKE_ROLLER_SPEED = 0.5;
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -45,6 +46,13 @@ public class RobotContainer {
     intakeArms = new IntakeArmsSubsystem();
     intakeRollers = new IntakeRollersSubsystem();
     pdp = new PowerDistributionPanelSubsystem(new PowerDistribution());
+
+    // Put subsystems on the SmartDashboard
+    SmartDashboard.putData(conveyor);
+    SmartDashboard.putData(drive);
+    SmartDashboard.putData(intakeArms);
+    SmartDashboard.putData(intakeRollers);
+    SmartDashboard.putData(pdp);
 
     // Initialize pneumatics
     initializePneumatics();
@@ -64,6 +72,14 @@ public class RobotContainer {
     chooser.setDefaultOption("Drive forward", new AutonomousCommand(drive));
     SmartDashboard.putData("Auto Mode", chooser);
 
+    // Put commands on the SmartDashboard
+    SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(drive));
+    SmartDashboard.putData("RaiseIntakeCommand", new MoveIntakeCommand(ArmState.RAISED, intakeArms));
+    SmartDashboard.putData("LowerIntakeCommand", new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
+    SmartDashboard.putData("ForwardConveyorCommand", new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
+    SmartDashboard.putData("ReverseConveyorCommand", new MoveConveyorCommand(-CONVEYOR_SPEED, conveyor));
+    SmartDashboard.putData("ForwardIntakeRollersCommand", new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers));
+    SmartDashboard.putData("ReverseIntakeRollersCommand", new MoveIntakeRollersCommand(-INTAKE_ROLLER_SPEED, intakeRollers));
   }
 
   // Used to start compressor
@@ -79,14 +95,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // intake a game piece
-    driveController.a()
-        .whileTrue(
-            new SequentialCommandGroup(
-                new MoveIntakeCommand(ArmState.LOWERED, intakeArms),
-                new ParallelCommandGroup(
-                    new MoveConveyorCommand(0.3, conveyor),
-                    new ForwardIntakeRollersCommand(intakeRollers))));
-    driveController.b().whileTrue(new MoveConveyorCommand(0.3, conveyor));
+    driveController.a().onTrue(new IntakeCommand(intakeArms, conveyor, intakeRollers));
+    driveController.b().whileTrue(new MoveConveyorCommand(0.5, conveyor));
     driveController.y().whileTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
     driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));

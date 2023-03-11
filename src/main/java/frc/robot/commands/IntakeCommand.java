@@ -1,6 +1,6 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.ConveyorSubsystem;
 import frc.robot.subsystems.IntakeArmsSubsystem;
@@ -19,9 +19,10 @@ public class IntakeCommand extends SequentialCommandGroup {
                         IntakeRollersSubsystem intakeRollers) {
                 addCommands(
                                 new MoveIntakeCommand(ArmState.LOWERED, intakeArms),
-                                new ParallelDeadlineGroup(
-                                                new MoveConveyorCommand(0.3, conveyor),
-                                                new ForwardIntakeRollersCommand(intakeRollers)),
+                                new ParallelCommandGroup(
+                                                new MoveConveyorCommand(0.5, conveyor),
+                                                new MoveIntakeRollersCommand(0.5, intakeRollers))
+                                                .until(() -> !conveyor.isEmpty()),
                                 new MoveIntakeCommand(ArmState.RAISED, intakeArms));
         }
 
