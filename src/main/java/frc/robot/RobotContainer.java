@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
   // Subsystems
@@ -63,6 +64,7 @@ public class RobotContainer {
     // Configure default commands
     drive.setDefaultCommand(
         new DriveCommand(() -> driveController.getLeftY(), () -> driveController.getRightX(), drive));
+    conveyor.setDefaultCommand(new MoveConveyorCommand(-0.1, conveyor));
 
     // Configure button bindings
     configureButtonBindings();
@@ -78,8 +80,10 @@ public class RobotContainer {
     SmartDashboard.putData("LowerIntakeCommand", new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
     SmartDashboard.putData("ForwardConveyorCommand", new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
     SmartDashboard.putData("ReverseConveyorCommand", new MoveConveyorCommand(-CONVEYOR_SPEED, conveyor));
-    SmartDashboard.putData("ForwardIntakeRollersCommand", new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers));
-    SmartDashboard.putData("ReverseIntakeRollersCommand", new MoveIntakeRollersCommand(-INTAKE_ROLLER_SPEED, intakeRollers));
+    SmartDashboard.putData("ForwardIntakeRollersCommand",
+        new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers));
+    SmartDashboard.putData("ReverseIntakeRollersCommand",
+        new MoveIntakeRollersCommand(-INTAKE_ROLLER_SPEED, intakeRollers));
   }
 
   // Used to start compressor
@@ -94,19 +98,28 @@ public class RobotContainer {
    * Configure joysitck button bindings
    */
   private void configureButtonBindings() {
-    // intake a game piece
-    driveController.a().onTrue(new IntakeCommand(intakeArms, conveyor, intakeRollers));
-    driveController.b().whileTrue(new MoveConveyorCommand(0.5, conveyor));
-    driveController.y().whileTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
-    driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
-    driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
     // Toggle between brake and coast
-    driveController.leftStick()
+    driveController.b()
         .onTrue(
             new ConditionalCommand(
                 new SetNeutralModeCommand(NeutralMode.Brake, drive),
                 new SetNeutralModeCommand(NeutralMode.Coast, drive),
                 () -> (drive.getNeutralMode() == NeutralMode.Coast)));
+         
+    driveController.leftBumper().onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));
+    driveController.rightBumper().onTrue(new IntakeFromSubstationCommand(intakeArms, conveyor, intakeRollers));
+
+    driveController.a().onTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
+
+    Trigger leftTrigger = new Trigger(() -> driveController.getLeftTriggerAxis() > 0.1);
+    leftTrigger.whileTrue(new MoveIntakeRollersCommand(-INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
+    Trigger rightTrigger = new Trigger(() -> driveController.getRightTriggerAxis() > 0.3);
+    rightTrigger.whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
+
+    driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
+    driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
+
+    //Add LED command once we have the lights on the robot
   }
 
   /**
