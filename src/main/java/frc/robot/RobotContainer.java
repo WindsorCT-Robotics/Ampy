@@ -49,13 +49,6 @@ public class RobotContainer {
     pdp = new PowerDistributionPanelSubsystem(new PowerDistribution());
     ledSubsystem = new LEDSubsystem();
 
-    // Put subsystems on the SmartDashboard
-    SmartDashboard.putData(conveyor);
-    SmartDashboard.putData(drive);
-    SmartDashboard.putData(intakeArms);
-    SmartDashboard.putData(intakeRollers);
-    SmartDashboard.putData(pdp);
-
     // Initialize pneumatics
     initializePneumatics();
 
@@ -75,16 +68,6 @@ public class RobotContainer {
     chooser.setDefaultOption("Drive forward", new AutonomousCommand(drive));
     SmartDashboard.putData("Auto Mode", chooser);
 
-    // Put commands on the SmartDashboard
-    SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(drive));
-    SmartDashboard.putData("RaiseIntakeCommand", new MoveIntakeCommand(ArmState.RAISED, intakeArms));
-    SmartDashboard.putData("LowerIntakeCommand", new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
-    SmartDashboard.putData("ForwardConveyorCommand", new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
-    SmartDashboard.putData("ReverseConveyorCommand", new MoveConveyorCommand(-CONVEYOR_SPEED, conveyor));
-    SmartDashboard.putData("ForwardIntakeRollersCommand",
-        new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers));
-    SmartDashboard.putData("ReverseIntakeRollersCommand",
-        new MoveIntakeRollersCommand(-INTAKE_ROLLER_SPEED, intakeRollers));
   }
 
   // Used to start compressor
@@ -100,7 +83,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // set color of LEDs
-    driveController.x().whileTrue(new SetLedColorCommand(ledSubsystem, 0,0,255));
+    driveController.x().whileTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
     driveController.y().whileTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
     // Toggle between brake and coast
     driveController.b()
@@ -109,21 +92,22 @@ public class RobotContainer {
                 new SetNeutralModeCommand(NeutralMode.Brake, drive),
                 new SetNeutralModeCommand(NeutralMode.Coast, drive),
                 () -> (drive.getNeutralMode() == NeutralMode.Coast)));
-         
+
     driveController.leftBumper().onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));
     driveController.rightBumper().onTrue(new IntakeFromSubstationCommand(intakeArms, conveyor, intakeRollers));
 
     driveController.a().onTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
 
     Trigger leftTrigger = new Trigger(() -> driveController.getLeftTriggerAxis() > 0.1);
-    leftTrigger.whileTrue(new MoveIntakeRollersCommand(-INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
+    leftTrigger.whileTrue(
+        new MoveIntakeRollersCommand(-INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
     Trigger rightTrigger = new Trigger(() -> driveController.getRightTriggerAxis() > 0.3);
     rightTrigger.whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
 
     driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
 
-    //Add LED command once we have the lights on the robot
+    // Add LED command once we have the lights on the robot
   }
 
   /**
