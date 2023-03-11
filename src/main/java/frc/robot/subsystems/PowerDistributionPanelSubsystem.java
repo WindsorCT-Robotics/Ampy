@@ -22,7 +22,7 @@ public class PowerDistributionPanelSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("ID " + i, this.powerDistributionPanel.getCurrent(i));
         }
         SmartDashboard.putNumber("PDP Temperature (C)", Math.round(this.powerDistributionPanel.getTemperature()));
-        SmartDashboard.putNumber("PDP Total Current", Math.round(this.powerDistributionPanel.getTotalCurrent()));
+        SmartDashboard.putNumber("PDP Total Current (A)", Math.round(this.powerDistributionPanel.getTotalCurrent()));
         SmartDashboard.putNumber("PDP Total Power (W)", this.powerDistributionPanel.getTotalPower());
         SmartDashboard.putNumber("PDP Total Energy (J)", this.powerDistributionPanel.getTotalEnergy());
     }
