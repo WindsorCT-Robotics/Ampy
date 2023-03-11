@@ -66,10 +66,10 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Right main sensor position", rightMain.getSelectedSensorPosition());
         SmartDashboard.putNumber("Right main sensor velocity", rightMain.getSelectedSensorVelocity());
         // Motor temps
-        SmartDashboard.putNumber("Left main motor", Math.round(leftMain.getTemperature()));
-        SmartDashboard.putNumber("Left follower motor", Math.round(leftFollower.getTemperature()));
-        SmartDashboard.putNumber("Right main motor", Math.round(rightMain.getTemperature()));
-        SmartDashboard.putNumber("Right follower motor", Math.round(rightFollower.getTemperature()));
+        SmartDashboard.putNumber("MotorTemperature/Left main", Math.round(leftMain.getTemperature()));
+        SmartDashboard.putNumber("MotorTemperature/Left follower", Math.round(leftFollower.getTemperature()));
+        SmartDashboard.putNumber("MotorTemperature/Right main", Math.round(rightMain.getTemperature()));
+        SmartDashboard.putNumber("MotorTemperature/Right follower", Math.round(rightFollower.getTemperature()));
 
     }
 
