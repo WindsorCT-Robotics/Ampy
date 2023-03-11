@@ -47,6 +47,13 @@ public class RobotContainer {
     intakeRollers = new IntakeRollersSubsystem();
     pdp = new PowerDistributionPanelSubsystem(new PowerDistribution());
 
+    // Put subsystems on the SmartDashboard
+    SmartDashboard.putData(conveyor);
+    SmartDashboard.putData(drive);
+    SmartDashboard.putData(intakeArms);
+    SmartDashboard.putData(intakeRollers);
+    SmartDashboard.putData(pdp);
+
     // Initialize pneumatics
     initializePneumatics();
 

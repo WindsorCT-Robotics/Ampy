@@ -13,7 +13,7 @@ public class IntakeRollersSubsystem extends SubsystemBase {
     public IntakeRollersSubsystem() {
         intakeRollerMotor = new WPI_CANSparkMax(IntakeRollersSubsystem.CAN_ID, MotorType.kBrushless);
         intakeRollerMotor.restoreFactoryDefaults();
-        addChild("Intake Roller/Motor", intakeRollerMotor);
+        addChild("Intake Roller Motor", intakeRollerMotor);
 
     }
 
