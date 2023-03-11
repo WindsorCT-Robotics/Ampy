@@ -52,35 +52,35 @@ public class DriveCommand extends CommandBase {
     @Override
     public void initialize() {
         drivetrainSubsystem.stop();
-        SmartDashboard.putNumber("Speed scale", speedScale);
-        SmartDashboard.putNumber("Turn scale", turnScale);
-        SmartDashboard.putBoolean("Square inputs", squareInputs);
+        SmartDashboard.putNumber("Drive/Speed scale", speedScale);
+        SmartDashboard.putNumber("Drive/Turn scale", turnScale);
+        SmartDashboard.putBoolean("Drive/Square inputs", squareInputs);
 
-        SmartDashboard.putNumber("Positive speed rate limit", positiveSpeedRateLimit);
-        SmartDashboard.putNumber("Negative speed rate limit", negativeSpeedRateLimit);
-        SmartDashboard.putNumber("Positive turn rate limit", positiveTurnRateLimit);
-        SmartDashboard.putNumber("Negative turn rate limit", negativeTurnRateLimit);
+        SmartDashboard.putNumber("Drive/Positive speed rate limit", positiveSpeedRateLimit);
+        SmartDashboard.putNumber("Drive/Negative speed rate limit", negativeSpeedRateLimit);
+        SmartDashboard.putNumber("Drive/Positive turn rate limit", positiveTurnRateLimit);
+        SmartDashboard.putNumber("Drive/Negative turn rate limit", negativeTurnRateLimit);
 
     }
 
     @Override
     public void execute() {
         // Update values from the SmartDashboard
-        speedScale = SmartDashboard.getNumber("Speed scale", speedScale);
-        turnScale = SmartDashboard.getNumber("Turn scale", turnScale);
-        squareInputs = SmartDashboard.getBoolean("Square inputs", squareInputs);
+        speedScale = SmartDashboard.getNumber("Drive/Speed scale", speedScale);
+        turnScale = SmartDashboard.getNumber("Drive/Turn scale", turnScale);
+        squareInputs = SmartDashboard.getBoolean("Drive/Square inputs", squareInputs);
 
         // Calculate speed values
         double driveSpeed = speed.getAsDouble() * speedScale * (squareInputs ? Math.abs(speed.getAsDouble()) : 1);
         double turnSpeed = turn.getAsDouble() * turnScale * (squareInputs ? Math.abs(turn.getAsDouble()) : 1);
 
         // Update limiters
-        double newPositiveSpeedRateLimit = SmartDashboard.getNumber("Positive speed rate limit",
+        double newPositiveSpeedRateLimit = SmartDashboard.getNumber("Drive/Positive speed rate limit",
                 positiveSpeedRateLimit);
-        double newNegativeSpeedRateLimit = SmartDashboard.getNumber("Negative speed rate limit",
+        double newNegativeSpeedRateLimit = SmartDashboard.getNumber("Drive/Negative speed rate limit",
                 negativeSpeedRateLimit);
-        double newPositiveTurnRateLimit = SmartDashboard.getNumber("Positive turn rate limit", positiveTurnRateLimit);
-        double newNegativeTurnRateLimit = SmartDashboard.getNumber("Negative turn rate limit", negativeTurnRateLimit);
+        double newPositiveTurnRateLimit = SmartDashboard.getNumber("Drive/Positive turn rate limit", positiveTurnRateLimit);
+        double newNegativeTurnRateLimit = SmartDashboard.getNumber("Drive/Negative turn rate limit", negativeTurnRateLimit);
 
         if (newPositiveSpeedRateLimit != positiveSpeedRateLimit
                 || newNegativeSpeedRateLimit != negativeSpeedRateLimit) {

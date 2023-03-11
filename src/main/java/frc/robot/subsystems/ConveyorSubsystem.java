@@ -23,12 +23,12 @@ public class ConveyorSubsystem extends SubsystemBase {
     }
 
     private void initializeSmartDashboard() {
-        SmartDashboard.putBoolean("isConveyorEmpty", isEmpty());
+        SmartDashboard.putBoolean("ConveyorSubsystem/isConveyorEmpty", isEmpty());
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("isConveyorEmpty", isEmpty());
+        SmartDashboard.putBoolean("ConveyorSubsystem/isConveyorEmpty", isEmpty());
     }
 
     /**
