@@ -15,18 +15,17 @@ public class LEDSubsystem extends SubsystemBase {
         led = new AddressableLED(ledPort);
         ledBuffer = new AddressableLEDBuffer(ledLength);
         led.setLength(ledBuffer.getLength());
+        led.start();
 
         for (var i = 0; i < ledBuffer.getLength(); i++) {
-            ledBuffer.setRGB(i, 0, 0, 0);
+            ledBuffer.setRGB(i, 255, 255, 255);
         }
 
         led.setData(ledBuffer);
-        led.start();
     }
 
     @Override
     public void periodic() {
-
         SmartDashboard.putString("LED Color", ledBuffer.getLED(0).toString());
     }
 
@@ -34,6 +33,7 @@ public class LEDSubsystem extends SubsystemBase {
         for (var i = 0; i < ledBuffer.getLength(); i++) {
             ledBuffer.setRGB(i, red, green, blue);
         }
+        led.setData(ledBuffer);
     }
 
 }
