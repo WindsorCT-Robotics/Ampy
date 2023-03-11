@@ -27,7 +27,7 @@ public class RobotContainer {
   private final IntakeArmsSubsystem intakeArms;
   private final IntakeRollersSubsystem intakeRollers;
   private final PowerDistributionPanelSubsystem pdp;
-
+  private final LEDSubsystem ledSubsystem;
   // Joysticks
   private final CommandXboxController driveController;
 
@@ -47,6 +47,7 @@ public class RobotContainer {
     intakeArms = new IntakeArmsSubsystem();
     intakeRollers = new IntakeRollersSubsystem();
     pdp = new PowerDistributionPanelSubsystem(new PowerDistribution());
+    ledSubsystem = new LEDSubsystem();
 
     // Put subsystems on the SmartDashboard
     SmartDashboard.putData(conveyor);
@@ -98,6 +99,9 @@ public class RobotContainer {
    * Configure joysitck button bindings
    */
   private void configureButtonBindings() {
+    // set color of LEDs
+    driveController.x().whileTrue(new SetLedColorCommand(ledSubsystem, 0,0,255));
+    driveController.y().whileTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
     // Toggle between brake and coast
     driveController.b()
         .onTrue(
