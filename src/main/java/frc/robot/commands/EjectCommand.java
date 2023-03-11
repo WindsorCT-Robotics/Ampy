@@ -21,7 +21,7 @@ public class EjectCommand extends SequentialCommandGroup {
                                 new MoveIntakeCommand(ArmState.LOWERED, intakeArms),
                                 new ParallelDeadlineGroup(
                                                 new MoveConveyorCommand(-0.3, conveyor),
-                                                new ReverseIntakeRollersCommand(intakeRollers)),
+                                                new MoveIntakeRollersCommand(0.3, intakeRollers)),
                                 new MoveIntakeCommand(ArmState.RAISED, intakeArms));
         }
 

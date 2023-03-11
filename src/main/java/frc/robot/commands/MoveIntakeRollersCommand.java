@@ -7,18 +7,19 @@ import frc.robot.subsystems.IntakeRollersSubsystem;
  * Enable the rollers of Ampy's intake arms to spin forwards (in the direction
  * to intake objects)
  */
-public class ForwardIntakeRollersCommand extends CommandBase {
+public class MoveIntakeRollersCommand extends CommandBase {
     IntakeRollersSubsystem intakeRollers;
-    public static final double TARGET_FORWARD_SPEED = -0.3;
+    private final double speed;
 
-    public ForwardIntakeRollersCommand(IntakeRollersSubsystem intakeRollers) {
+    public MoveIntakeRollersCommand(double speed, IntakeRollersSubsystem intakeRollers) {
+        this.speed = speed;
         this.intakeRollers = intakeRollers;
         addRequirements(intakeRollers);
     }
 
     @Override
     public void execute() {
-        intakeRollers.setSpeed(TARGET_FORWARD_SPEED);
+        intakeRollers.setSpeed(speed);
     }
 
     @Override
