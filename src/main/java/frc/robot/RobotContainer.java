@@ -26,7 +26,7 @@ public class RobotContainer {
   private final IntakeArmsSubsystem intakeArms;
   private final IntakeRollersSubsystem intakeRollers;
   private final PowerDistributionPanelSubsystem pdp;
-
+  private final LEDSubsystem led;
   // Joysticks
   private final CommandXboxController driveController;
 
@@ -46,6 +46,7 @@ public class RobotContainer {
     intakeArms = new IntakeArmsSubsystem();
     intakeRollers = new IntakeRollersSubsystem();
     pdp = new PowerDistributionPanelSubsystem(new PowerDistribution());
+    led = new LEDSubsystem();
 
     // Put subsystems on the SmartDashboard
     SmartDashboard.putData(conveyor);
@@ -97,7 +98,8 @@ public class RobotContainer {
     // intake a game piece
     driveController.a().onTrue(new IntakeCommand(intakeArms, conveyor, intakeRollers));
     driveController.b().whileTrue(new MoveConveyorCommand(0.5, conveyor));
-    driveController.y().whileTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
+    driveController.x().whileTrue(new SetLedColorCommand(led, 0,0,255));
+    driveController.y().whileTrue(new SetLedColorCommand(led, 255, 255, 0));
     driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
     // Toggle between brake and coast
