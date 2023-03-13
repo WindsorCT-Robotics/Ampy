@@ -61,15 +61,15 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
-        SmartDashboard.putNumber("Left main sensor position", getMeters(leftMain.getSelectedSensorPosition()));
-        SmartDashboard.putNumber("Left main sensor velocity", getMetersPerSecond(leftMain.getSelectedSensorVelocity()));
-        SmartDashboard.putNumber("Right main sensor position", getMeters(rightMain.getSelectedSensorPosition()));
-        SmartDashboard.putNumber("Right main sensor velocity", getMetersPerSecond(rightMain.getSelectedSensorVelocity()));
+        SmartDashboard.putNumber("Left Main Sensor Position (m)", getMeters(leftMain.getSelectedSensorPosition()));
+        SmartDashboard.putNumber("Left Main Sensor Velocity (m/s)", getMetersPerSecond(leftMain.getSelectedSensorVelocity()));
+        SmartDashboard.putNumber("Right Main Sensor position (m)", getMeters(rightMain.getSelectedSensorPosition()));
+        SmartDashboard.putNumber("Right Main Sensor velocity (m/s)", getMetersPerSecond(rightMain.getSelectedSensorVelocity()));
         // Motor temps
-        SmartDashboard.putNumber("MotorTemperature/Left main", Math.round(leftMain.getTemperature()));
-        SmartDashboard.putNumber("MotorTemperature/Left follower", Math.round(leftFollower.getTemperature()));
-        SmartDashboard.putNumber("MotorTemperature/Right main", Math.round(rightMain.getTemperature()));
-        SmartDashboard.putNumber("MotorTemperature/Right follower", Math.round(rightFollower.getTemperature()));
+        SmartDashboard.putNumber("MotorTemperature/Left Main (C)", Math.round(leftMain.getTemperature()));
+        SmartDashboard.putNumber("MotorTemperature/Left Follower (C)", Math.round(leftFollower.getTemperature()));
+        SmartDashboard.putNumber("MotorTemperature/Right Main (C)", Math.round(rightMain.getTemperature()));
+        SmartDashboard.putNumber("MotorTemperature/Right Follower (C)", Math.round(rightFollower.getTemperature()));
 
     }
 
