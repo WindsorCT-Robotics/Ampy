@@ -6,8 +6,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDSubsystem extends SubsystemBase {
-    private static int ledPort = 0;
-    private static int ledLength = 11;
+    private static int ledPort = 1;
+    private static int ledLength = 170;
     private AddressableLED led;
     private AddressableLEDBuffer ledBuffer;
 
