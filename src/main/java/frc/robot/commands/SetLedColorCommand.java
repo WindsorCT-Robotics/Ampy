@@ -14,6 +14,8 @@ public class SetLedColorCommand extends CommandBase {
         this.red = red;
         this.green = green;
         this.blue = blue;
+
+        addRequirements(led);
     }
 
     @Override
@@ -23,5 +25,10 @@ public class SetLedColorCommand extends CommandBase {
 
     public void end() {
         led.setLedColor(0, 0, 0);
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false;
     }
 }

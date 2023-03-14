@@ -59,6 +59,7 @@ public class RobotContainer {
     drive.setDefaultCommand(
         new DriveCommand(() -> driveController.getLeftY(), () -> driveController.getRightX(), drive));
     conveyor.setDefaultCommand(new MoveConveyorCommand(-0.1, conveyor));
+    ledSubsystem.setDefaultCommand(new SetLedColorCommand(ledSubsystem, 255, 127, 0));
 
     // Configure button bindings
     configureButtonBindings();
