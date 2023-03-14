@@ -26,7 +26,7 @@ public class LEDSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("LED Color", ledBuffer.getLED(0).toString());
+        SmartDashboard.putBoolean("LED Color", convertColor());
     }
 
     public void setLedColor(int red, int green, int blue) {
@@ -34,6 +34,13 @@ public class LEDSubsystem extends SubsystemBase {
             ledBuffer.setRGB(i, red, green, blue);
         }
         led.setData(ledBuffer);
+    }
+
+    public boolean convertColor(){
+        if (ledBuffer.getLED(0).toString().equals("#0000FF")){
+        return true;
+        }
+        return false;
     }
 
 }
