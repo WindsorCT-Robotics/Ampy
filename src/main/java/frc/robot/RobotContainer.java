@@ -34,7 +34,7 @@ public class RobotContainer {
   // A chooser for autonomous commands
   private final SendableChooser<Command> chooser;
 
-  private final double CONVEYOR_SPEED = 0.5;
+  private final double CONVEYOR_SPEED = 0.8;
   private final double INTAKE_ROLLER_SPEED = 0.5;
 
   /**
