@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -69,6 +70,7 @@ public class RobotContainer {
     chooser = new SendableChooser<>();
     chooser.addOption("Score left", new AutoScoreCommand(conveyor, drive, 5));
     chooser.addOption("Score right", new AutoScoreCommand(conveyor, drive, 8));
+    chooser.addOption("Do nothing", new PrintCommand("Doing nothing!"));
     chooser.setDefaultOption("Drive forward", new AutonomousCommand(drive));
     SmartDashboard.putData("Auto Mode", chooser);
 
