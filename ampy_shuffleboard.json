@@ -41,7 +41,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "5,3": {
+          "4,3": {
             "size": [
               2,
               1
@@ -54,7 +54,7 @@
               "_showGlyph": false
             }
           },
-          "5,2": {
+          "4,2": {
             "size": [
               2,
               1
@@ -67,7 +67,7 @@
               "_showGlyph": false
             }
           },
-          "7,2": {
+          "6,2": {
             "size": [
               2,
               1
@@ -80,7 +80,7 @@
               "_showGlyph": false
             }
           },
-          "9,2": {
+          "6,3": {
             "size": [
               2,
               1
@@ -151,8 +151,8 @@
               "_title": "MotorTemperature/Left Main (C)",
               "_glyph": 148,
               "_showGlyph": false,
-              "Range/Min": -1.0,
-              "Range/Max": 1.0,
+              "Range/Min": 0.0,
+              "Range/Max": 100.0,
               "Range/Center": 0.0,
               "Visuals/Num tick marks": 5,
               "Visuals/Show text": true,
@@ -165,14 +165,17 @@
               1
             ],
             "content": {
-              "_type": "Simple Dial",
+              "_type": "Number Bar",
               "_source0": "network_table:///SmartDashboard/MotorTemperature/Left Follower (C)",
               "_title": "MotorTemperature/Left Follower (C)",
               "_glyph": 148,
               "_showGlyph": false,
               "Range/Min": 0.0,
               "Range/Max": 100.0,
-              "Visuals/Show value": true
+              "Range/Center": 0.0,
+              "Visuals/Num tick marks": 5,
+              "Visuals/Show text": true,
+              "Visuals/Orientation": "HORIZONTAL"
             }
           },
           "2,2": {
@@ -181,14 +184,17 @@
               1
             ],
             "content": {
-              "_type": "Simple Dial",
+              "_type": "Number Bar",
               "_source0": "network_table:///SmartDashboard/MotorTemperature/Right Main (C)",
               "_title": "MotorTemperature/Right Main (C)",
               "_glyph": 148,
               "_showGlyph": false,
               "Range/Min": 0.0,
               "Range/Max": 100.0,
-              "Visuals/Show value": true
+              "Range/Center": 0.0,
+              "Visuals/Num tick marks": 5,
+              "Visuals/Show text": true,
+              "Visuals/Orientation": "HORIZONTAL"
             }
           },
           "2,3": {
@@ -197,19 +203,22 @@
               1
             ],
             "content": {
-              "_type": "Simple Dial",
+              "_type": "Number Bar",
               "_source0": "network_table:///SmartDashboard/MotorTemperature/Right Follower (C)",
               "_title": "MotorTemperature/Right Follower (C)",
               "_glyph": 148,
               "_showGlyph": false,
               "Range/Min": 0.0,
               "Range/Max": 100.0,
-              "Visuals/Show value": true
+              "Range/Center": 0.0,
+              "Visuals/Num tick marks": 5,
+              "Visuals/Show text": true,
+              "Visuals/Orientation": "HORIZONTAL"
             }
           },
-          "5,5": {
+          "12,2": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -218,15 +227,15 @@
               "_title": "Speed Scale",
               "_glyph": 148,
               "_showGlyph": false,
-              "Slider Settings/Min": -1.0,
+              "Slider Settings/Min": 0.0,
               "Slider Settings/Max": 1.0,
               "Slider Settings/Block increment": 0.0625,
               "Visuals/Display value": true
             }
           },
-          "5,4": {
+          "12,3": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -235,7 +244,7 @@
               "_title": "Turn Scale",
               "_glyph": 148,
               "_showGlyph": false,
-              "Slider Settings/Min": -1.0,
+              "Slider Settings/Min": 0.0,
               "Slider Settings/Max": 1.0,
               "Slider Settings/Block increment": 0.0625,
               "Visuals/Display value": true
@@ -256,7 +265,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "7,3": {
+          "8,2": {
             "size": [
               2,
               1
@@ -269,7 +278,7 @@
               "_showGlyph": false
             }
           },
-          "9,3": {
+          "10,2": {
             "size": [
               2,
               1
@@ -282,7 +291,7 @@
               "_showGlyph": false
             }
           },
-          "7,4": {
+          "8,3": {
             "size": [
               2,
               1
@@ -295,7 +304,7 @@
               "_showGlyph": false
             }
           },
-          "9,4": {
+          "10,3": {
             "size": [
               2,
               1
@@ -304,6 +313,214 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Negative Turn Rate Limit",
               "_title": "Negative Turn Rate Limit",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/Auto Mode",
+              "_title": "Auto Mode",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left main sensor position",
+              "_title": "Left main sensor position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Left main sensor velocity",
+              "_title": "Left main sensor velocity",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right main sensor position",
+              "_title": "Right main sensor position",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Right main sensor velocity",
+              "_title": "Right main sensor velocity",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/MotorTemperature/Left main",
+              "_title": "MotorTemperature/Left main",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/MotorTemperature/Left follower",
+              "_title": "MotorTemperature/Left follower",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/MotorTemperature/Right main",
+              "_title": "MotorTemperature/Right main",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/MotorTemperature/Right follower",
+              "_title": "MotorTemperature/Right follower",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Speed scale",
+              "_title": "Speed scale",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "5,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Turn scale",
+              "_title": "Turn scale",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Toggle Button",
+              "_source0": "network_table:///SmartDashboard/Square inputs",
+              "_title": "Square inputs",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "7,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Positive speed rate limit",
+              "_title": "Positive speed rate limit",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "8,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Negative speed rate limit",
+              "_title": "Negative speed rate limit",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "9,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Positive turn rate limit",
+              "_title": "Positive turn rate limit",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Negative turn rate limit",
+              "_title": "Negative turn rate limit",
               "_glyph": 148,
               "_showGlyph": false
             }
