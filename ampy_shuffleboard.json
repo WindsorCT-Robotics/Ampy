@@ -256,13 +256,11 @@
               1
             ],
             "content": {
-              "_type": "Boolean Box",
+              "_type": "Toggle Switch",
               "_source0": "network_table:///SmartDashboard/Square Inputs",
               "_title": "Square Inputs",
               "_glyph": 148,
-              "_showGlyph": false,
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
+              "_showGlyph": false
             }
           },
           "9,2": {
@@ -574,6 +572,6 @@
     "x": -5.0,
     "y": 5.0,
     "width": 1920.0,
-    "height": 982.0
+    "height": 820.0
   }
 }
