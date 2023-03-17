@@ -1,6 +1,7 @@
 package frc.robot;
 
 import frc.robot.commands.*;
+import frc.robot.commands.autonomous.AutoScoreCommand;
 import frc.robot.commands.autonomous.AutonomousCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.SetNeutralModeCommand;
@@ -66,6 +67,8 @@ public class RobotContainer {
 
     // Initialize autonomous chooser
     chooser = new SendableChooser<>();
+    chooser.addOption("Score left", new AutoScoreCommand(conveyor, drive, 5));
+    chooser.addOption("Score right", new AutoScoreCommand(conveyor, drive, 8));
     chooser.setDefaultOption("Drive forward", new AutonomousCommand(drive));
     SmartDashboard.putData("Auto Mode", chooser);
 
