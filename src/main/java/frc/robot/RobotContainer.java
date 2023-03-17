@@ -61,15 +61,14 @@ public class RobotContainer {
     drive.setDefaultCommand(
         new DriveCommand(() -> driveController.getLeftY(), () -> driveController.getRightX(), drive));
     conveyor.setDefaultCommand(new MoveConveyorCommand(-0.1, conveyor));
-    ledSubsystem.setDefaultCommand(new SetLedColorCommand(ledSubsystem, 255, 127, 0));
 
     // Configure button bindings
     configureButtonBindings();
 
     // Initialize autonomous chooser
     chooser = new SendableChooser<>();
-    chooser.addOption("Score left", new AutoScoreCommand(conveyor, drive, 5));
-    chooser.addOption("Score right", new AutoScoreCommand(conveyor, drive, 8));
+    chooser.addOption("Score short", new AutoScoreCommand(conveyor, drive, 2));
+    chooser.addOption("Score far", new AutoScoreCommand(conveyor, drive, 3));
     chooser.addOption("Do nothing", new PrintCommand("Doing nothing!"));
     chooser.setDefaultOption("Drive forward", new AutonomousCommand(drive));
     SmartDashboard.putData("Auto Mode", chooser);
@@ -89,8 +88,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // set color of LEDs
-    driveController.x().whileTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
-    driveController.y().whileTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
+    driveController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
+    driveController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
     // Toggle between brake and coast
     driveController.b()
         .onTrue(
@@ -106,7 +105,7 @@ public class RobotContainer {
 
     Trigger leftTrigger = new Trigger(() -> driveController.getLeftTriggerAxis() > 0.1);
     leftTrigger.whileTrue(
-        new MoveIntakeRollersCommand(-INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
+        new MoveIntakeRollersCommand(() -> -INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
     Trigger rightTrigger = new Trigger(() -> driveController.getRightTriggerAxis() > 0.3);
     rightTrigger.whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
 

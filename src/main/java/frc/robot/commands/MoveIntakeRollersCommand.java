@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeRollersSubsystem;
 
@@ -8,18 +10,22 @@ import frc.robot.subsystems.IntakeRollersSubsystem;
  * to intake objects)
  */
 public class MoveIntakeRollersCommand extends CommandBase {
-    IntakeRollersSubsystem intakeRollers;
-    private final double speed;
+    private IntakeRollersSubsystem intakeRollers;
+    private DoubleSupplier speed;
 
-    public MoveIntakeRollersCommand(double speed, IntakeRollersSubsystem intakeRollers) {
+    public MoveIntakeRollersCommand(DoubleSupplier speed, IntakeRollersSubsystem intakeRollers) {
         this.speed = speed;
         this.intakeRollers = intakeRollers;
         addRequirements(intakeRollers);
     }
 
+    public MoveIntakeRollersCommand(double speed, IntakeRollersSubsystem intakeRollers) {
+        this(() -> speed, intakeRollers);
+    }
+
     @Override
     public void execute() {
-        intakeRollers.setSpeed(speed);
+        intakeRollers.setSpeed(speed.getAsDouble());
     }
 
     @Override
