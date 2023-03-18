@@ -70,6 +70,7 @@ public class RobotContainer {
     chooser.addOption("Score short", new AutoScoreCommand(conveyor, drive).withTimeout(6));
     chooser.addOption("Score far", new AutoScoreCommand(conveyor, drive).withTimeout(8));
     chooser.addOption("Drive forward", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
+    chooser.addOption("Score piece", new MoveConveyorCommand(0.8, conveyor).withTimeout(1));
     chooser.addOption("Do nothing", new PrintCommand("Doing nothing!"));
     chooser.setDefaultOption("Drive forward", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
     SmartDashboard.putData("Auto Mode", chooser);
