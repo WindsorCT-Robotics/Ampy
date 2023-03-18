@@ -70,6 +70,8 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("MotorTemperature/Left Follower (C)", Math.round(leftFollower.getTemperature()));
         SmartDashboard.putNumber("MotorTemperature/Right Main (C)", Math.round(rightMain.getTemperature()));
         SmartDashboard.putNumber("MotorTemperature/Right Follower (C)", Math.round(rightFollower.getTemperature()));
+        // Brake Mode
+        SmartDashboard.putBoolean("Brake Mode", getNeutralMode() == NeutralMode.Brake);
 
     }
 
