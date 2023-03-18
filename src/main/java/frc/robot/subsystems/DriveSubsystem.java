@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.lang.Math;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -23,7 +24,7 @@ public class DriveSubsystem extends SubsystemBase {
     DifferentialDrive drive;
 
     // Current neutral mode
-    NeutralMode neutralMode = NeutralMode.Coast;
+    NeutralMode neutralMode = NeutralMode.Brake;
 
     public DriveSubsystem() {
         // Motor initialization
@@ -54,6 +55,8 @@ public class DriveSubsystem extends SubsystemBase {
     private WPI_TalonFX initMotor(int canId) {
         WPI_TalonFX motor = new WPI_TalonFX(canId);
         motor.configFactoryDefault();
+        StatorCurrentLimitConfiguration limiter = new StatorCurrentLimitConfiguration(true, 70, 90, 2);
+        motor.configStatorCurrentLimit(limiter);
         motor.setNeutralMode(neutralMode);
         return motor;
     }
@@ -72,6 +75,11 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("MotorTemperature/Right Follower (C)", Math.round(rightFollower.getTemperature()));
         // Brake Mode
         SmartDashboard.putBoolean("Brake Mode", getNeutralMode() == NeutralMode.Brake);
+        // Motor current
+        SmartDashboard.putNumber("MotorCurrent/Left Main", leftMain.getStatorCurrent());
+        SmartDashboard.putNumber("MotorCurrent/Left Follower", leftFollower.getStatorCurrent());
+        SmartDashboard.putNumber("MotorCurrent/Right Main", rightMain.getStatorCurrent());
+        SmartDashboard.putNumber("MotorCurrent/Right Follower", rightFollower.getStatorCurrent());
 
     }
 
