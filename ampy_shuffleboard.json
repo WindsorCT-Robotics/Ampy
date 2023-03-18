@@ -550,6 +550,73 @@
               "_glyph": 148,
               "_showGlyph": false
             }
+          },
+          "0,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Brake Mode",
+              "_title": "Brake Mode",
+              "_glyph": 148,
+              "_showGlyph": false,
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "1,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/MotorCurrent/Left Main",
+              "_title": "MotorCurrent/Left Main",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/MotorCurrent/Left Follower",
+              "_title": "MotorCurrent/Left Follower",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/MotorCurrent/Right Main",
+              "_title": "MotorCurrent/Right Main",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "4,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/MotorCurrent/Right Follower",
+              "_title": "MotorCurrent/Right Follower",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
           }
         }
       }
@@ -572,6 +639,6 @@
     "x": -5.0,
     "y": 5.0,
     "width": 1920.0,
-    "height": 820.0
+    "height": 847.0
   }
 }
