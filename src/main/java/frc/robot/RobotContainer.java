@@ -1,7 +1,8 @@
 package frc.robot;
 
 import frc.robot.commands.*;
-import frc.robot.commands.autonomous.AutonomousCommand;
+import frc.robot.commands.autonomous.AutoDriveCommand;
+import frc.robot.commands.autonomous.AutoScoreCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.SetNeutralModeCommand;
 import frc.robot.subsystems.*;
@@ -11,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -34,7 +36,7 @@ public class RobotContainer {
   // A chooser for autonomous commands
   private final SendableChooser<Command> chooser;
 
-  private final double CONVEYOR_SPEED = 0.5;
+  private final double CONVEYOR_SPEED = 0.8;
   private final double INTAKE_ROLLER_SPEED = 0.5;
 
   /**
@@ -59,14 +61,18 @@ public class RobotContainer {
     drive.setDefaultCommand(
         new DriveCommand(() -> driveController.getLeftY(), () -> driveController.getRightX(), drive));
     conveyor.setDefaultCommand(new MoveConveyorCommand(-0.1, conveyor));
-    ledSubsystem.setDefaultCommand(new SetLedColorCommand(ledSubsystem, 255, 127, 0));
 
     // Configure button bindings
     configureButtonBindings();
 
     // Initialize autonomous chooser
     chooser = new SendableChooser<>();
-    chooser.setDefaultOption("Drive forward", new AutonomousCommand(drive));
+    chooser.setDefaultOption("Score short", new AutoScoreCommand(conveyor, drive).withTimeout(6));
+    chooser.addOption("Score far", new AutoScoreCommand(conveyor, drive).withTimeout(8));
+    chooser.addOption("Drive forward", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
+    chooser.addOption("Score piece", new MoveConveyorCommand(0.8, conveyor).withTimeout(1));
+    chooser.addOption("Do nothing", new PrintCommand("Doing nothing!"));
+    chooser.addOption("Drive forward", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
     SmartDashboard.putData("Auto Mode", chooser);
 
   }
@@ -84,15 +90,16 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // set color of LEDs
-    driveController.x().whileTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
-    driveController.y().whileTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
+    driveController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
+    driveController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
     // Toggle between brake and coast
-    driveController.b()
-        .onTrue(
-            new ConditionalCommand(
-                new SetNeutralModeCommand(NeutralMode.Brake, drive),
-                new SetNeutralModeCommand(NeutralMode.Coast, drive),
-                () -> (drive.getNeutralMode() == NeutralMode.Coast)));
+    // driveController.b()
+    //     .onTrue(
+    //         new ConditionalCommand(
+    //             new SetNeutralModeCommand(NeutralMode.Brake, drive),
+    //             new SetNeutralModeCommand(NeutralMode.Coast, drive),
+    //             () -> (drive.getNeutralMode() == NeutralMode.Coast)));
+    driveController.b().onTrue(new SetNeutralModeCommand(NeutralMode.Brake, drive));
 
     driveController.leftBumper().onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));
     driveController.rightBumper().onTrue(new IntakeFromSubstationCommand(intakeArms, conveyor, intakeRollers));
@@ -101,7 +108,7 @@ public class RobotContainer {
 
     Trigger leftTrigger = new Trigger(() -> driveController.getLeftTriggerAxis() > 0.1);
     leftTrigger.whileTrue(
-        new MoveIntakeRollersCommand(-INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
+        new MoveIntakeRollersCommand(() -> -INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
     Trigger rightTrigger = new Trigger(() -> driveController.getRightTriggerAxis() > 0.3);
     rightTrigger.whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
 

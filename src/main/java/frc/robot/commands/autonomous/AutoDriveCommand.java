@@ -12,19 +12,16 @@ public class AutoDriveCommand extends CommandBase{
     double seconds;
     double speed;
     double curvature;
-    public AutoDriveCommand(double speed, double curvature, double seconds, DriveSubsystem drive) {
+    public AutoDriveCommand(double speed, double curvature, DriveSubsystem drive) {
         addRequirements(drive);
         this.drive = drive;
         this.speed = speed;
         this.curvature = curvature;
-        this.seconds = seconds;
-        elapsedTime = new Timer();
     }
 
     @Override
     public void initialize() {
         drive.setNeutralMode(NeutralMode.Brake);
-        elapsedTime.start();
     }
     
     @Override
@@ -37,8 +34,4 @@ public class AutoDriveCommand extends CommandBase{
         drive.stop();
     }
 
-    @Override
-    public boolean isFinished() {
-        return (elapsedTime.get() >= seconds);
-    }
 }

@@ -15,8 +15,8 @@ import frc.robot.subsystems.IntakeArmsSubsystem.ArmState;
  * order to intake an object. Afterwards, it raises the intake.
  */
 public class IntakeFromFloorCommand extends SequentialCommandGroup {
-        private final double CONVEYOR_SPEED = 0.5;
-        private final double INTAKE_ROLLER_SPEED = -0.5;
+        private final double CONVEYOR_SPEED = 0.3;
+        private final double INTAKE_ROLLER_SPEED = -0.4;
         public IntakeFromFloorCommand(IntakeArmsSubsystem intakeArms, ConveyorSubsystem conveyor,
                         IntakeRollersSubsystem intakeRollers) {
                 addCommands(
