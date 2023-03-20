@@ -101,19 +101,19 @@ public class RobotContainer {
     //             () -> (drive.getNeutralMode() == NeutralMode.Coast)));
     driveController.b().onTrue(new SetNeutralModeCommand(NeutralMode.Brake, drive));
 
-    driveController.leftBumper().onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));
-    driveController.rightBumper().onTrue(new IntakeFromSubstationCommand(intakeArms, conveyor, intakeRollers));
+    // driveController.leftBumper().onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));
+    // driveController.rightBumper().onTrue(new IntakeFromSubstationCommand(intakeArms, conveyor, intakeRollers));
 
-    driveController.a().onTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
+    // driveController.a().onTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
 
     Trigger leftTrigger = new Trigger(() -> driveController.getLeftTriggerAxis() > 0.1);
-    leftTrigger.whileTrue(
-        new MoveIntakeRollersCommand(() -> -INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
-    Trigger rightTrigger = new Trigger(() -> driveController.getRightTriggerAxis() > 0.3);
-    rightTrigger.whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
+    // leftTrigger.whileTrue(
+    //     new MoveIntakeRollersCommand(() -> -INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
+    // Trigger rightTrigger = new Trigger(() -> driveController.getRightTriggerAxis() > 0.3);
+    // rightTrigger.whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
 
-    driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
-    driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
+    // driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
+    // driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
 
     // Add LED command once we have the lights on the robot
   }

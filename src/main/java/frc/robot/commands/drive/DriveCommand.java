@@ -15,7 +15,7 @@ public class DriveCommand extends CommandBase {
     // Speed values
     private DoubleSupplier speed;
     // Value to scale joystick speed input by. Should probably be less than 1.
-    private double speedScale = 1;
+    private double speedScale = .3;
     // SlewRateLimiter and values to smooth acceleration
     double positiveSpeedRateLimit = 5.0;
     double negativeSpeedRateLimit = -5.0;
@@ -24,7 +24,7 @@ public class DriveCommand extends CommandBase {
     // Rotation values
     private DoubleSupplier turn;
     // Value to scale joystick rotation input by. Should probably be less than 1.
-    private double turnScale = 0.3;
+    private double turnScale = 0.1;
     // SlewRateLimiter and values to smooth acceleration
     double positiveTurnRateLimit = 10.0;
     double negativeTurnRateLimit = -10.0;
