@@ -38,6 +38,7 @@ public class RobotContainer {
 
   private final double CONVEYOR_SPEED = 0.8;
   private final double INTAKE_ROLLER_SPEED = 0.5;
+  private final double DEADZONE = 0.25;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -60,11 +61,11 @@ public class RobotContainer {
 
     // Configure default commands
     drive.setDefaultCommand(
-        new DriveCommand(() -> getJoystickDeadzone(driverController.getLeftY(), 0.25), () -> getTriggerScale(driverController.getLeftTriggerAxis()),
-            () -> getJoystickDeadzone(driverController.getRightX(), 0.25), () -> getTriggerScale(driverController.getRightTriggerAxis()), drive));
+        new DriveCommand(() -> getJoystickDeadzone(driverController.getLeftY(), DEADZONE), () -> getTriggerScale(driverController.getLeftTriggerAxis()),
+            () -> getJoystickDeadzone(driverController.getRightX(), DEADZONE), () -> getTriggerScale(driverController.getRightTriggerAxis()), drive));
     conveyor.setDefaultCommand(new MoveConveyorCommand(-0.1, conveyor));
     intakeRollers.setDefaultCommand(
-        new MoveIntakeRollersCommand(() -> getJoystickDeadzone(operatorController.getLeftY(), 0.25) * INTAKE_ROLLER_SPEED, intakeRollers));
+        new MoveIntakeRollersCommand(() -> getJoystickDeadzone(operatorController.getLeftY(), DEADZONE) * INTAKE_ROLLER_SPEED, intakeRollers));
 
     // Configure button bindings
     configureOperatorBindings();
@@ -118,7 +119,7 @@ public class RobotContainer {
     // Not a default command because the conveyor belt is always moving
     Trigger conveyorTrigger = new Trigger(() -> Math.abs(operatorController.getRightY()) > 0.1);
     conveyorTrigger.whileTrue(
-        new MoveConveyorCommand(() -> getJoystickDeadzone(driverController.getLeftTriggerAxis(), 0.25) * CONVEYOR_SPEED, conveyor));
+        new MoveConveyorCommand(() -> getJoystickDeadzone(driverController.getLeftTriggerAxis(), DEADZONE) * CONVEYOR_SPEED, conveyor));
 
     // Raise and lower the intake arms
     operatorController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
@@ -139,7 +140,7 @@ public class RobotContainer {
     driverController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
     driverController.povLeft().whileTrue(new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers));
     driverController.povRight().whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
-
+    
   }
 
   /**
