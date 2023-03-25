@@ -10,8 +10,8 @@ import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeArmsSubsystem;
 import frc.robot.subsystems.IntakeRollersSubsystem;
 
-public class PickUpPiece extends SequentialCommandGroup {
-    public PickUpPiece(ConveyorSubsystem conveyor, DriveSubsystem drive, IntakeArmsSubsystem intakeArms, IntakeRollersSubsystem intakeRollers) {
+public class AutoPickUpPiece extends SequentialCommandGroup {
+    public AutoPickUpPiece(ConveyorSubsystem conveyor, DriveSubsystem drive, IntakeArmsSubsystem intakeArms, IntakeRollersSubsystem intakeRollers) {
         addCommands(
             new MoveConveyorCommand(0.8, conveyor).withTimeout(1), // spit out piece
             new WaitCommand(1), // Wait for cube to settle

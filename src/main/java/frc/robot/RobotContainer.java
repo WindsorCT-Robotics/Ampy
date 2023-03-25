@@ -2,6 +2,7 @@ package frc.robot;
 
 import frc.robot.commands.*;
 import frc.robot.commands.autonomous.AutoDriveCommand;
+import frc.robot.commands.autonomous.AutoPickUpPiece;
 import frc.robot.commands.autonomous.AutoScoreCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.SetNeutralModeCommand;
@@ -72,7 +73,7 @@ public class RobotContainer {
     chooser.addOption("Score piece", new MoveConveyorCommand(0.8, conveyor).withTimeout(1));
     chooser.addOption("Do nothing", new PrintCommand("Doing nothing!"));
     chooser.addOption("Drive forward", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
-    chooser.addOption("Pick up piece", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
+    chooser.addOption("Pick up piece", new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers));
     SmartDashboard.putData("Auto Mode", chooser);
 
   }
