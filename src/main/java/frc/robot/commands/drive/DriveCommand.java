@@ -16,6 +16,7 @@ public class DriveCommand extends CommandBase {
     private DoubleSupplier speed;
     // Value to scale joystick speed input by. Should probably be less than 1.
     private double speedScale = 1;
+    private DoubleSupplier manualSpeedScale;
     // SlewRateLimiter and values to smooth acceleration
     double positiveSpeedRateLimit = 5.0;
     double negativeSpeedRateLimit = -5.0;
@@ -25,6 +26,7 @@ public class DriveCommand extends CommandBase {
     private DoubleSupplier turn;
     // Value to scale joystick rotation input by. Should probably be less than 1.
     private double turnScale = 0.3;
+    private DoubleSupplier manualTurnScale;
     // SlewRateLimiter and values to smooth acceleration
     double positiveTurnRateLimit = 10.0;
     double negativeTurnRateLimit = -10.0;
@@ -42,9 +44,13 @@ public class DriveCommand extends CommandBase {
      * @param turn                Joystick rotation in [-1.0, 1.0]
      * @param drivetrainSubsystem The DriveSubsystem
      */
-    public DriveCommand(DoubleSupplier speed, DoubleSupplier turn, DriveSubsystem drivetrainSubsystem) {
+    public DriveCommand(DoubleSupplier speed, DoubleSupplier manualSpeedScale, DoubleSupplier turn, DoubleSupplier manualTurnScale, DriveSubsystem drivetrainSubsystem) {
         this.speed = speed;
+        this.manualSpeedScale = manualSpeedScale;
+        
         this.turn = turn;
+        this.manualTurnScale = manualTurnScale;
+        
         this.drivetrainSubsystem = drivetrainSubsystem;
         addRequirements(drivetrainSubsystem);
     }
@@ -65,9 +71,9 @@ public class DriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        // Update values from the SmartDashboard
-        speedScale = SmartDashboard.getNumber("Speed Scale", speedScale);
-        turnScale = SmartDashboard.getNumber("Turn Scale", turnScale);
+        // Update control values
+        speedScale = SmartDashboard.getNumber("Speed Scale", speedScale) * manualSpeedScale.getAsDouble();
+        turnScale = SmartDashboard.getNumber("Turn Scale", turnScale) * manualTurnScale.getAsDouble();
         squareInputs = SmartDashboard.getBoolean("Square Inputs", squareInputs);
 
         // Calculate speed values

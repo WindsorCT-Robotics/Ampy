@@ -61,7 +61,8 @@ public class RobotContainer {
 
     // Configure default commands
     drive.setDefaultCommand(
-        new DriveCommand(() -> driveController.getLeftY(), () -> driveController.getRightX(), drive));
+        new DriveCommand(() -> driveController.getLeftY(), () -> getTriggerScale(driveController.getLeftTriggerAxis()),
+            () -> driveController.getRightX(), () -> getTriggerScale(driveController.getRightTriggerAxis()), drive));
     conveyor.setDefaultCommand(new MoveConveyorCommand(-0.1, conveyor));
 
     // Configure button bindings
@@ -119,6 +120,20 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return chooser.getSelected();
+  }
+
+  /**
+   * Use one joystick trigger to scale another
+   * 
+   * @param raw the raw axis value
+   * @return number to scale by
+   */
+  private static double getTriggerScale(double raw) {
+    // Don't freeze up the turning
+    if (raw < 0.1) {
+      return 0.1;
+    }
+    return 1 - raw;
   }
 
 }
