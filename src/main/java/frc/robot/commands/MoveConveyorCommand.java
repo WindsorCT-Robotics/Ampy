@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ConveyorSubsystem;
 
@@ -8,18 +9,19 @@ import frc.robot.subsystems.ConveyorSubsystem;
  */
 public class MoveConveyorCommand extends CommandBase {
     ConveyorSubsystem conveyor;
-    private final double targetSpeed;
+    private final double speed;
+    private final SlewRateLimiter smoothing = new SlewRateLimiter(1);
 
     public MoveConveyorCommand(double targetSpeed, ConveyorSubsystem conveyor) {
         // Positive values move pieces towards the back
-        this.targetSpeed = -targetSpeed;
+        this.speed = -targetSpeed;
         this.conveyor = conveyor;
         addRequirements(conveyor);
     }
 
     @Override
     public void execute() {
-        conveyor.setSpeed(targetSpeed);
+        conveyor.setSpeed(smoothing.calculate(speed));
     }
 
     @Override
