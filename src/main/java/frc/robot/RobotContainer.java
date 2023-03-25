@@ -32,6 +32,7 @@ public class RobotContainer {
   private final LEDSubsystem ledSubsystem;
   // Joysticks
   private final CommandXboxController driveController;
+  private final CommandXboxController operatorController;
 
   // A chooser for autonomous commands
   private final SendableChooser<Command> chooser;
@@ -56,6 +57,7 @@ public class RobotContainer {
 
     // Initialize controllers
     driveController = new CommandXboxController(0);
+    operatorController = new CommandXboxController(1);
 
     // Configure default commands
     drive.setDefaultCommand(
@@ -92,14 +94,6 @@ public class RobotContainer {
     // set color of LEDs
     driveController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
     driveController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
-    // Toggle between brake and coast
-    // driveController.b()
-    //     .onTrue(
-    //         new ConditionalCommand(
-    //             new SetNeutralModeCommand(NeutralMode.Brake, drive),
-    //             new SetNeutralModeCommand(NeutralMode.Coast, drive),
-    //             () -> (drive.getNeutralMode() == NeutralMode.Coast)));
-    driveController.b().onTrue(new SetNeutralModeCommand(NeutralMode.Brake, drive));
 
     driveController.leftBumper().onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));
     driveController.rightBumper().onTrue(new IntakeFromSubstationCommand(intakeArms, conveyor, intakeRollers));
