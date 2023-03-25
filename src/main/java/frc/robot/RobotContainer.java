@@ -11,10 +11,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
-
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -60,7 +61,8 @@ public class RobotContainer {
         new DriveCommand(() -> driveController.getLeftY(), () -> getTriggerScale(driveController.getLeftTriggerAxis()),
             () -> driveController.getRightX(), () -> getTriggerScale(driveController.getRightTriggerAxis()), drive));
     conveyor.setDefaultCommand(new MoveConveyorCommand(-0.1, conveyor));
-    intakeRollers.setDefaultCommand(new MoveIntakeRollersCommand(() -> operatorController.getLeftY() * INTAKE_ROLLER_SPEED, intakeRollers));
+    intakeRollers.setDefaultCommand(
+        new MoveIntakeRollersCommand(() -> operatorController.getLeftY() * INTAKE_ROLLER_SPEED, intakeRollers));
 
     // Configure button bindings
     configureButtonBindings();
@@ -89,7 +91,13 @@ public class RobotContainer {
    * Configure joysitck button bindings
    */
   private void configureButtonBindings() {
-    // Operator bindings
+    // Operator controller bindings
+
+    // Rumble when a piece is grabbed
+    Trigger getPieceTrigger = new Trigger(() -> conveyor.isEmpty() == true);
+    getPieceTrigger
+        .onTrue(new RunCommand(() -> operatorController.getHID().setRumble(RumbleType.kBothRumble, 0.5)).withTimeout(0.5));
+
     // set LED color
     operatorController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
     operatorController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
