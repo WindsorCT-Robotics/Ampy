@@ -21,6 +21,8 @@ public class SetLedColorCommand extends CommandBase {
     @Override
     public void execute() {
         led.setLedColor(red, green, blue);
+        //Disables the colorMover method in the periodic of LEDSubsystem so it doesn't run during TeleOp when other colors need to be displayed
+        LEDSubsystem.ledCheck = 1;
     }
 
     public void end() {
