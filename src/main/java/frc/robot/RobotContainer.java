@@ -60,11 +60,11 @@ public class RobotContainer {
 
     // Configure default commands
     drive.setDefaultCommand(
-        new DriveCommand(() -> driverController.getLeftY(), () -> getTriggerScale(driverController.getLeftTriggerAxis()),
-            () -> driverController.getRightX(), () -> getTriggerScale(driverController.getRightTriggerAxis()), drive));
+        new DriveCommand(() -> getJoystickDeadzone(driverController.getLeftY(), 0.25), () -> getTriggerScale(driverController.getLeftTriggerAxis()),
+            () -> getJoystickDeadzone(driverController.getRightX(), 0.25), () -> getTriggerScale(driverController.getRightTriggerAxis()), drive));
     conveyor.setDefaultCommand(new MoveConveyorCommand(-0.1, conveyor));
     intakeRollers.setDefaultCommand(
-        new MoveIntakeRollersCommand(() -> operatorController.getLeftY() * INTAKE_ROLLER_SPEED, intakeRollers));
+        new MoveIntakeRollersCommand(() -> getJoystickDeadzone(operatorController.getLeftY(), 0.25) * INTAKE_ROLLER_SPEED, intakeRollers));
 
     // Configure button bindings
     configureOperatorBindings();
@@ -104,18 +104,23 @@ public class RobotContainer {
     operatorController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
     operatorController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
 
+    // Eject pieces
     operatorController.a().whileTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
 
     // Automatic intake
     Trigger leftTrigger = new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5);
     leftTrigger.onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));
+
     Trigger rightTrigger = new Trigger(() -> operatorController.getRightTriggerAxis() > 0.5);
     rightTrigger.onTrue(new IntakeFromSubstationCommand(intakeArms, conveyor, intakeRollers));
 
+    // Control conveyor with right joystick
+    // Not a default command because the conveyor belt is always moving
     Trigger conveyorTrigger = new Trigger(() -> Math.abs(operatorController.getRightY()) > 0.1);
     conveyorTrigger.whileTrue(
-        new MoveConveyorCommand(() -> driverController.getLeftTriggerAxis() * CONVEYOR_SPEED, conveyor));
+        new MoveConveyorCommand(() -> getJoystickDeadzone(driverController.getLeftTriggerAxis(), 0.25) * CONVEYOR_SPEED, conveyor));
 
+    // Raise and lower the intake arms
     operatorController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     operatorController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
   }
@@ -158,6 +163,21 @@ public class RobotContainer {
       return 0.1;
     }
     return 1 - raw;
+  }
+
+  private static double getJoystickDeadzone(double raw, double deadband) {
+        double result;
+        double validRange = 1 - deadband;
+        double value = Math.abs(raw);
+
+        if (value > deadband) {
+            result = (value - deadband) / validRange;
+        }
+        else {
+            result = 0;
+        }
+
+        return raw < 0 ? -result : result;
   }
 
 }
