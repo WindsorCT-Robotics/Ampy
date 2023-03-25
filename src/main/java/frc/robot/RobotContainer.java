@@ -74,7 +74,7 @@ public class RobotContainer {
     chooser.addOption("Drive forward", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
     chooser.addOption("Pick up piece", new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers));
     chooser.addOption("Pick up piece and score",
-        new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers).andThen(new AutoScoreCommand(conveyor, drive)));
+        new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers).andThen(new AutoScoreCommand(conveyor, drive).withTimeout(4)));
     SmartDashboard.putData("Auto Mode", chooser);
 
   }
