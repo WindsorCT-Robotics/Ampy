@@ -67,7 +67,8 @@ public class RobotContainer {
         new MoveIntakeRollersCommand(() -> operatorController.getLeftY() * INTAKE_ROLLER_SPEED, intakeRollers));
 
     // Configure button bindings
-    configureButtonBindings();
+    configureOperatorBindings();
+    configureDriverBindings();
 
     // Initialize autonomous chooser
     chooser = new SendableChooser<>();
@@ -90,10 +91,9 @@ public class RobotContainer {
   }
 
   /**
-   * Configure joysitck button bindings
+   * Configure operator controller bindings
    */
-  private void configureButtonBindings() {
-    // Operator controller bindings
+  private void configureOperatorBindings() {
     // Rumble when a piece is grabbed
     Trigger getPieceTrigger = new Trigger(() -> conveyor.isEmpty() == true);
     getPieceTrigger
@@ -118,8 +118,12 @@ public class RobotContainer {
 
     operatorController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     operatorController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
+  }
 
-    // driver controller bindings
+  /**
+   * Configure driver controller bindings
+   */
+  private void configureDriverBindings() {
     // Toggle current limiting and rumble
     driveController.y()
         .onTrue(new InstantCommand(() -> drive.setCurrentLimitingEnabled(!drive.isCurrentLimitingEnabled()))
@@ -130,6 +134,7 @@ public class RobotContainer {
     driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
     driveController.povLeft().whileTrue(new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers));
     driveController.povRight().whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
+
   }
 
   /**
