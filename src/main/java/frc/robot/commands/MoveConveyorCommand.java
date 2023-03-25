@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ConveyorSubsystem;
 
@@ -8,18 +10,21 @@ import frc.robot.subsystems.ConveyorSubsystem;
  */
 public class MoveConveyorCommand extends CommandBase {
     ConveyorSubsystem conveyor;
-    private final double targetSpeed;
+    private final DoubleSupplier targetSpeed;
 
-    public MoveConveyorCommand(double targetSpeed, ConveyorSubsystem conveyor) {
-        // Positive values move pieces towards the back
-        this.targetSpeed = -targetSpeed;
+    public MoveConveyorCommand(DoubleSupplier targetSpeed, ConveyorSubsystem conveyor) {
+        this.targetSpeed = targetSpeed;
         this.conveyor = conveyor;
         addRequirements(conveyor);
     }
 
+    public MoveConveyorCommand(double targetSpeed, ConveyorSubsystem conveyor) {
+        this(() -> targetSpeed, conveyor);
+    }
+
     @Override
     public void execute() {
-        conveyor.setSpeed(targetSpeed);
+        conveyor.setSpeed(targetSpeed.getAsDouble());
     }
 
     @Override

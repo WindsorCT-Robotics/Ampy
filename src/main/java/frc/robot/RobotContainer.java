@@ -4,17 +4,13 @@ import frc.robot.commands.*;
 import frc.robot.commands.autonomous.AutoDriveCommand;
 import frc.robot.commands.autonomous.AutoScoreCommand;
 import frc.robot.commands.drive.DriveCommand;
-import frc.robot.commands.drive.SetNeutralModeCommand;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.IntakeArmsSubsystem.ArmState;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
-
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -64,6 +60,7 @@ public class RobotContainer {
         new DriveCommand(() -> driveController.getLeftY(), () -> getTriggerScale(driveController.getLeftTriggerAxis()),
             () -> driveController.getRightX(), () -> getTriggerScale(driveController.getRightTriggerAxis()), drive));
     conveyor.setDefaultCommand(new MoveConveyorCommand(-0.1, conveyor));
+    intakeRollers.setDefaultCommand(new MoveIntakeRollersCommand(() -> operatorController.getLeftY() * INTAKE_ROLLER_SPEED, intakeRollers));
 
     // Configure button bindings
     configureButtonBindings();
@@ -92,25 +89,26 @@ public class RobotContainer {
    * Configure joysitck button bindings
    */
   private void configureButtonBindings() {
-    // set color of LEDs
-    driveController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
-    driveController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
+    // Operator bindings
+    // set LED color
+    operatorController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
+    operatorController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
 
-    driveController.leftBumper().onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));
-    driveController.rightBumper().onTrue(new IntakeFromSubstationCommand(intakeArms, conveyor, intakeRollers));
+    operatorController.a().whileTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
 
-    driveController.a().onTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
+    // Automatic intake
+    Trigger leftTrigger = new Trigger(() -> operatorController.getLeftTriggerAxis() > 0.5);
+    leftTrigger.onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));
+    Trigger rightTrigger = new Trigger(() -> operatorController.getRightTriggerAxis() > 0.5);
+    rightTrigger.onTrue(new IntakeFromSubstationCommand(intakeArms, conveyor, intakeRollers));
 
-    Trigger leftTrigger = new Trigger(() -> driveController.getLeftTriggerAxis() > 0.1);
-    leftTrigger.whileTrue(
-        new MoveIntakeRollersCommand(() -> -INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
-    Trigger rightTrigger = new Trigger(() -> driveController.getRightTriggerAxis() > 0.3);
-    rightTrigger.whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
+    Trigger conveyorTrigger = new Trigger(() -> Math.abs(operatorController.getRightY()) > 0.1);
+    conveyorTrigger.whileTrue(
+        new MoveConveyorCommand(() -> driveController.getLeftTriggerAxis() * CONVEYOR_SPEED, conveyor));
 
-    driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
-    driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
+    operatorController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
+    operatorController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
 
-    // Add LED command once we have the lights on the robot
   }
 
   /**
