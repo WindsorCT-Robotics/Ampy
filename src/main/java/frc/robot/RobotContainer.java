@@ -30,7 +30,7 @@ public class RobotContainer {
   private final PowerDistributionPanelSubsystem pdp;
   private final LEDSubsystem ledSubsystem;
   // Joysticks
-  private final CommandXboxController driveController;
+  private final CommandXboxController driverController;
   private final CommandXboxController operatorController;
 
   // A chooser for autonomous commands
@@ -55,13 +55,13 @@ public class RobotContainer {
     initializePneumatics();
 
     // Initialize controllers
-    driveController = new CommandXboxController(0);
+    driverController = new CommandXboxController(0);
     operatorController = new CommandXboxController(1);
 
     // Configure default commands
     drive.setDefaultCommand(
-        new DriveCommand(() -> driveController.getLeftY(), () -> getTriggerScale(driveController.getLeftTriggerAxis()),
-            () -> driveController.getRightX(), () -> getTriggerScale(driveController.getRightTriggerAxis()), drive));
+        new DriveCommand(() -> driverController.getLeftY(), () -> getTriggerScale(driverController.getLeftTriggerAxis()),
+            () -> driverController.getRightX(), () -> getTriggerScale(driverController.getRightTriggerAxis()), drive));
     conveyor.setDefaultCommand(new MoveConveyorCommand(-0.1, conveyor));
     intakeRollers.setDefaultCommand(
         new MoveIntakeRollersCommand(() -> operatorController.getLeftY() * INTAKE_ROLLER_SPEED, intakeRollers));
@@ -114,7 +114,7 @@ public class RobotContainer {
 
     Trigger conveyorTrigger = new Trigger(() -> Math.abs(operatorController.getRightY()) > 0.1);
     conveyorTrigger.whileTrue(
-        new MoveConveyorCommand(() -> driveController.getLeftTriggerAxis() * CONVEYOR_SPEED, conveyor));
+        new MoveConveyorCommand(() -> driverController.getLeftTriggerAxis() * CONVEYOR_SPEED, conveyor));
 
     operatorController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     operatorController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
@@ -125,15 +125,15 @@ public class RobotContainer {
    */
   private void configureDriverBindings() {
     // Toggle current limiting and rumble
-    driveController.y()
+    driverController.y()
         .onTrue(new InstantCommand(() -> drive.setCurrentLimitingEnabled(!drive.isCurrentLimitingEnabled()))
-            .andThen(new RunCommand(() -> driveController.getHID().setRumble(RumbleType.kBothRumble, 0.5))));
+            .andThen(new RunCommand(() -> driverController.getHID().setRumble(RumbleType.kBothRumble, 0.5))));
 
     // Emergency intake controls
-    driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
-    driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
-    driveController.povLeft().whileTrue(new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers));
-    driveController.povRight().whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
+    driverController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
+    driverController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
+    driverController.povLeft().whileTrue(new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers));
+    driverController.povRight().whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
 
   }
 
