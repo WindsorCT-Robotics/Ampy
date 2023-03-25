@@ -114,6 +114,8 @@ public class RobotContainer {
 
     driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
+
+    // Add LED command once we have the lights on the robot
   }
 
   /**
