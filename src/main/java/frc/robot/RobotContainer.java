@@ -10,8 +10,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -92,11 +94,11 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Operator controller bindings
-
     // Rumble when a piece is grabbed
     Trigger getPieceTrigger = new Trigger(() -> conveyor.isEmpty() == true);
     getPieceTrigger
-        .onTrue(new RunCommand(() -> operatorController.getHID().setRumble(RumbleType.kBothRumble, 0.5)).withTimeout(0.5));
+        .onTrue(
+            new RunCommand(() -> operatorController.getHID().setRumble(RumbleType.kBothRumble, 0.5)).withTimeout(0.5));
 
     // set LED color
     operatorController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
@@ -117,6 +119,17 @@ public class RobotContainer {
     operatorController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     operatorController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
 
+    // driver controller bindings
+    // Toggle current limiting and rumble
+    driveController.y()
+        .onTrue(new InstantCommand(() -> drive.setCurrentLimitingEnabled(!drive.isCurrentLimitingEnabled()))
+            .andThen(new RunCommand(() -> driveController.getHID().setRumble(RumbleType.kBothRumble, 0.5))));
+
+    // Emergency intake controls
+    driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
+    driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
+    driveController.povLeft().whileTrue(new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers));
+    driveController.povRight().whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
   }
 
   /**

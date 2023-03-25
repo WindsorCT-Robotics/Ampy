@@ -20,6 +20,8 @@ public class DriveSubsystem extends SubsystemBase {
     WPI_TalonFX rightMain;
     WPI_TalonFX rightFollower;
 
+    private StatorCurrentLimitConfiguration limiter;
+
     // DifferentialDrive object for drive calculations
     DifferentialDrive drive;
 
@@ -55,7 +57,7 @@ public class DriveSubsystem extends SubsystemBase {
     private WPI_TalonFX initMotor(int canId) {
         WPI_TalonFX motor = new WPI_TalonFX(canId);
         motor.configFactoryDefault();
-        StatorCurrentLimitConfiguration limiter = new StatorCurrentLimitConfiguration(true, 80, 100, 2);
+        limiter = new StatorCurrentLimitConfiguration(true, 80, 100, 2);
         motor.configStatorCurrentLimit(limiter);
         motor.setNeutralMode(neutralMode);
         return motor;
@@ -65,9 +67,11 @@ public class DriveSubsystem extends SubsystemBase {
     public void periodic() {
 
         SmartDashboard.putNumber("Left Main Sensor Position (m)", getMeters(leftMain.getSelectedSensorPosition()));
-        SmartDashboard.putNumber("Left Main Sensor Velocity (m/s)", Math.abs(getMetersPerSecond(leftMain.getSelectedSensorVelocity())));
+        SmartDashboard.putNumber("Left Main Sensor Velocity (m/s)",
+                Math.abs(getMetersPerSecond(leftMain.getSelectedSensorVelocity())));
         SmartDashboard.putNumber("Right Main Sensor position (m)", getMeters(rightMain.getSelectedSensorPosition()));
-        SmartDashboard.putNumber("Right Main Sensor velocity (m/s)", Math.abs(getMetersPerSecond(rightMain.getSelectedSensorVelocity())));
+        SmartDashboard.putNumber("Right Main Sensor velocity (m/s)",
+                Math.abs(getMetersPerSecond(rightMain.getSelectedSensorVelocity())));
         // Motor temps
         SmartDashboard.putNumber("MotorTemperature/Left Main (C)", Math.round(leftMain.getTemperature()));
         SmartDashboard.putNumber("MotorTemperature/Left Follower (C)", Math.round(leftFollower.getTemperature()));
@@ -116,6 +120,24 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public NeutralMode getNeutralMode() {
         return neutralMode;
+    }
+
+    /**
+     * Sets whether or not current limiting is enabled
+     * 
+     * @param enabled enable limiting
+     */
+    public void setCurrentLimitingEnabled(boolean enabled) {
+        limiter.enable = enabled;
+    }
+
+    /**
+     * Get whether or not current limiting is enabled
+     * 
+     * @return whether limiting is enabled
+     */
+    public boolean isCurrentLimitingEnabled() {
+        return limiter.enable;
     }
 
     /**
