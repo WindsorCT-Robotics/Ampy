@@ -25,7 +25,7 @@ public class DriveCommand extends CommandBase {
     // Rotation values
     private DoubleSupplier turn;
     // Value to scale joystick rotation input by. Should probably be less than 1.
-    private double turnScale = 0.3;
+    private double turnScale = 0.5;
     private DoubleSupplier manualTurnScale;
     // SlewRateLimiter and values to smooth acceleration
     double positiveTurnRateLimit = 10.0;

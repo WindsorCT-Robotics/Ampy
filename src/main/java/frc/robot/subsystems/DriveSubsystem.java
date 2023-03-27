@@ -43,6 +43,7 @@ public class DriveSubsystem extends SubsystemBase {
         rightFollower = initMotor(4);
         rightFollower.follow(rightMain);
         rightFollower.setInverted(TalonFXInvertType.FollowMaster);
+        setCurrentLimitingEnabled(true);
 
         // Drivetrain initialization
         drive = new DifferentialDrive(leftMain, rightMain);
@@ -57,8 +58,6 @@ public class DriveSubsystem extends SubsystemBase {
     private WPI_TalonFX initMotor(int canId) {
         WPI_TalonFX motor = new WPI_TalonFX(canId);
         motor.configFactoryDefault();
-        limiter = new StatorCurrentLimitConfiguration(true, 80, 100, 2);
-        motor.configStatorCurrentLimit(limiter);
         motor.setNeutralMode(neutralMode);
         return motor;
     }
@@ -78,7 +77,7 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("MotorTemperature/Right Main (C)", Math.round(rightMain.getTemperature()));
         SmartDashboard.putNumber("MotorTemperature/Right Follower (C)", Math.round(rightFollower.getTemperature()));
         // Brake Mode
-        SmartDashboard.putBoolean("Brake Mode", getNeutralMode() == NeutralMode.Brake);
+        SmartDashboard.putBoolean("Stator Mode", isCurrentLimitingEnabled());
         // Motor current
         SmartDashboard.putNumber("MotorCurrent/Left Main", leftMain.getStatorCurrent());
         SmartDashboard.putNumber("MotorCurrent/Left Follower", leftFollower.getStatorCurrent());
@@ -128,7 +127,11 @@ public class DriveSubsystem extends SubsystemBase {
      * @param enabled enable limiting
      */
     public void setCurrentLimitingEnabled(boolean enabled) {
-        limiter.enable = enabled;
+        limiter = new StatorCurrentLimitConfiguration(enabled, 80, 100, 2);
+        leftMain.configStatorCurrentLimit(limiter);
+        leftFollower.configStatorCurrentLimit(limiter);
+        rightMain.configStatorCurrentLimit(limiter);
+        rightFollower.configStatorCurrentLimit(limiter);
     }
 
     /**

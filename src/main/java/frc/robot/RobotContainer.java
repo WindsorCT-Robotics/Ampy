@@ -61,9 +61,9 @@ public class RobotContainer {
 
     // Configure default commands
     drive.setDefaultCommand(
-        new DriveCommand(() -> getJoystickDeadzone(driverController.getLeftY(), DEADZONE), () -> getTriggerScale(driverController.getLeftTriggerAxis()),
-            () -> getJoystickDeadzone(driverController.getRightX(), DEADZONE), () -> getTriggerScale(driverController.getRightTriggerAxis()), drive));
-    conveyor.setDefaultCommand(new MoveConveyorCommand(-0.1, conveyor));
+        new DriveCommand(() -> driverController.getLeftY(), () -> getTriggerScale(driverController.getLeftTriggerAxis()),
+            () -> driverController.getRightX(), () -> getTriggerScale(driverController.getRightTriggerAxis()), drive));
+    conveyor.setDefaultCommand(new MoveConveyorCommand(0.1, conveyor));
     intakeRollers.setDefaultCommand(
         new MoveIntakeRollersCommand(() -> getJoystickDeadzone(operatorController.getLeftY(), DEADZONE) * INTAKE_ROLLER_SPEED, intakeRollers));
 
@@ -95,12 +95,6 @@ public class RobotContainer {
    * Configure operator controller bindings
    */
   private void configureOperatorBindings() {
-    // Rumble when a piece is grabbed
-    Trigger getPieceTrigger = new Trigger(() -> conveyor.isEmpty() == true);
-    getPieceTrigger
-        .onTrue(
-            new RunCommand(() -> operatorController.getHID().setRumble(RumbleType.kBothRumble, 0.5)).withTimeout(0.5));
-
     // set LED color
     operatorController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
     operatorController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
@@ -119,7 +113,7 @@ public class RobotContainer {
     // Not a default command because the conveyor belt is always moving
     Trigger conveyorTrigger = new Trigger(() -> Math.abs(operatorController.getRightY()) > 0.1);
     conveyorTrigger.whileTrue(
-        new MoveConveyorCommand(() -> getJoystickDeadzone(driverController.getLeftTriggerAxis(), DEADZONE) * CONVEYOR_SPEED, conveyor));
+        new MoveConveyorCommand(() -> getJoystickDeadzone(operatorController.getRightY(), DEADZONE) * CONVEYOR_SPEED, conveyor));
 
     // Raise and lower the intake arms
     operatorController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
@@ -132,8 +126,7 @@ public class RobotContainer {
   private void configureDriverBindings() {
     // Toggle current limiting and rumble
     driverController.y()
-        .onTrue(new InstantCommand(() -> drive.setCurrentLimitingEnabled(!drive.isCurrentLimitingEnabled()))
-            .andThen(new RunCommand(() -> driverController.getHID().setRumble(RumbleType.kBothRumble, 0.5))));
+        .onTrue(new InstantCommand(() -> drive.setCurrentLimitingEnabled(!drive.isCurrentLimitingEnabled())));
 
     // Emergency intake controls
     driverController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
@@ -159,11 +152,12 @@ public class RobotContainer {
    * @return number to scale by
    */
   private static double getTriggerScale(double raw) {
+    double value = 1 - raw;
     // Don't freeze up the turning
-    if (raw < 0.1) {
+    if (value < 0.1) {
       return 0.1;
     }
-    return 1 - raw;
+    return value;
   }
 
   private static double getJoystickDeadzone(double raw, double deadband) {
