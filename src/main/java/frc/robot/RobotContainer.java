@@ -2,6 +2,7 @@ package frc.robot;
 
 import frc.robot.commands.*;
 import frc.robot.commands.autonomous.AutoDriveCommand;
+import frc.robot.commands.autonomous.AutoPickUpPiece;
 import frc.robot.commands.autonomous.AutoScoreCommand;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.SetNeutralModeCommand;
@@ -68,12 +69,16 @@ public class RobotContainer {
 
     // Initialize autonomous chooser
     chooser = new SendableChooser<>();
-    chooser.setDefaultOption("Score short", new AutoScoreCommand(conveyor, drive).withTimeout(6));
-    chooser.addOption("Score far", new AutoScoreCommand(conveyor, drive).withTimeout(8));
+    chooser.setDefaultOption("Score piece",
+        new AutoScoreCommand(conveyor).andThen(new AutoDriveCommand(-0.25, 0, drive).withTimeout(6)));
     chooser.addOption("Drive forward", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
     chooser.addOption("Score piece", new MoveConveyorCommand(0.8, conveyor).withTimeout(1));
     chooser.addOption("Do nothing", new PrintCommand("Doing nothing!"));
     chooser.addOption("Drive forward", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
+    chooser.addOption("Pick up piece", new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers));
+    // chooser.addOption("Pick up piece and score",
+    //     new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers)
+    //         .andThen(new AutoScoreCommand(conveyor).andThen(new AutoDriveCommand(-0.25, 0, drive).withTimeout(6))));
     SmartDashboard.putData("Auto Mode", chooser);
 
   }
