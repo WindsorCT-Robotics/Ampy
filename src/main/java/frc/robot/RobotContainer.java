@@ -13,12 +13,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -93,16 +95,12 @@ public class RobotContainer {
    * Configure joysitck button bindings
    */
   private void configureButtonBindings() {
+    Trigger piece = new Trigger(() -> !conveyor.isEmpty());
+    piece.onTrue(new StartEndCommand(() -> driveController.getHID().setRumble(RumbleType.kBothRumble, 0.5),
+        () -> driveController.getHID().setRumble(RumbleType.kBothRumble, 0)).withTimeout(0.5));
     // set color of LEDs
     driveController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
     driveController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
-    // Toggle between brake and coast
-    // driveController.b()
-    // .onTrue(
-    // new ConditionalCommand(
-    // new SetNeutralModeCommand(NeutralMode.Brake, drive),
-    // new SetNeutralModeCommand(NeutralMode.Coast, drive),
-    // () -> (drive.getNeutralMode() == NeutralMode.Coast)));
     driveController.b().onTrue(new SetNeutralModeCommand(NeutralMode.Brake, drive));
 
     driveController.leftBumper().onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));
