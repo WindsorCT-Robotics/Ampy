@@ -1,6 +1,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.hardware.WPI_CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -22,7 +23,8 @@ public class IntakeRollersSubsystem extends SubsystemBase {
      * @param speed The speed in [-1.0, 1.0]
      */
     public void setSpeed(double speed) {
-        intakeRollerMotor.set(speed);
+        SlewRateLimiter filter = new SlewRateLimiter(0.5);
+        intakeRollerMotor.set(filter.calculate(speed));
     }
 
     public void stop() {

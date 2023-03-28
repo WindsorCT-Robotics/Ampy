@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -36,7 +37,8 @@ public class ConveyorSubsystem extends SubsystemBase {
      * @param speed the speed in [-1.0, 1.0]
      */
     public void setSpeed(double speed) {
-        conveyorMotor.set(speed);
+        SlewRateLimiter filter = new SlewRateLimiter(0.5);
+        conveyorMotor.set(filter.calculate(speed));
     }
 
     public void stop() {
