@@ -9,7 +9,7 @@ import frc.robot.subsystems.*;
 import frc.robot.subsystems.IntakeArmsSubsystem.ArmState;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -61,6 +61,7 @@ public class RobotContainer {
     drive.setDefaultCommand(
         new DriveCommand(() -> driveController.getLeftY(), () -> driveController.getRightX(), drive));
     conveyor.setDefaultCommand(new MoveConveyorCommand(-0.1, conveyor));
+    ledSubsystem.setDefaultCommand(new LEDColorMoverCommand(ledSubsystem, new Color(255, 70, 0), new Color(0, 0, 255), 5));
 
     // Configure button bindings
     configureButtonBindings();
@@ -91,7 +92,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // set color of LEDs
     driveController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
-    driveController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
+    driveController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 110, 0));
     // Toggle between brake and coast
     // driveController.b()
     //     .onTrue(
