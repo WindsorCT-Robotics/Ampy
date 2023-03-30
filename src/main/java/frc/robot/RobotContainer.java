@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -96,13 +97,7 @@ public class RobotContainer {
     // set color of LEDs
     driveController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
     driveController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
-    // Toggle between brake and coast
-    // driveController.b()
-    // .onTrue(
-    // new ConditionalCommand(
-    // new SetNeutralModeCommand(NeutralMode.Brake, drive),
-    // new SetNeutralModeCommand(NeutralMode.Coast, drive),
-    // () -> (drive.getNeutralMode() == NeutralMode.Coast)));
+
     driveController.b().onTrue(new SetNeutralModeCommand(NeutralMode.Brake, drive));
 
     driveController.leftBumper().onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));
@@ -114,7 +109,7 @@ public class RobotContainer {
     leftTrigger.whileTrue(
         new MoveIntakeRollersCommand(() -> -INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
     Trigger rightTrigger = new Trigger(() -> driveController.getRightTriggerAxis() > 0.3);
-    rightTrigger.whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
+    rightTrigger.whileTrue(new ParallelCommandGroup(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor), new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers)));
 
     driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
