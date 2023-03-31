@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 
@@ -76,9 +77,6 @@ public class RobotContainer {
     chooser.addOption("Do nothing", new PrintCommand("Doing nothing!"));
     chooser.addOption("Drive forward", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
     chooser.addOption("Pick up piece", new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers));
-    // chooser.addOption("Pick up piece and score",
-    //     new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers)
-    //         .andThen(new AutoScoreCommand(conveyor).andThen(new AutoDriveCommand(-0.25, 0, drive).withTimeout(6))));
     SmartDashboard.putData("Auto Mode", chooser);
 
   }
@@ -95,7 +93,7 @@ public class RobotContainer {
    * Configure joysitck button bindings
    */
   private void configureButtonBindings() {
-    Trigger piece = new Trigger(() -> !conveyor.isEmpty());
+    Trigger piece = new Trigger(() -> !conveyor.isIntakeSensor());
     piece.onTrue(new StartEndCommand(() -> driveController.getHID().setRumble(RumbleType.kBothRumble, 0.5),
         () -> driveController.getHID().setRumble(RumbleType.kBothRumble, 0)).withTimeout(0.5));
     // set color of LEDs
@@ -104,7 +102,7 @@ public class RobotContainer {
     driveController.b().onTrue(new SetNeutralModeCommand(NeutralMode.Brake, drive));
 
     driveController.leftBumper().onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));
-    driveController.rightBumper().onTrue(new IntakeFromSubstationCommand(intakeArms, conveyor, intakeRollers));
+    driveController.rightBumper().onTrue(new IntakeFromSubstationCommand(intakeArms, conveyor));
 
     driveController.a().onTrue(new EjectCommand(intakeArms, conveyor, intakeRollers));
 
@@ -112,7 +110,8 @@ public class RobotContainer {
     leftTrigger.whileTrue(
         new MoveIntakeRollersCommand(() -> -INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
     Trigger rightTrigger = new Trigger(() -> driveController.getRightTriggerAxis() > 0.3);
-    rightTrigger.whileTrue(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor));
+    rightTrigger.onTrue(new ParallelCommandGroup(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor),
+        new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers)));
 
     driveController.povUp().onTrue(new MoveIntakeCommand(ArmState.RAISED, intakeArms));
     driveController.povDown().onTrue(new MoveIntakeCommand(ArmState.LOWERED, intakeArms));
