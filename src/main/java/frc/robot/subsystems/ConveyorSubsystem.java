@@ -11,11 +11,14 @@ public class ConveyorSubsystem extends SubsystemBase {
 
     private WPI_CANSparkMax conveyorMotor;
     private static final int CONVEYOR_MOTOR_CAN_ID = 5; // CAN ID should be 5, it may be different as a result of testing
-    private static final int CONVEYOR_SENSOR_CHANNEL = 0;
-    private final DigitalInput conveyorFullSensor;
+    private static final int ARM_SENSOR_CHANNEL = 0;
+    private static final int CONVEYOR_SENSOR_CHANNEL = 2;
+    private final DigitalInput armSensor;
+    private final DigitalInput conveyorSensor;
 
     public ConveyorSubsystem() {
-        conveyorFullSensor = new DigitalInput(CONVEYOR_SENSOR_CHANNEL);
+        armSensor = new DigitalInput(ARM_SENSOR_CHANNEL);
+        conveyorSensor = new DigitalInput(CONVEYOR_SENSOR_CHANNEL);
         conveyorMotor = new WPI_CANSparkMax(CONVEYOR_MOTOR_CAN_ID, MotorType.kBrushless);
         conveyorMotor.restoreFactoryDefaults();
         addChild("Conveyor motor", conveyorMotor);
@@ -23,12 +26,12 @@ public class ConveyorSubsystem extends SubsystemBase {
     }
 
     private void initializeSmartDashboard() {
-        SmartDashboard.putBoolean("isConveyorEmpty", isEmpty());
+        SmartDashboard.putBoolean("isConveyorEmpty", isPiece());
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("isConveyorEmpty", isEmpty());
+        SmartDashboard.putBoolean("isConveyorEmpty", isPiece());
     }
 
     /**
@@ -43,7 +46,8 @@ public class ConveyorSubsystem extends SubsystemBase {
         conveyorMotor.stopMotor();
     }
 
-    public boolean isEmpty() {
-        return conveyorFullSensor.get();
+    public boolean isPiece() {
+        return armSensor.get() || conveyorSensor.get();
     }
+
 }

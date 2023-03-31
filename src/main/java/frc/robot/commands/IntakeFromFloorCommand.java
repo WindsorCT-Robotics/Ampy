@@ -24,7 +24,7 @@ public class IntakeFromFloorCommand extends SequentialCommandGroup {
                                 new ParallelCommandGroup(
                                                 new MoveConveyorCommand(CONVEYOR_SPEED, conveyor),
                                                 new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers))
-                                                .until(() -> !conveyor.isEmpty()),
+                                                .until(() -> !conveyor.isPiece()),
                                 new MoveIntakeCommand(ArmState.RAISED, intakeArms),
                                 new WaitCommand(1),
                                 new MoveConveyorCommand(-CONVEYOR_SPEED, conveyor).withTimeout(0.5));
