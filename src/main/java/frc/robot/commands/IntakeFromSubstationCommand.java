@@ -22,7 +22,7 @@ public class IntakeFromSubstationCommand extends CommandBase {
 
         @Override
         public boolean isFinished() {
-                return conveyor.isConveyorSensor() || conveyor.isIntakeSensor();
+                return !(conveyor.isConveyorSensor() || conveyor.isIntakeSensor());
         }
 
         @Override

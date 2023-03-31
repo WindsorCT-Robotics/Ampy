@@ -13,7 +13,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     private static final int CONVEYOR_MOTOR_CAN_ID = 5; // CAN ID should be 5, it may be different as a result of testing
     private static final int INTAKE_SENSOR_CHANNEL = 0;
     private final DigitalInput intakeSensor;
-    private static final int CONVEYOR_SENSOR_CHANNEL = 3;
+    private static final int CONVEYOR_SENSOR_CHANNEL = 2;
     private final DigitalInput conveyorSensor;
 
     public ConveyorSubsystem() {
