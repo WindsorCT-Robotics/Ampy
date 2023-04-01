@@ -71,7 +71,7 @@ public class RobotContainer {
     // Initialize autonomous chooser
     chooser = new SendableChooser<>();
     chooser.addOption("Score piece and escape",
-        new AutoScoreCommand(conveyor).andThen(new AutoDriveCommand(-0.25, 0, drive).withTimeout(6)));
+        new AutoScoreCommand(conveyor).andThen(new AutoDriveCommand(-0.25, 0, drive).withTimeout(4)));
     chooser.addOption("Drive forward", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
     chooser.addOption("Score piece", new MoveConveyorCommand(0.8, conveyor).withTimeout(1));
     chooser.addOption("Do nothing", new PrintCommand("Doing nothing!"));
