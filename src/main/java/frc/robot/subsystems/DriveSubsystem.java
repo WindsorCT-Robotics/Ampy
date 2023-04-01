@@ -31,10 +31,15 @@ public class DriveSubsystem extends SubsystemBase {
     NeutralMode neutralMode = NeutralMode.Brake;
 
     DataLog log;
-    DoubleLogEntry rightMainLog;
-    DoubleLogEntry leftMainLog;
-    DoubleLogEntry rightFollowerLog;
-    DoubleLogEntry leftFollowerLog;
+    DoubleLogEntry rightMainCurrentLog;
+    DoubleLogEntry leftMainCurrentLog;
+    DoubleLogEntry rightFollowerCurrentLog;
+    DoubleLogEntry leftFollowerCurrentLog;
+    
+    DoubleLogEntry leftMainSpeedLog;
+    DoubleLogEntry leftFollowerSpeedLog;
+    DoubleLogEntry rightMainSpeedLog;
+    DoubleLogEntry rightFollowerSpeedLog;
 
 
     public DriveSubsystem() {
@@ -57,10 +62,15 @@ public class DriveSubsystem extends SubsystemBase {
         drive = new DifferentialDrive(leftMain, rightMain);
 
         DataLogManager.start();
-        rightMainLog = new DoubleLogEntry(DataLogManager.getLog(), "Right Main Current");
-        leftMainLog = new DoubleLogEntry(DataLogManager.getLog(), "Left Main Current");
-        rightFollowerLog = new DoubleLogEntry(DataLogManager.getLog(), "Right Follower Current");
-        leftFollowerLog = new DoubleLogEntry(DataLogManager.getLog(), "Left Follower Current");
+        rightMainCurrentLog = new DoubleLogEntry(DataLogManager.getLog(), "Right Main Current");
+        leftMainCurrentLog = new DoubleLogEntry(DataLogManager.getLog(), "Left Main Current");
+        rightFollowerCurrentLog = new DoubleLogEntry(DataLogManager.getLog(), "Right Follower Current");
+        leftFollowerCurrentLog = new DoubleLogEntry(DataLogManager.getLog(), "Left Follower Current");
+
+        leftMainSpeedLog = new DoubleLogEntry(DataLogManager.getLog(), "Left Main Speed");
+        leftFollowerSpeedLog = new DoubleLogEntry(DataLogManager.getLog(), "Left Follower Speed");
+        rightMainSpeedLog = new DoubleLogEntry(DataLogManager.getLog(), "Right Main Speed");
+        rightFollowerSpeedLog = new DoubleLogEntry(DataLogManager.getLog(), "Right Follower Speed");
     }
 
     /**
@@ -98,10 +108,15 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("MotorCurrent/Right Main", rightMain.getStatorCurrent());
         SmartDashboard.putNumber("MotorCurrent/Right Follower", rightFollower.getStatorCurrent());
 
-        rightMainLog.append(rightMain.getStatorCurrent());
-        leftMainLog.append(leftMain.getStatorCurrent());
-        rightFollowerLog.append(rightFollower.getStatorCurrent());
-        leftFollowerLog.append(leftFollower.getStatorCurrent());
+        rightMainCurrentLog.append(rightMain.getStatorCurrent());
+        leftMainCurrentLog.append(leftMain.getStatorCurrent());
+        rightFollowerCurrentLog.append(rightFollower.getStatorCurrent());
+        leftFollowerCurrentLog.append(leftFollower.getStatorCurrent());
+
+        leftMainSpeedLog.append(getMetersPerSecond(leftMain.getSelectedSensorVelocity()));
+        leftFollowerSpeedLog.append(getMetersPerSecond(leftFollower.getSelectedSensorVelocity()));
+        rightMainSpeedLog.append(getMetersPerSecond(rightMain.getSelectedSensorVelocity()));
+        rightFollowerSpeedLog.append(getMetersPerSecond(rightFollower.getSelectedSensorVelocity()));
     }
 
     /**
