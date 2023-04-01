@@ -103,7 +103,7 @@
               "_showGlyph": true
             }
           },
-          "4,4": {
+          "8,2": {
             "size": [
               2,
               1
@@ -268,7 +268,7 @@
           "4,0": {
             "size": [
               2,
-              2
+              3
             ],
             "content": {
               "_type": "Subsystem Layout",
@@ -278,35 +278,29 @@
               "Layout/Label position": "TOP",
               "_children": [
                 {
-                  "_type": "Number Bar",
+                  "_type": "Simple Dial",
                   "_source0": "network_table:///SmartDashboard/Left Main Sensor Velocity (m/s)",
                   "_title": "Left Main",
                   "_glyph": 148,
                   "_showGlyph": false,
-                  "Range/Min": -10.0,
-                  "Range/Max": 10.0,
-                  "Range/Center": 0.0,
-                  "Visuals/Num tick marks": 5,
-                  "Visuals/Show text": true,
-                  "Visuals/Orientation": "HORIZONTAL"
+                  "Range/Min": 0.0,
+                  "Range/Max": 100.0,
+                  "Visuals/Show value": true
                 },
                 {
-                  "_type": "Number Bar",
+                  "_type": "Simple Dial",
                   "_source0": "network_table:///SmartDashboard/Right Main Sensor velocity (m/s)",
                   "_title": "Right Main",
                   "_glyph": 148,
                   "_showGlyph": false,
-                  "Range/Min": -10.0,
-                  "Range/Max": 10.0,
-                  "Range/Center": 0.0,
-                  "Visuals/Num tick marks": 5,
-                  "Visuals/Show text": true,
-                  "Visuals/Orientation": "HORIZONTAL"
+                  "Range/Min": 0.0,
+                  "Range/Max": 100.0,
+                  "Visuals/Show value": true
                 }
               ]
             }
           },
-          "4,2": {
+          "4,3": {
             "size": [
               2,
               2
@@ -513,7 +507,7 @@
           },
           "10,1": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
