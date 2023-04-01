@@ -81,9 +81,9 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
-        SmartDashboard.putNumber("Left Main Sensor Position (m)", getMeters(leftMain.getSelectedSensorPosition()));
+        SmartDashboard.putNumber("Left Main Sensor Position (m)", -getMeters(leftMain.getSelectedSensorPosition()));
         SmartDashboard.putNumber("Left Main Sensor Velocity (m/s)", Math.abs(getMetersPerSecond(leftMain.getSelectedSensorVelocity())));
-        SmartDashboard.putNumber("Right Main Sensor position (m)", getMeters(rightMain.getSelectedSensorPosition()));
+        SmartDashboard.putNumber("Right Main Sensor position (m)", -getMeters(rightMain.getSelectedSensorPosition()));
         SmartDashboard.putNumber("Right Main Sensor velocity (m/s)", Math.abs(getMetersPerSecond(rightMain.getSelectedSensorVelocity())));
         // Motor temps
         SmartDashboard.putNumber("MotorTemperature/Left Main (C)", Math.round(leftMain.getTemperature()));
