@@ -10,6 +10,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+
 /**
  * Subsystem to model the robot's drivetrain
  */
@@ -25,6 +29,13 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Current neutral mode
     NeutralMode neutralMode = NeutralMode.Brake;
+
+    DataLog log;
+    DoubleLogEntry rightMainLog;
+    DoubleLogEntry leftMainLog;
+    DoubleLogEntry rightFollowerLog;
+    DoubleLogEntry leftFollowerLog;
+
 
     public DriveSubsystem() {
         // Motor initialization
@@ -44,6 +55,12 @@ public class DriveSubsystem extends SubsystemBase {
 
         // Drivetrain initialization
         drive = new DifferentialDrive(leftMain, rightMain);
+
+        DataLogManager.start();
+        rightMainLog = new DoubleLogEntry(DataLogManager.getLog(), "Right Main Current");
+        leftMainLog = new DoubleLogEntry(DataLogManager.getLog(), "Left Main Current");
+        rightFollowerLog = new DoubleLogEntry(DataLogManager.getLog(), "Right Follower Current");
+        leftFollowerLog = new DoubleLogEntry(DataLogManager.getLog(), "Left Follower Current");
     }
 
     /**
@@ -55,7 +72,7 @@ public class DriveSubsystem extends SubsystemBase {
     private WPI_TalonFX initMotor(int canId) {
         WPI_TalonFX motor = new WPI_TalonFX(canId);
         motor.configFactoryDefault();
-        StatorCurrentLimitConfiguration limiter = new StatorCurrentLimitConfiguration(true, 80, 100, 2);
+        StatorCurrentLimitConfiguration limiter = new StatorCurrentLimitConfiguration(true, 100, 115, 2);
         motor.configStatorCurrentLimit(limiter);
         motor.setNeutralMode(neutralMode);
         return motor;
@@ -81,6 +98,10 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("MotorCurrent/Right Main", rightMain.getStatorCurrent());
         SmartDashboard.putNumber("MotorCurrent/Right Follower", rightFollower.getStatorCurrent());
 
+        rightMainLog.append(rightMain.getStatorCurrent());
+        leftMainLog.append(leftMain.getStatorCurrent());
+        rightFollowerLog.append(rightFollower.getStatorCurrent());
+        leftFollowerLog.append(leftFollower.getStatorCurrent());
     }
 
     /**
