@@ -18,8 +18,9 @@ public class AutoPickUpPiece extends SequentialCommandGroup {
         addCommands(
                 new MoveConveyorCommand(0.8, conveyor).withTimeout(1), // spit out piece
                 new WaitCommand(1), // Wait for cube to settle
+                new AutoDriveCommand(-0.25, 0, drive).withTimeout(2),
                 new ParallelRaceGroup(
-                        new AutoDriveCommand(-0.25, 0, drive).withTimeout(4.25), // go to a piece
+                        new AutoDriveCommand(-0.25, 0, drive).withTimeout(2.25), // go to a piece
                         new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers)), // pick up the piece
                 new MoveIntakeCommand(ArmState.RAISED, intakeArms),
                 new AutoDriveCommand(0.25, 0, drive).withTimeout(4) // return to the community
