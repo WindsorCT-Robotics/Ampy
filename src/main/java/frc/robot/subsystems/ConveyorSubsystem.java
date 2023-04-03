@@ -14,6 +14,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     private static final int CONVEYOR_MOTOR_CAN_ID = 5; // CAN ID should be 5, it may be different as a result of testing
     private static final int CONVEYOR_SENSOR_CHANNEL = 0;
     private final DigitalInput conveyorFullSensor;
+    private final SlewRateLimiter limiter = new SlewRateLimiter(0.5);
 
     public ConveyorSubsystem() {
         conveyorFullSensor = new DigitalInput(CONVEYOR_SENSOR_CHANNEL);
@@ -37,8 +38,7 @@ public class ConveyorSubsystem extends SubsystemBase {
      * @param speed the speed in [-1.0, 1.0]
      */
     public void setSpeed(double speed) {
-        SlewRateLimiter filter = new SlewRateLimiter(0.5);
-        conveyorMotor.set(filter.calculate(speed));
+        conveyorMotor.set(limiter.calculate(speed));
     }
 
     public void stop() {
