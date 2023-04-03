@@ -12,12 +12,15 @@ public class ConveyorSubsystem extends SubsystemBase {
 
     private WPI_CANSparkMax conveyorMotor;
     private static final int CONVEYOR_MOTOR_CAN_ID = 5; // CAN ID should be 5, it may be different as a result of testing
-    private static final int CONVEYOR_SENSOR_CHANNEL = 0;
-    private final DigitalInput conveyorFullSensor;
+    private static final int INTAKE_SENSOR_CHANNEL = 0;
+    private final DigitalInput intakeSensor;
+    private static final int CONVEYOR_SENSOR_CHANNEL = 2;
+    private final DigitalInput conveyorSensor;
     private final SlewRateLimiter limiter = new SlewRateLimiter(0.5);
 
     public ConveyorSubsystem() {
-        conveyorFullSensor = new DigitalInput(CONVEYOR_SENSOR_CHANNEL);
+        intakeSensor = new DigitalInput(INTAKE_SENSOR_CHANNEL);
+        conveyorSensor = new DigitalInput(CONVEYOR_SENSOR_CHANNEL);
         conveyorMotor = new WPI_CANSparkMax(CONVEYOR_MOTOR_CAN_ID, MotorType.kBrushless);
         conveyorMotor.restoreFactoryDefaults();
         addChild("Conveyor motor", conveyorMotor);
@@ -25,12 +28,12 @@ public class ConveyorSubsystem extends SubsystemBase {
     }
 
     private void initializeSmartDashboard() {
-        SmartDashboard.putBoolean("isConveyorEmpty", isEmpty());
+        SmartDashboard.putBoolean("isConveyorEmpty", isIntakeSensor());
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("isConveyorEmpty", isEmpty());
+        SmartDashboard.putBoolean("isConveyorEmpty", isIntakeSensor());
     }
 
     /**
@@ -45,7 +48,19 @@ public class ConveyorSubsystem extends SubsystemBase {
         conveyorMotor.stopMotor();
     }
 
-    public boolean isEmpty() {
-        return conveyorFullSensor.get();
+    /**
+     * Get the intake sensor status
+     * @return whether something is in the intake
+     */
+    public boolean isIntakeSensor() {
+        return intakeSensor.get();
+    }
+
+    /**
+     * Get the conveyor sensor status
+     * @return whether something is on the conveyor
+     */
+    public boolean isConveyorSensor() {
+        return conveyorSensor.get();
     }
 }
