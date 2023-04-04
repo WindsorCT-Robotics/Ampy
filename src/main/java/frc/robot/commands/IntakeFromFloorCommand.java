@@ -16,7 +16,7 @@ import frc.robot.subsystems.IntakeArmsSubsystem.ArmState;
  */
 public class IntakeFromFloorCommand extends SequentialCommandGroup {
         private final double CONVEYOR_SPEED = 0.3;
-        private final double INTAKE_ROLLER_SPEED = -0.4;
+        private final double INTAKE_ROLLER_SPEED = -0.5;
         public IntakeFromFloorCommand(IntakeArmsSubsystem intakeArms, ConveyorSubsystem conveyor,
                         IntakeRollersSubsystem intakeRollers) {
                 addCommands(

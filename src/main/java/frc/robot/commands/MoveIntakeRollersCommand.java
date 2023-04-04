@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeRollersSubsystem;
 
@@ -12,6 +13,7 @@ import frc.robot.subsystems.IntakeRollersSubsystem;
 public class MoveIntakeRollersCommand extends CommandBase {
     private IntakeRollersSubsystem intakeRollers;
     private DoubleSupplier speed;
+    private SlewRateLimiter limiter = new SlewRateLimiter(0.2);
 
     public MoveIntakeRollersCommand(DoubleSupplier speed, IntakeRollersSubsystem intakeRollers) {
         this.speed = speed;
@@ -25,7 +27,7 @@ public class MoveIntakeRollersCommand extends CommandBase {
 
     @Override
     public void execute() {
-        intakeRollers.setSpeed(speed.getAsDouble());
+        intakeRollers.setSpeed(limiter.calculate(speed.getAsDouble()));
     }
 
     @Override
