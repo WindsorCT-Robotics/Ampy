@@ -137,7 +137,7 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public void setCurrentLimitEnabled(boolean enabled) {
         currentLimitEnabled = enabled;
-        StatorCurrentLimitConfiguration limiter = new StatorCurrentLimitConfiguration(currentLimitEnabled, 80, 100, 2);
+        StatorCurrentLimitConfiguration limiter = new StatorCurrentLimitConfiguration(currentLimitEnabled, 100, 115, 2);
         leftMain.configStatorCurrentLimit(limiter);
         leftFollower.configStatorCurrentLimit(limiter);
         rightMain.configStatorCurrentLimit(limiter);
