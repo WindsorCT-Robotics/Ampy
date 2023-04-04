@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.hardware.WPI_CANSparkMax;
+
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class IntakeRollersSubsystem extends SubsystemBase {
@@ -13,6 +15,7 @@ public class IntakeRollersSubsystem extends SubsystemBase {
     public IntakeRollersSubsystem() {
         intakeRollerMotor = new WPI_CANSparkMax(IntakeRollersSubsystem.CAN_ID, MotorType.kBrushless);
         intakeRollerMotor.restoreFactoryDefaults();
+        intakeRollerMotor.setIdleMode(IdleMode.kBrake);
         addChild("Intake Roller Motor", intakeRollerMotor);
 
     }
