@@ -4,6 +4,7 @@ import frc.robot.commands.*;
 import frc.robot.commands.autonomous.AutoDriveCommand;
 import frc.robot.commands.autonomous.AutoPickUpPiece;
 import frc.robot.commands.autonomous.AutoScoreCommand;
+import frc.robot.commands.drive.DisableCurrentLimiting;
 import frc.robot.commands.autonomous.AutoScorePiece;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.SetNeutralModeCommand;
@@ -97,9 +98,12 @@ public class RobotContainer {
     Trigger piece = new Trigger(() -> !conveyor.isIntakeSensor());
     piece.onTrue(new StartEndCommand(() -> driveController.getHID().setRumble(RumbleType.kBothRumble, 0.5),
         () -> driveController.getHID().setRumble(RumbleType.kBothRumble, 0)).withTimeout(0.5));
+    
     // set color of LEDs
     driveController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
     driveController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
+    
+    driveController.leftStick().whileTrue(new DisableCurrentLimiting(drive));
     driveController.b().onTrue(new SetNeutralModeCommand(NeutralMode.Brake, drive));
 
     driveController.leftBumper().onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));
