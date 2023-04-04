@@ -26,6 +26,9 @@ public class DriveSubsystem extends SubsystemBase {
     // Current neutral mode
     NeutralMode neutralMode = NeutralMode.Brake;
 
+    // Current limiting enabled?
+    private Boolean currentLimitEnabled = true;
+
     public DriveSubsystem() {
         // Motor initialization
         // Left motors turn clockwise
@@ -42,6 +45,8 @@ public class DriveSubsystem extends SubsystemBase {
         rightFollower.follow(rightMain);
         rightFollower.setInverted(TalonFXInvertType.FollowMaster);
 
+        setCurrentLimitEnabled(true);
+
         // Drivetrain initialization
         drive = new DifferentialDrive(leftMain, rightMain);
     }
@@ -55,8 +60,6 @@ public class DriveSubsystem extends SubsystemBase {
     private WPI_TalonFX initMotor(int canId) {
         WPI_TalonFX motor = new WPI_TalonFX(canId);
         motor.configFactoryDefault();
-        StatorCurrentLimitConfiguration limiter = new StatorCurrentLimitConfiguration(true, 80, 100, 2);
-        motor.configStatorCurrentLimit(limiter);
         motor.setNeutralMode(neutralMode);
         return motor;
     }
@@ -116,6 +119,28 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public NeutralMode getNeutralMode() {
         return neutralMode;
+    }
+
+    /**
+     * Returns whether current limiting is currently enabled
+     * @return whether current limiting is applied to drive motors
+     */
+    public boolean isCurrentLimitEnabled() {
+        return currentLimitEnabled;
+    }
+
+    /**
+     * Set whether current limiting is enabled
+     * @param enabled whether to enable current limiting
+     */
+    public void setCurrentLimitEnabled(boolean enabled) {
+        currentLimitEnabled = enabled;
+        StatorCurrentLimitConfiguration limiter = new StatorCurrentLimitConfiguration(currentLimitEnabled, 80, 100, 2);
+        leftMain.configStatorCurrentLimit(limiter);
+        leftFollower.configStatorCurrentLimit(limiter);
+        rightMain.configStatorCurrentLimit(limiter);
+        rightFollower.configStatorCurrentLimit(limiter);
+
     }
 
     /**
