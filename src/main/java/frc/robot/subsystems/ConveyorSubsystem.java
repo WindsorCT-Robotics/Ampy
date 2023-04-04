@@ -16,7 +16,7 @@ public class ConveyorSubsystem extends SubsystemBase {
     private final DigitalInput intakeSensor;
     private static final int CONVEYOR_SENSOR_CHANNEL = 2;
     private final DigitalInput conveyorSensor;
-    private final SlewRateLimiter limiter = new SlewRateLimiter(0.5);
+    private final SlewRateLimiter limiter = new SlewRateLimiter(2);
 
     public ConveyorSubsystem() {
         intakeSensor = new DigitalInput(INTAKE_SENSOR_CHANNEL);
