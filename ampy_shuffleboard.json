@@ -65,8 +65,8 @@
               "_type": "Number Slider",
               "_source0": "network_table:///SmartDashboard/Speed Scale",
               "_title": "Speed Scale",
-              "_glyph": 148,
-              "_showGlyph": false,
+              "_glyph": 139,
+              "_showGlyph": true,
               "Slider Settings/Min": 0.0,
               "Slider Settings/Max": 1.0,
               "Slider Settings/Block increment": 0.0625,
@@ -82,8 +82,8 @@
               "_type": "Number Slider",
               "_source0": "network_table:///SmartDashboard/Turn Scale",
               "_title": "Turn Scale",
-              "_glyph": 148,
-              "_showGlyph": false,
+              "_glyph": 27,
+              "_showGlyph": true,
               "Slider Settings/Min": 0.0,
               "Slider Settings/Max": 1.0,
               "Slider Settings/Block increment": 0.0625,
@@ -100,10 +100,10 @@
               "_source0": "network_table:///SmartDashboard/Square Inputs",
               "_title": "Square Inputs",
               "_glyph": 148,
-              "_showGlyph": false
+              "_showGlyph": true
             }
           },
-          "4,4": {
+          "8,2": {
             "size": [
               2,
               1
@@ -112,8 +112,8 @@
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/Auto Mode",
               "_title": "Auto Mode",
-              "_glyph": 148,
-              "_showGlyph": false
+              "_glyph": 8,
+              "_showGlyph": true
             }
           },
           "2,4": {
@@ -206,7 +206,7 @@
             "content": {
               "_type": "Subsystem Layout",
               "_title": "Motor Currents (A)",
-              "_glyph": 488,
+              "_glyph": 308,
               "_showGlyph": true,
               "Layout/Label position": "TOP",
               "_children": [
@@ -268,7 +268,7 @@
           "4,0": {
             "size": [
               2,
-              2
+              3
             ],
             "content": {
               "_type": "Subsystem Layout",
@@ -278,35 +278,29 @@
               "Layout/Label position": "TOP",
               "_children": [
                 {
-                  "_type": "Number Bar",
+                  "_type": "Simple Dial",
                   "_source0": "network_table:///SmartDashboard/Left Main Sensor Velocity (m/s)",
                   "_title": "Left Main",
                   "_glyph": 148,
                   "_showGlyph": false,
-                  "Range/Min": -10.0,
+                  "Range/Min": 0.0,
                   "Range/Max": 10.0,
-                  "Range/Center": 0.0,
-                  "Visuals/Num tick marks": 5,
-                  "Visuals/Show text": true,
-                  "Visuals/Orientation": "HORIZONTAL"
+                  "Visuals/Show value": true
                 },
                 {
-                  "_type": "Number Bar",
+                  "_type": "Simple Dial",
                   "_source0": "network_table:///SmartDashboard/Right Main Sensor velocity (m/s)",
                   "_title": "Right Main",
                   "_glyph": 148,
                   "_showGlyph": false,
-                  "Range/Min": -10.0,
+                  "Range/Min": 0.0,
                   "Range/Max": 10.0,
-                  "Range/Center": 0.0,
-                  "Visuals/Num tick marks": 5,
-                  "Visuals/Show text": true,
-                  "Visuals/Orientation": "HORIZONTAL"
+                  "Visuals/Show value": true
                 }
               ]
             }
           },
-          "4,2": {
+          "4,3": {
             "size": [
               2,
               2
@@ -470,6 +464,58 @@
                   "_showGlyph": false
                 }
               ]
+            }
+          },
+          "10,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Positive Speed Rate Limit",
+              "_title": "Positive Speed Rate Limit",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "11,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Negative Speed Rate Limit",
+              "_title": "Negative Speed Rate Limit",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "12,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Positive Turn Rate Limit",
+              "_title": "Positive Turn Rate Limit",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "10,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Negative Turn Rate Limit",
+              "_title": "Negative Turn Rate Limit",
+              "_glyph": 148,
+              "_showGlyph": false
             }
           }
         }

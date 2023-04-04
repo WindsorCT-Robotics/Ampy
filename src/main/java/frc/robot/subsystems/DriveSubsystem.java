@@ -10,6 +10,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+
 /**
  * Subsystem to model the robot's drivetrain
  */
@@ -25,6 +29,18 @@ public class DriveSubsystem extends SubsystemBase {
 
     // Current neutral mode
     NeutralMode neutralMode = NeutralMode.Brake;
+
+    DataLog log;
+    DoubleLogEntry rightMainCurrentLog;
+    DoubleLogEntry leftMainCurrentLog;
+    DoubleLogEntry rightFollowerCurrentLog;
+    DoubleLogEntry leftFollowerCurrentLog;
+
+    DoubleLogEntry leftMainSpeedLog;
+    DoubleLogEntry leftFollowerSpeedLog;
+    DoubleLogEntry rightMainSpeedLog;
+    DoubleLogEntry rightFollowerSpeedLog;
+
 
     public DriveSubsystem() {
         // Motor initialization
@@ -44,6 +60,17 @@ public class DriveSubsystem extends SubsystemBase {
 
         // Drivetrain initialization
         drive = new DifferentialDrive(leftMain, rightMain);
+
+        DataLogManager.start();
+        rightMainCurrentLog = new DoubleLogEntry(DataLogManager.getLog(), "Right Main Current");
+        leftMainCurrentLog = new DoubleLogEntry(DataLogManager.getLog(), "Left Main Current");
+        rightFollowerCurrentLog = new DoubleLogEntry(DataLogManager.getLog(), "Right Follower Current");
+        leftFollowerCurrentLog = new DoubleLogEntry(DataLogManager.getLog(), "Left Follower Current");
+
+        leftMainSpeedLog = new DoubleLogEntry(DataLogManager.getLog(), "Left Main Speed");
+        leftFollowerSpeedLog = new DoubleLogEntry(DataLogManager.getLog(), "Left Follower Speed");
+        rightMainSpeedLog = new DoubleLogEntry(DataLogManager.getLog(), "Right Main Speed");
+        rightFollowerSpeedLog = new DoubleLogEntry(DataLogManager.getLog(), "Right Follower Speed");
     }
 
     /**
@@ -55,7 +82,7 @@ public class DriveSubsystem extends SubsystemBase {
     private WPI_TalonFX initMotor(int canId) {
         WPI_TalonFX motor = new WPI_TalonFX(canId);
         motor.configFactoryDefault();
-        StatorCurrentLimitConfiguration limiter = new StatorCurrentLimitConfiguration(true, 80, 100, 2);
+        StatorCurrentLimitConfiguration limiter = new StatorCurrentLimitConfiguration(true, 100, 115, 2);
         motor.configStatorCurrentLimit(limiter);
         motor.setNeutralMode(neutralMode);
         return motor;
@@ -64,9 +91,9 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
-        SmartDashboard.putNumber("Left Main Sensor Position (m)", getMeters(leftMain.getSelectedSensorPosition()));
+        SmartDashboard.putNumber("Left Main Sensor Position (m)", -getMeters(leftMain.getSelectedSensorPosition()));
         SmartDashboard.putNumber("Left Main Sensor Velocity (m/s)", Math.abs(getMetersPerSecond(leftMain.getSelectedSensorVelocity())));
-        SmartDashboard.putNumber("Right Main Sensor position (m)", getMeters(rightMain.getSelectedSensorPosition()));
+        SmartDashboard.putNumber("Right Main Sensor position (m)", -getMeters(rightMain.getSelectedSensorPosition()));
         SmartDashboard.putNumber("Right Main Sensor velocity (m/s)", Math.abs(getMetersPerSecond(rightMain.getSelectedSensorVelocity())));
         // Motor temps
         SmartDashboard.putNumber("MotorTemperature/Left Main (C)", Math.round(leftMain.getTemperature()));
@@ -81,6 +108,15 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("MotorCurrent/Right Main", rightMain.getStatorCurrent());
         SmartDashboard.putNumber("MotorCurrent/Right Follower", rightFollower.getStatorCurrent());
 
+        rightMainCurrentLog.append(rightMain.getStatorCurrent());
+        leftMainCurrentLog.append(leftMain.getStatorCurrent());
+        rightFollowerCurrentLog.append(rightFollower.getStatorCurrent());
+        leftFollowerCurrentLog.append(leftFollower.getStatorCurrent());
+
+        leftMainSpeedLog.append(getMetersPerSecond(leftMain.getSelectedSensorVelocity()));
+        leftFollowerSpeedLog.append(getMetersPerSecond(leftFollower.getSelectedSensorVelocity()));
+        rightMainSpeedLog.append(getMetersPerSecond(rightMain.getSelectedSensorVelocity()));
+        rightFollowerSpeedLog.append(getMetersPerSecond(rightFollower.getSelectedSensorVelocity()));
     }
 
     /**
@@ -127,7 +163,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     private static double getMeters(double sensorReading) {
-        final double gearRatio = 10.71; // 10.71:1 gear ratio
+        final double gearRatio = 8.45; // 8.45:1 gear ratio
         final double encoderCount = 2048; // 2048 encoder counts per revolution
         final double wheelDiameter = 0.1524; // 6-inch wheel diameter in meters
         final double wheelCircumference = (Math.PI * wheelDiameter);
