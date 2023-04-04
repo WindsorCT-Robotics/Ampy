@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -78,7 +77,7 @@ public class RobotContainer {
     chooser.addOption("Score piece", new MoveConveyorCommand(0.8, conveyor).withTimeout(1));
     chooser.addOption("Do nothing", new PrintCommand("Doing nothing!"));
     chooser.addOption("Pick up piece", new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers));
-    chooser.setDefaultOption("Score picked-up piece", new AutoScorePiece(DriverStation.getAlliance(), conveyor, drive, intakeArms, intakeRollers));
+    chooser.setDefaultOption("Score picked-up piece", new AutoScorePiece(conveyor, drive, intakeArms, intakeRollers));
     SmartDashboard.putData("Auto Mode", chooser);
 
   }
