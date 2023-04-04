@@ -14,7 +14,8 @@ public class AutoScorePiece extends SequentialCommandGroup {
         double turnDirection = (alliance == Alliance.Red) ? -1 : 1;
         addCommands(new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers),
                 new AutoDriveCommand(0, 0.25 * turnDirection, drive).withTimeout(0.5),
-                new AutoDriveCommand(0.25, 0, drive).withTimeout(0.5));
+                new AutoDriveCommand(0.25, 0, drive).withTimeout(0.5),
+                new AutoScoreCommand(conveyor));
     }
 
 }
