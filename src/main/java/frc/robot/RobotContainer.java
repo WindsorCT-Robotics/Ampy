@@ -5,6 +5,7 @@ import frc.robot.commands.autonomous.AutoDriveCommand;
 import frc.robot.commands.autonomous.AutoPickUpPiece;
 import frc.robot.commands.autonomous.AutoScoreCommand;
 import frc.robot.commands.drive.DisableCurrentLimiting;
+import frc.robot.commands.autonomous.AutoScorePiece;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.SetNeutralModeCommand;
 import frc.robot.subsystems.*;
@@ -41,7 +42,7 @@ public class RobotContainer {
   private final SendableChooser<Command> chooser;
 
   private final double CONVEYOR_SPEED = 0.8;
-  private final double INTAKE_ROLLER_SPEED = 0.5;
+  private final double INTAKE_ROLLER_SPEED = -0.5;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -72,11 +73,12 @@ public class RobotContainer {
     // Initialize autonomous chooser
     chooser = new SendableChooser<>();
     chooser.addOption("Score piece and escape",
-        new AutoScoreCommand(conveyor).andThen(new AutoDriveCommand(-0.25, 0, drive).withTimeout(6)));
+        new AutoScoreCommand(conveyor).andThen(new AutoDriveCommand(-0.25, 0, drive).withTimeout(4)));
     chooser.addOption("Drive forward", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
     chooser.addOption("Score piece", new MoveConveyorCommand(0.8, conveyor).withTimeout(1));
     chooser.addOption("Do nothing", new PrintCommand("Doing nothing!"));
-    chooser.setDefaultOption("Pick up piece", new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers));
+    chooser.addOption("Pick up piece", new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers));
+    chooser.setDefaultOption("Score picked-up piece", new AutoScorePiece(conveyor, drive, intakeArms, intakeRollers));
     SmartDashboard.putData("Auto Mode", chooser);
 
   }
@@ -114,7 +116,7 @@ public class RobotContainer {
 
     Trigger leftTrigger = new Trigger(() -> driveController.getLeftTriggerAxis() > 0.1);
     leftTrigger.whileTrue(
-        new MoveIntakeRollersCommand(() -> -INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
+        new MoveIntakeRollersCommand(() -> INTAKE_ROLLER_SPEED * driveController.getLeftTriggerAxis(), intakeRollers));
     Trigger rightTrigger = new Trigger(() -> driveController.getRightTriggerAxis() > 0.3);
     rightTrigger.whileTrue(new ParallelCommandGroup(new MoveConveyorCommand(CONVEYOR_SPEED, conveyor),
         new MoveIntakeRollersCommand(INTAKE_ROLLER_SPEED, intakeRollers)));
