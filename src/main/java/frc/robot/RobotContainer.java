@@ -4,6 +4,7 @@ import frc.robot.commands.*;
 import frc.robot.commands.autonomous.AutoDriveCommand;
 import frc.robot.commands.autonomous.AutoPickUpPiece;
 import frc.robot.commands.autonomous.AutoScoreCommand;
+import frc.robot.commands.autonomous.AutoScorePiece;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.SetNeutralModeCommand;
 import frc.robot.subsystems.*;
@@ -19,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -75,7 +77,8 @@ public class RobotContainer {
     chooser.addOption("Drive forward", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
     chooser.addOption("Score piece", new MoveConveyorCommand(0.8, conveyor).withTimeout(1));
     chooser.addOption("Do nothing", new PrintCommand("Doing nothing!"));
-    chooser.setDefaultOption("Pick up piece", new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers));
+    chooser.addOption("Pick up piece", new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers));
+    chooser.setDefaultOption("Score picked-up piece", new AutoScorePiece(DriverStation.getAlliance(), conveyor, drive, intakeArms, intakeRollers));
     SmartDashboard.putData("Auto Mode", chooser);
 
   }
