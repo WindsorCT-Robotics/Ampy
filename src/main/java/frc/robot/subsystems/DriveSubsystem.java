@@ -15,16 +15,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  */
 public class DriveSubsystem extends SubsystemBase {
     // Drive motors
-    WPI_TalonFX leftMain;
-    WPI_TalonFX leftFollower;
-    WPI_TalonFX rightMain;
-    WPI_TalonFX rightFollower;
+    private WPI_TalonFX leftMain;
+    private WPI_TalonFX leftFollower;
+    private WPI_TalonFX rightMain;
+    private WPI_TalonFX rightFollower;
 
     // DifferentialDrive object for drive calculations
-    DifferentialDrive drive;
+    private DifferentialDrive drive;
 
     // Current neutral mode
-    NeutralMode neutralMode = NeutralMode.Brake;
+    private NeutralMode neutralMode = NeutralMode.Brake;
 
     // Current limiting enabled?
     private Boolean currentLimitEnabled = true;
