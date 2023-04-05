@@ -4,6 +4,8 @@ import frc.robot.commands.*;
 import frc.robot.commands.autonomous.AutoDriveCommand;
 import frc.robot.commands.autonomous.AutoPickUpPiece;
 import frc.robot.commands.autonomous.AutoScoreCommand;
+import frc.robot.commands.drive.DisableCurrentLimiting;
+import frc.robot.commands.autonomous.AutoScorePiece;
 import frc.robot.commands.drive.DriveCommand;
 import frc.robot.commands.drive.SetNeutralModeCommand;
 import frc.robot.subsystems.*;
@@ -75,7 +77,8 @@ public class RobotContainer {
     chooser.addOption("Drive forward", new AutoDriveCommand(-0.25, 0, drive).withTimeout(2));
     chooser.addOption("Score piece", new MoveConveyorCommand(0.8, conveyor).withTimeout(1));
     chooser.addOption("Do nothing", new PrintCommand("Doing nothing!"));
-    chooser.setDefaultOption("Pick up piece", new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers));
+    chooser.addOption("Pick up piece", new AutoPickUpPiece(conveyor, drive, intakeArms, intakeRollers));
+    chooser.setDefaultOption("Score picked-up piece", new AutoScorePiece(conveyor, drive, intakeArms, intakeRollers));
     SmartDashboard.putData("Auto Mode", chooser);
 
   }
@@ -95,9 +98,12 @@ public class RobotContainer {
     Trigger piece = new Trigger(() -> !conveyor.isIntakeSensor());
     piece.onTrue(new StartEndCommand(() -> driveController.getHID().setRumble(RumbleType.kBothRumble, 0.5),
         () -> driveController.getHID().setRumble(RumbleType.kBothRumble, 0)).withTimeout(0.5));
+    
     // set color of LEDs
     driveController.x().onTrue(new SetLedColorCommand(ledSubsystem, 0, 0, 255));
     driveController.y().onTrue(new SetLedColorCommand(ledSubsystem, 255, 102, 0));
+    
+    driveController.leftStick().whileTrue(new DisableCurrentLimiting(drive));
     driveController.b().onTrue(new SetNeutralModeCommand(NeutralMode.Brake, drive));
 
     driveController.leftBumper().onTrue(new IntakeFromFloorCommand(intakeArms, conveyor, intakeRollers));

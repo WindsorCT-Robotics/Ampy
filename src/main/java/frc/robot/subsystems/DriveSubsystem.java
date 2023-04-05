@@ -19,16 +19,19 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
  */
 public class DriveSubsystem extends SubsystemBase {
     // Drive motors
-    WPI_TalonFX leftMain;
-    WPI_TalonFX leftFollower;
-    WPI_TalonFX rightMain;
-    WPI_TalonFX rightFollower;
+    private WPI_TalonFX leftMain;
+    private WPI_TalonFX leftFollower;
+    private WPI_TalonFX rightMain;
+    private WPI_TalonFX rightFollower;
 
     // DifferentialDrive object for drive calculations
-    DifferentialDrive drive;
+    private DifferentialDrive drive;
 
     // Current neutral mode
-    NeutralMode neutralMode = NeutralMode.Brake;
+    private NeutralMode neutralMode = NeutralMode.Brake;
+
+    // Current limiting enabled?
+    private Boolean currentLimitEnabled = true;
 
     DataLog log;
     DoubleLogEntry rightMainCurrentLog;
@@ -58,6 +61,8 @@ public class DriveSubsystem extends SubsystemBase {
         rightFollower.follow(rightMain);
         rightFollower.setInverted(TalonFXInvertType.FollowMaster);
 
+        setCurrentLimitEnabled(true);
+
         // Drivetrain initialization
         drive = new DifferentialDrive(leftMain, rightMain);
 
@@ -82,8 +87,6 @@ public class DriveSubsystem extends SubsystemBase {
     private WPI_TalonFX initMotor(int canId) {
         WPI_TalonFX motor = new WPI_TalonFX(canId);
         motor.configFactoryDefault();
-        StatorCurrentLimitConfiguration limiter = new StatorCurrentLimitConfiguration(true, 100, 115, 2);
-        motor.configStatorCurrentLimit(limiter);
         motor.setNeutralMode(neutralMode);
         return motor;
     }
@@ -102,6 +105,8 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("MotorTemperature/Right Follower (C)", Math.round(rightFollower.getTemperature()));
         // Brake Mode
         SmartDashboard.putBoolean("Brake Mode", getNeutralMode() == NeutralMode.Brake);
+        // Current Limiting
+        SmartDashboard.putBoolean("Current limiting", isCurrentLimitEnabled());
         // Motor current
         SmartDashboard.putNumber("MotorCurrent/Left Main", leftMain.getStatorCurrent());
         SmartDashboard.putNumber("MotorCurrent/Left Follower", leftFollower.getStatorCurrent());
@@ -152,6 +157,28 @@ public class DriveSubsystem extends SubsystemBase {
      */
     public NeutralMode getNeutralMode() {
         return neutralMode;
+    }
+
+    /**
+     * Returns whether current limiting is currently enabled
+     * @return whether current limiting is applied to drive motors
+     */
+    public boolean isCurrentLimitEnabled() {
+        return currentLimitEnabled;
+    }
+
+    /**
+     * Set whether current limiting is enabled
+     * @param enabled whether to enable current limiting
+     */
+    public void setCurrentLimitEnabled(boolean enabled) {
+        currentLimitEnabled = enabled;
+        StatorCurrentLimitConfiguration limiter = new StatorCurrentLimitConfiguration(currentLimitEnabled, 100, 115, 2);
+        leftMain.configStatorCurrentLimit(limiter);
+        leftFollower.configStatorCurrentLimit(limiter);
+        rightMain.configStatorCurrentLimit(limiter);
+        rightFollower.configStatorCurrentLimit(limiter);
+
     }
 
     /**
