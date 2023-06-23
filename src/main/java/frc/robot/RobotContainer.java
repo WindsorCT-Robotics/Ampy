@@ -65,7 +65,7 @@ public class RobotContainer {
 
     // Configure default commands
     drive.setDefaultCommand(
-        new DriveCommand(() -> driveController.getLeftY(), () -> driveController.getRightX(), drive));
+        new DriveCommand(() -> driveController.getLeftY() * 0.5, () -> driveController.getRightX() * 0.75, drive));
     conveyor.setDefaultCommand(new MoveConveyorCommand(-0.1, conveyor));
 
     // Configure button bindings
